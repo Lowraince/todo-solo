@@ -1,0 +1,19 @@
+<div class="input-field">
+  <input
+    class="input-field__input"
+    appFocusInput
+    [formControl]="control"
+    [type]="type"
+    [ngClass]="{ 'input-field__input_invalid': isInvalid }"
+  />
+  @if (controlHasLength()) {
+    <label class="input-field__label">{{ inputName }}</label>
+  }
+
+  <p
+    class="input-field__hint"
+    [ngClass]="{ 'input-field__hint_active': !controlHasLength() }"
+  >
+    {{ inputName }}
+  </p>
+</div>

@@ -6,15 +6,12 @@
   >
     <ul class="form__fields">
       <li class="form__field">
-        <div>
-          <p class="form__label">Username:</p>
-          <input
-            class="input form__input"
-            formControlName="userName"
-            type="text"
-          />
-        </div>
-
+        <app-input-field
+          [control]="registrationForm.controls.userName"
+          type="text"
+          inputName="username"
+          [isInvalid]="isFieldInvalid('userName')"
+        ></app-input-field>
         @if (isFieldInvalid("userName")) {
           <div>
             @if (hasError("userName", "required")) {
@@ -35,14 +32,12 @@
         }
       </li>
       <li class="form__field">
-        <div>
-          <p class="form__label">Password:</p>
-          <input
-            class="input form__input"
-            formControlName="password"
-            type="password"
-          />
-        </div>
+        <app-input-field
+          [control]="registrationForm.controls.password"
+          type="password"
+          inputName="password"
+          [isInvalid]="isFieldInvalid('password')"
+        ></app-input-field>
         @if (isFieldInvalid("password")) {
           <div>
             @if (hasError("password", "required")) {
@@ -61,12 +56,12 @@
         }
       </li>
       <li class="form__field">
-        <p class="form__label">Your name:</p>
-        <input
-          class="input form__input"
-          formControlName="realName"
+        <app-input-field
+          [control]="registrationForm.controls.realName"
           type="text"
-        />
+          inputName="name"
+          [isInvalid]="isFieldInvalid('realName')"
+        ></app-input-field>
       </li>
     </ul>
 

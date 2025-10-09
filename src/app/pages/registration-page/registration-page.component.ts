@@ -7,10 +7,11 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { multipleWords } from '../../utils/validator-multiple-words';
+import { InputFieldComponent } from '../../components/input-field/input-field.component';
 
 @Component({
   selector: 'app-registration-page',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, InputFieldComponent],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
