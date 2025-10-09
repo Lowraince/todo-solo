@@ -1,0 +1,34 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-bg-primary: #ffcba4;
+  --color-bg-secondary: #fff5ee;
+  --color-bg-tertiary: #f8ad7e;
+  --color-border: #f0c6a8;
+
+  --color-text-button-primary: white;
+  --color-text-button-hover: white;
+  --color-bg-button-register: green;
+  --color-bg-button-register-hover: rgb(2, 151, 2);
+
+  --color-text-link-register-hover: #f8ad7e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}
+
+a {
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}

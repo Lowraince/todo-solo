@@ -1,0 +1,83 @@
+<div class="wrapper">
+  <form
+    class="form form__registration"
+    [formGroup]="registrationForm"
+    (ngSubmit)="onSubmit($event)"
+  >
+    <ul class="form__fields">
+      <li class="form__field">
+        <div>
+          <p class="form__label">Username:</p>
+          <input
+            class="input form__input"
+            formControlName="userName"
+            type="text"
+          />
+        </div>
+
+        @if (isFieldInvalid("userName")) {
+          <div>
+            @if (hasError("userName", "required")) {
+              <p>Username is required</p>
+            } @else if (hasError("userName", "maxlength")) {
+              <p>
+                Username must be at most
+                {{
+                  registrationForm.get("userName")?.getError("maxlength")
+                    ?.requiredLength
+                }}
+                characters
+              </p>
+            } @else if (hasError("userName", "multipleWords")) {
+              <p>A nickname cannot contain two or more words</p>
+            }
+          </div>
+        }
+      </li>
+      <li class="form__field">
+        <div>
+          <p class="form__label">Password:</p>
+          <input
+            class="input form__input"
+            formControlName="password"
+            type="password"
+          />
+        </div>
+        @if (isFieldInvalid("password")) {
+          <div>
+            @if (hasError("password", "required")) {
+              <p>Password is required</p>
+            } @else if (hasError("password", "maxlength")) {
+              <p>
+                Password must be at most
+                {{
+                  registrationForm.get("password")?.getError("maxlength")
+                    ?.requiredLength
+                }}
+                characters
+              </p>
+            }
+          </div>
+        }
+      </li>
+      <li class="form__field">
+        <p class="form__label">Your name:</p>
+        <input
+          class="input form__input"
+          formControlName="realName"
+          type="text"
+        />
+      </li>
+    </ul>
+
+    <div class="registration__buttons">
+      <a routerLink="/login" class="link">Login</a>
+      <button
+        type="submit"
+        class="button button__registration button__registration_register"
+      >
+        Register
+      </button>
+    </div>
+  </form>
+</div>
