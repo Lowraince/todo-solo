@@ -4,7 +4,10 @@
     appFocusInput
     [formControl]="control"
     [type]="type"
-    [ngClass]="{ 'input-field__input_invalid': isInvalid }"
+    [ngClass]="{
+      'input-field__input_invalid':
+        control.invalid && (control.dirty || control.touched),
+    }"
   />
   @if (controlHasLength()) {
     <label class="input-field__label">{{ inputName }}</label>
@@ -12,8 +15,40 @@
 
   <p
     class="input-field__hint"
-    [ngClass]="{ 'input-field__hint_active': !controlHasLength() }"
+    [ngClass]="{
+      'input-field__hint_active': !controlHasLength(),
+    }"
   >
     {{ inputName }}
   </p>
+
+  @if (control.invalid && (control.dirty || control.touched)) {
+    <div class="error__field">
+      @if (control.hasError("required")) {
+        <p>{{ inputName | capitalize }} is required.</p>
+      }
+
+      @if (control.hasError("maxlength")) {
+        <p>
+          {{ inputName | capitalize }} must be at most
+          {{ control.getError("maxlength")?.requiredLength }} characters.
+        </p>
+      }
+
+      @if (control.hasError("multipleWords")) {
+        <p>A {{ inputName }} cannot contain two or more words.</p>
+      }
+
+      @if (control.hasError("minlength")) {
+        <p>
+          {{ inputName | capitalize }} must be at least
+          {{ control.getError("minlength")?.requiredLength }} characters.
+        </p>
+      }
+
+      @if (control.hasError("nicknameTaken")) {
+        <p>{{ inputName | capitalize }} is already exists</p>
+      }
+    </div>
+  }
 </div>

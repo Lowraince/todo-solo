@@ -5,18 +5,25 @@
   min-height: 100vh;
 }
 
-.form__registration {
+.wrapper__registration {
   background-color: var(--color-bg-primary);
-  padding: 0.5rem;
   border: none;
   border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.registration__title {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 1rem;
 }
 
 .form__fields {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .form__field {
+  position: relative;
   margin-bottom: 0.5rem;
 
   &:last-of-type {

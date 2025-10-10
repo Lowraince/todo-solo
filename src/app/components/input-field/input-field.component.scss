@@ -1,5 +1,7 @@
 .input-field {
   position: relative;
+  min-width: 255px;
+  margin-bottom: 1rem;
 }
 
 .input-field__input {
@@ -60,4 +62,32 @@
 .input-field__hint_active {
   opacity: 1;
   transform: translateY(-50%) scale(1);
+}
+
+.error__field {
+  position: absolute;
+  padding: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 100%;
+  margin-left: 10px;
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.85rem;
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -8px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid red;
+  }
 }

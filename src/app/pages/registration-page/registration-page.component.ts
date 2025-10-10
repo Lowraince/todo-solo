@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+/* eslint-disable @typescript-eslint/member-ordering */
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +14,8 @@ import {
 import { RouterLink } from '@angular/router';
 import { multipleWords } from '../../utils/validator-multiple-words';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
+import { asyncValidatorUsername } from '../../utils/async-validator-username';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-registration-page',
@@ -17,12 +25,17 @@ import { InputFieldComponent } from '../../components/input-field/input-field.co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationPageComponent implements OnInit {
+  private apiService = inject(ApiService);
+
   public registrationForm = new FormGroup({
-    userName: new FormControl('', [
-      Validators.required,
-      Validators.maxLength(10),
-      multipleWords,
-    ]),
+    userName: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.maxLength(10),
+        multipleWords,
+      ],
+      asyncValidators: [asyncValidatorUsername(this.apiService)],
+    }),
     password: new FormControl('', [
       Validators.required,
       Validators.maxLength(10),
@@ -34,25 +47,12 @@ export class RegistrationPageComponent implements OnInit {
     ]),
   });
 
-  public ngOnInit(): void {
-    // this.registrationForm.get("userName")?.asyncValidator.
-  }
+  public ngOnInit(): void {}
 
   public onSubmit(event: Event): void {
     event.preventDefault();
     const form = this.registrationForm;
     console.log(form);
     if (!form.valid) return;
-  }
-
-  public isFieldInvalid(fieldName: string): boolean {
-    const field = this.registrationForm.get(fieldName);
-    return field ? field.invalid && (field.dirty || field.touched) : false;
-  }
-
-  public hasError(fieldName: string, error: string): boolean {
-    const field = this.registrationForm.get(fieldName);
-
-    return field ? field.hasError(error) && field.touched : false;
   }
 }
