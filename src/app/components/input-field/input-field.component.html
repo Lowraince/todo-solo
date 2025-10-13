@@ -49,6 +49,17 @@
       @if (control.hasError("nicknameTaken")) {
         <p>{{ inputName | capitalize }} is already exists</p>
       }
+
+      @if (control.hasError("isStrong")) {
+        <p>
+          {{ inputName | capitalize }} must contain digits, uppercase, lowercase
+          & symbols
+        </p>
+      }
+
+      @if (control.hasError("noSpaces")) {
+        No spaces allowed
+      }
     </div>
   }
 </div>

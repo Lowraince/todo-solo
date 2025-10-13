@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import {
   ChangeDetectionStrategy,
   Component,
@@ -16,6 +15,10 @@ import { multipleWords } from '../../utils/validator-multiple-words';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
 import { asyncValidatorUsername } from '../../utils/async-validator-username';
 import { ApiService } from '../../services/api.service';
+import { strengthPassword } from '../../utils/validator-strength-password';
+import { noSpaces } from '../../utils/validator-no-spaces';
+import { UserProfile } from '../../interfaces/interface-api';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-registration-page',
@@ -26,6 +29,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class RegistrationPageComponent implements OnInit {
   private apiService = inject(ApiService);
+  private authService = inject(AuthService);
 
   public registrationForm = new FormGroup({
     userName: new FormControl('', {
@@ -39,6 +43,8 @@ export class RegistrationPageComponent implements OnInit {
     password: new FormControl('', [
       Validators.required,
       Validators.maxLength(10),
+      strengthPassword,
+      noSpaces,
     ]),
     realName: new FormControl('', [
       Validators.required,
@@ -52,7 +58,21 @@ export class RegistrationPageComponent implements OnInit {
   public onSubmit(event: Event): void {
     event.preventDefault();
     const form = this.registrationForm;
-    console.log(form);
+
     if (!form.valid) return;
+
+    const value = form.value;
+
+    if (!value.userName || !value.password || !value.realName) {
+      return;
+    }
+
+    const newUser: UserProfile = {
+      userName: value.userName,
+      password: value.password,
+      name: value.realName,
+    };
+
+    this.authService.registrationUser(newUser);
   }
 }
