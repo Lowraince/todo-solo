@@ -19,4 +19,8 @@ export class InputFieldComponent {
   public controlHasLength(): boolean {
     return this.control.value?.length === 0;
   }
+
+  public isControlInvalid(control: FormControl): boolean {
+    return control.invalid && (control.dirty || control.touched);
+  }
 }
