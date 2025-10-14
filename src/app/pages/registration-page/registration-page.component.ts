@@ -19,6 +19,7 @@ import { strengthPassword } from '../../utils/validator-strength-password';
 import { noSpaces } from '../../utils/validator-no-spaces';
 import { UserProfile } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
+import { exhaustMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-registration-page',
@@ -73,6 +74,8 @@ export class RegistrationPageComponent implements OnInit {
       name: value.realName,
     };
 
-    this.authService.registrationUser(newUser);
+    of(newUser)
+      .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
+      .subscribe(() => form.reset());
   }
 }
