@@ -3,3 +3,5 @@ export interface UserProfile {
   name: string;
   password: string;
 }
+
+export type UserLogin = Omit<UserProfile, 'name'>;

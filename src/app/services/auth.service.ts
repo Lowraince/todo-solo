@@ -5,10 +5,11 @@ import {
   EMPTY,
   finalize,
   Observable,
+  of,
   take,
   tap,
 } from 'rxjs';
-import { UserProfile } from '../interfaces/interface-api';
+import { UserLogin, UserProfile } from '../interfaces/interface-api';
 import { ApiService } from './api.service';
 import { GetToken } from '../interfaces/types';
 import { LocalStorageService } from './local-storage.service';
@@ -97,6 +98,36 @@ export class AuthService {
       this.fetchUserProfile(token);
     } else {
       this.router.navigate(['/login']);
+    }
+  }
+
+  public loginUser({
+    userName,
+    password,
+  }: UserLogin): Observable<GetToken> | Observable<string> {
+    const token = this.localStorage.getTokenLocalStorage();
+    this.setLoading(true);
+
+    if (token) {
+      this.initProfile();
+      this.setLoading(false);
+      return of(token);
+    } else {
+      return this.apiService.loginUser({ userName, password }).pipe(
+        tap((value: GetToken) => {
+          this.localStorage.setTokenLocalStorage(value.token);
+        }),
+        catchError((error: Error) => {
+          console.error(`Login error: ${error.message}`);
+          this.authState.next({
+            ...this.authState.value,
+            error: `Error user create: ${error.message}`,
+          });
+
+          return EMPTY;
+        }),
+        finalize(() => this.setLoading(false)),
+      );
     }
   }
 

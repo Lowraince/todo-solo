@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { UserProfile } from '../interfaces/interface-api';
+import { UserLogin, UserProfile } from '../interfaces/interface-api';
 import { Observable } from 'rxjs';
 import { GetToken } from '../interfaces/types';
 import { HttpClient } from '@angular/common/http';
@@ -37,12 +37,18 @@ export class ApiService {
   }
 
   public checkUserName(userName: string): Observable<{ exists: boolean }> {
-    console.log(userName);
     return this.http.get<{ exists: boolean }>(
       `http://localhost:3004/api/user/check`,
       {
         params: { userName },
       },
     );
+  }
+
+  public loginUser({ userName, password }: UserLogin): Observable<GetToken> {
+    return this.http.post<GetToken>('http://localhost:3004/api/user/login', {
+      userName,
+      password,
+    });
   }
 }
