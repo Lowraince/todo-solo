@@ -26,7 +26,6 @@ export default defineConfig([
         "error",
         { accessibility: "explicit", overrides: { constructors: "off" } },
       ],
-      "@typescript-eslint/member-ordering": "error",
       "class-methods-use-this": "off",
       "@typescript-eslint/no-explicit-any": "error",
       "max-lines-per-function": ["error", 50],
