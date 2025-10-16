@@ -71,7 +71,7 @@ export class AuthService {
             error: null,
           });
 
-          this.router.navigate(['/todos']);
+          this.router.navigate(['/todos'], { replaceUrl: true });
         }),
         catchError((error) => {
           console.error(`Error user profile: ${error.message}`);
@@ -81,7 +81,7 @@ export class AuthService {
           });
 
           if (redirectOnError) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/login'], { replaceUrl: true });
           }
 
           return EMPTY;
@@ -97,7 +97,7 @@ export class AuthService {
     if (token) {
       this.fetchUserProfile(token);
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], { replaceUrl: true });
     }
   }
 

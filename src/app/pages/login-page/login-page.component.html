@@ -1,12 +1,31 @@
 <div class="wrapper wrapper__login">
-  <form>
+  <h1 class="login__title">Login</h1>
+  <form (ngSubmit)="onSubmit($event)">
     <ul>
       <li>
-        <app-input-field type="text" inputName="username"></app-input-field>
+        <app-input-field
+          [control]="loginForm.controls.userName"
+          type="text"
+          inputName="username"
+        ></app-input-field>
       </li>
       <li>
-        <app-input-field type="password" inputName="password"></app-input-field>
+        <app-input-field
+          [control]="loginForm.controls.password"
+          type="password"
+          inputName="password"
+        ></app-input-field>
       </li>
     </ul>
+    <div class="login__buttons">
+      <a routerLink="/registration" class="link">Registration</a>
+      <button
+        type="submit"
+        class="button button__login"
+        [disabled]="isLoading$ | async"
+      >
+        Sign in
+      </button>
+    </div>
   </form>
 </div>

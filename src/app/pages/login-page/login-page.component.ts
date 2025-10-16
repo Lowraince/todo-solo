@@ -8,17 +8,22 @@ import {
 } from '@angular/forms';
 import { UserLogin } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, of } from 'rxjs';
+import { exhaustMap, map, of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
-  imports: [InputFieldComponent, ReactiveFormsModule],
+  imports: [InputFieldComponent, ReactiveFormsModule, AsyncPipe],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
   private authService = inject(AuthService);
+
+  public isLoading$ = this.authService.authState$.pipe(
+    map((state) => state.isLoading),
+  );
 
   public loginForm = new FormGroup({
     userName: new FormControl('', Validators.required),
