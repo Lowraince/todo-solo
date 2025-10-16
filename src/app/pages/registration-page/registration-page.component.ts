@@ -11,19 +11,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { multipleWords } from '../../utils/validator-multiple-words';
+import { multipleWords } from '../../utils/validators/validator-multiple-words';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
 import { asyncValidatorUsername } from '../../utils/async-validator-username';
 import { ApiService } from '../../services/api.service';
-import { strengthPassword } from '../../utils/validator-strength-password';
-import { noSpaces } from '../../utils/validator-no-spaces';
+import { strengthPassword } from '../../utils/validators/validator-strength-password';
+import { noSpaces } from '../../utils/validators/validator-no-spaces';
 import { UserProfile } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, of } from 'rxjs';
+import { exhaustMap, map, of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { hasDigit } from '../../utils/validators/validator-has-digit';
 
 @Component({
   selector: 'app-registration-page',
-  imports: [ReactiveFormsModule, RouterLink, InputFieldComponent],
+  imports: [ReactiveFormsModule, RouterLink, InputFieldComponent, AsyncPipe],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +33,10 @@ import { exhaustMap, of } from 'rxjs';
 export class RegistrationPageComponent implements OnInit {
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
+
+  public isLoading$ = this.authService.authState$.pipe(
+    map((state) => state.isLoading),
+  );
 
   public registrationForm = new FormGroup({
     userName: new FormControl('', {
@@ -51,6 +57,7 @@ export class RegistrationPageComponent implements OnInit {
       Validators.required,
       Validators.maxLength(10),
       Validators.minLength(3),
+      hasDigit,
     ]),
   });
 

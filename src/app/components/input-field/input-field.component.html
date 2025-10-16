@@ -59,6 +59,10 @@
       @if (control.hasError("noSpaces")) {
         No spaces allowed
       }
+
+      @if (control.hasError("hasDigit")) {
+        The {{ inputName }} must not contain numbers.
+      }
     </div>
   }
 </div>

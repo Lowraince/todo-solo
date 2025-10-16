@@ -5,6 +5,7 @@ import {
   EMPTY,
   finalize,
   Observable,
+  take,
   tap,
 } from 'rxjs';
 import { UserProfile } from '../interfaces/interface-api';
@@ -12,7 +13,6 @@ import { ApiService } from './api.service';
 import { GetToken } from '../interfaces/types';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface AuthState {
   userProfile: UserProfile | null;
@@ -63,7 +63,6 @@ export class AuthService {
     this.apiService
       .getUserProfile(token)
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
         tap((profile: UserProfile) => {
           this.authState.next({
             userProfile: profile,
@@ -87,6 +86,7 @@ export class AuthService {
           return EMPTY;
         }),
         finalize(() => this.setLoading(false)),
+        take(1),
       )
       .subscribe();
   }
@@ -100,7 +100,7 @@ export class AuthService {
     }
   }
 
-  public setLoading(value: boolean): void {
+  private setLoading(value: boolean): void {
     this.authState.next({
       ...this.authState.value,
       isLoading: value,
