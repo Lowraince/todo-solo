@@ -5,6 +5,10 @@ export function multipleWords(
 ): ValidationErrors | null {
   const value: string = control.value;
 
+  if (!value) {
+    return null;
+  }
+
   const words = value.trim().split(/\s+/);
 
   return words.length > 1 ? { multipleWords: true } : null;

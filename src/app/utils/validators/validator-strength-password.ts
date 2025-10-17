@@ -5,7 +5,9 @@ export function strengthPassword(
 ): ValidationErrors | null {
   const value: string = control.value;
 
-  if (value.length === 0) return null;
+  if (!value) {
+    return null;
+  }
 
   const hasUpperCase = /[A-Z]/.test(value);
   const hasLowerCase = /[a-z]/.test(value);

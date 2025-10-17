@@ -1,6 +1,10 @@
 <div class="wrapper wrapper__login">
   <h1 class="login__title">Login</h1>
-  <form (ngSubmit)="onSubmit($event)">
+  <form
+    class="login__form"
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit($event)"
+  >
     <ul>
       <li>
         <app-input-field
@@ -18,7 +22,6 @@
       </li>
     </ul>
     <div class="login__buttons">
-      <a routerLink="/registration" class="link">Registration</a>
       <button
         type="submit"
         class="button button__login"
@@ -28,4 +31,8 @@
       </button>
     </div>
   </form>
+  <p>
+    You don't have an account?
+    <a routerLink="/registration" class="link">Registration</a>
+  </p>
 </div>

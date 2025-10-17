@@ -10,10 +10,11 @@ import { UserLogin } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
 import { exhaustMap, map, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
-  imports: [InputFieldComponent, ReactiveFormsModule, AsyncPipe],
+  imports: [InputFieldComponent, ReactiveFormsModule, AsyncPipe, RouterLink],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

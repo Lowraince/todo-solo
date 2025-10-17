@@ -12,6 +12,10 @@
   padding: 0.5rem;
 }
 
+.form__registration {
+  margin-bottom: 0.5rem;
+}
+
 .registration__title {
   text-align: center;
   margin: 0;
@@ -51,7 +55,7 @@
 }
 
 .link {
-  padding: 0.3rem 0.6rem;
+  text-decoration: underline;
 
   &:hover {
     color: var(--color-text-button-hover);

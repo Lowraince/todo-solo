@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -28,7 +28,6 @@ export class AuthService {
   private apiService = inject(ApiService);
   private localStorage = inject(LocalStorageService);
   private router = inject(Router);
-  private destroyRef = inject(DestroyRef);
 
   private authState = new BehaviorSubject<AuthState>({
     userProfile: null,
