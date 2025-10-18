@@ -1,6 +1,6 @@
-import { ApiService } from '../services/api.service';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, of, map, catchError, switchMap, timer, take } from 'rxjs';
+import { ApiService } from '../../../services/api.service';
 
 export function asyncValidatorUsername(apiService: ApiService) {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {

@@ -21,6 +21,6 @@ export class InputFieldComponent {
   }
 
   public isControlInvalid(control: FormControl): boolean {
-    return control.invalid && (control.dirty || control.touched);
+    return control.invalid && control.dirty;
   }
 }

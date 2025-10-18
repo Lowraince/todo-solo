@@ -61,3 +61,8 @@
     color: var(--color-text-button-hover);
   }
 }
+
+.button_disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

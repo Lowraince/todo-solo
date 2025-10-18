@@ -57,11 +57,15 @@
       }
 
       @if (control.hasError("noSpaces")) {
-        No spaces allowed
+        <p>No spaces allowed</p>
       }
 
       @if (control.hasError("hasDigit")) {
-        The {{ inputName }} must not contain numbers.
+        <p>The {{ inputName }} must not contain numbers.</p>
+      }
+
+      @if (control.hasError("passwordMismatch")) {
+        <p>Passwords do not match</p>
       }
     </div>
   }

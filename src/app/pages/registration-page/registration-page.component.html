@@ -23,6 +23,13 @@
       </li>
       <li class="form__field">
         <app-input-field
+          [control]="registrationForm.controls.confirmPassword"
+          type="password"
+          inputName="confirm password"
+        ></app-input-field>
+      </li>
+      <li class="form__field">
+        <app-input-field
           [control]="registrationForm.controls.realName"
           type="text"
           inputName="name"
@@ -35,6 +42,7 @@
         type="submit"
         class="button button__registration button__registration_register"
         [disabled]="isLoading$ | async"
+        [ngClass]="{ button_disabled: registrationForm.invalid }"
       >
         Sign up
       </button>
