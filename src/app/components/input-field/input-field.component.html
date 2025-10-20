@@ -8,6 +8,22 @@
       'input-field__input_invalid': isControlInvalid(control),
     }"
   />
+  @if (applyAsyncValidator) {
+    <div class="status-wrapper">
+      @if (control.pending) {
+        <span class="loader"></span>
+      } @else if (isValidAndTouched()) {
+        <svg app-check-icon></svg>
+      }
+    </div>
+  } @else {
+    @if (isValidAndTouched()) {
+      <div class="status-wrapper">
+        <svg app-check-icon></svg>
+      </div>
+    }
+  }
+
   @if (controlHasLength()) {
     <label class="input-field__label">{{ inputName }}</label>
   }

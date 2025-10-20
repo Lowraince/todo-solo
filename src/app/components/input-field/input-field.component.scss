@@ -97,3 +97,29 @@
     border-right: 8px solid red;
   }
 }
+
+.status-wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+}
+
+.loader {
+  width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid lightblue;
+  border-right-color: orange;
+  animation: l2 1s infinite linear;
+}
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}

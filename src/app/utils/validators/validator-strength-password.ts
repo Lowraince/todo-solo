@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function strengthPassword(
+export function strengthPasswordValidator(
   control: AbstractControl,
 ): ValidationErrors | null {
   const value: string = control.value;

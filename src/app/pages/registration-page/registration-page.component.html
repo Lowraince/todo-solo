@@ -38,14 +38,10 @@
     </ul>
 
     <div class="registration__buttons">
-      <button
-        type="submit"
-        class="button button__registration button__registration_register"
-        [disabled]="isLoading$ | async"
-        [ngClass]="{ button_disabled: registrationForm.invalid }"
+      <app-button-sign
+        [button_disabled]="registrationForm.invalid || registrationForm.pending"
+        >Sign up</app-button-sign
       >
-        Sign up
-      </button>
     </div>
   </form>
   <p>

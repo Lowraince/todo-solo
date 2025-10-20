@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function multipleWords(
+export function multipleWordsValidator(
   control: AbstractControl,
 ): ValidationErrors | null {
   const value: string = control.value;
