@@ -9,7 +9,7 @@ export function usernameAsyncValidator(apiService: ApiService) {
     }
 
     return timer(1000).pipe(
-      switchMap(() => apiService.checkUserName(control.value)),
+      switchMap(() => apiService.getCheckUserName(control.value)),
       map((result) => (result.exists ? { nicknameTaken: true } : null)),
       catchError(() => of(null)),
       take(1),

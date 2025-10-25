@@ -6,7 +6,7 @@ import {
   Input,
 } from '@angular/core';
 import { map } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-button-sign',
@@ -23,11 +23,11 @@ import { AuthService } from '../../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonSignComponent {
-  private authService = inject(AuthService);
+  private loadingService = inject(LoadingService);
 
   @Input() public button_disabled: boolean = false;
 
-  public isLoading$ = this.authService.authState$.pipe(
+  public isLoading$ = this.loadingService.loadingModalState$.pipe(
     map((state) => state.isLoading),
   );
 }

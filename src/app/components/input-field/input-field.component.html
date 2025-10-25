@@ -8,21 +8,32 @@
       'input-field__input_invalid': isControlInvalid(control),
     }"
   />
-  @if (applyAsyncValidator) {
-    <div class="status-wrapper">
-      @if (control.pending) {
-        <span class="loader"></span>
-      } @else if (isValidAndTouched()) {
-        <svg app-check-icon></svg>
+
+  <div class="status-wrapper">
+    @if (registrationInput) {
+      @if (applyAsyncValidator) {
+        @if (control.pending) {
+          <span class="loader"></span>
+        } @else if (isValidAndTouched()) {
+          <svg app-check-icon></svg>
+        }
+      } @else {
+        @if (isValidAndTouched()) {
+          <svg app-check-icon></svg>
+        }
       }
-    </div>
-  } @else {
-    @if (isValidAndTouched()) {
-      <div class="status-wrapper">
-        <svg app-check-icon></svg>
-      </div>
+    } @else {
+      @if (loginPassword) {
+        <div class="status__password-view" (click)="toggleViewPassword()">
+          @if (type === "password") {
+            <svg app-view-icon></svg>
+          } @else {
+            <svg app-not-view-icon></svg>
+          }
+        </div>
+      }
     }
-  }
+  </div>
 
   @if (controlHasLength()) {
     <label class="input-field__label">{{ inputName }}</label>
@@ -39,49 +50,11 @@
 
   @if (isControlInvalid(control)) {
     <div class="error__field">
-      @if (control.hasError("required")) {
-        <p>{{ inputName | capitalize }} is required.</p>
-      }
-
-      @if (control.hasError("maxlength")) {
-        <p>
-          {{ inputName | capitalize }} must be at most
-          {{ control.getError("maxlength")?.requiredLength }} characters.
-        </p>
-      }
-
-      @if (control.hasError("multipleWords")) {
-        <p>A {{ inputName }} cannot contain two or more words.</p>
-      }
-
-      @if (control.hasError("minlength")) {
-        <p>
-          {{ inputName | capitalize }} must be at least
-          {{ control.getError("minlength")?.requiredLength }} characters.
-        </p>
-      }
-
-      @if (control.hasError("nicknameTaken")) {
-        <p>{{ inputName | capitalize }} is already exists</p>
-      }
-
-      @if (control.hasError("isStrong")) {
-        <p>
-          {{ inputName | capitalize }} must contain digits, uppercase, lowercase
-          & symbols
-        </p>
-      }
-
-      @if (control.hasError("noSpaces")) {
-        <p>No spaces allowed</p>
-      }
-
-      @if (control.hasError("hasDigit")) {
-        <p>The {{ inputName }} must not contain numbers.</p>
-      }
-
-      @if (control.hasError("passwordMismatch")) {
-        <p>Passwords do not match</p>
+      @for (
+        errorMessage of errorMessages.getErrorMessages(control, inputName);
+        track $index
+      ) {
+        <p>{{ errorMessage }}</p>
       }
     </div>
   }

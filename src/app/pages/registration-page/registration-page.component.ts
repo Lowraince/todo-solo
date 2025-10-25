@@ -8,11 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { InputFieldComponent } from '../../components/input-field/input-field.component';
 import { ApiService } from '../../services/api.service';
 import { UserProfile } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, map, of } from 'rxjs';
+import { exhaustMap, of } from 'rxjs';
 import { markAllFieldsAsDirty } from '../../utils/mark-all-field-dirty';
 import { multipleWordsValidator } from '../../utils/validators/validator-multiple-words';
 import { usernameAsyncValidator } from '../../utils/validators/async-validators/async-validator-username';
@@ -20,14 +19,15 @@ import { strengthPasswordValidator } from '../../utils/validators/validator-stre
 import { noSpacesValidator } from '../../utils/validators/validator-no-spaces';
 import { hasDigitValidator } from '../../utils/validators/validator-has-digit';
 import { ButtonSignComponent } from '../../components/buttons/button-sign/button-sign.component';
+import { InputFieldComponent } from '../../components/input-field/input-field.component';
 
 @Component({
   selector: 'app-registration-page',
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    InputFieldComponent,
     ButtonSignComponent,
+    InputFieldComponent,
   ],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss',
@@ -36,10 +36,6 @@ import { ButtonSignComponent } from '../../components/buttons/button-sign/button
 export class RegistrationPageComponent {
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
-
-  public isLoading$ = this.authService.authState$.pipe(
-    map((state) => state.isLoading),
-  );
 
   public registrationForm = new FormGroup(
     {
@@ -76,7 +72,7 @@ export class RegistrationPageComponent {
     event.preventDefault();
     const form = this.registrationForm;
 
-    markAllFieldsAsDirty(this.registrationForm);
+    markAllFieldsAsDirty(form);
 
     if (form.invalid) return;
 

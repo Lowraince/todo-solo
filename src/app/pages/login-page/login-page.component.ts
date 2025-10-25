@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { InputFieldComponent } from '../../components/input-field/input-field.component';
 import {
   FormControl,
   FormGroup,
@@ -8,22 +7,34 @@ import {
 } from '@angular/forms';
 import { UserLogin } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, map, of } from 'rxjs';
+import { BehaviorSubject, exhaustMap, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { PasswordFieldType } from '../../interfaces/types';
+import { InputFieldComponent } from '../../components/input-field/input-field.component';
+import { markAllFieldsAsDirty } from '../../utils/mark-all-field-dirty';
+
+import { ButtonSignComponent } from '../../components/buttons/button-sign/button-sign.component';
 
 @Component({
   selector: 'app-login-page',
-  imports: [InputFieldComponent, ReactiveFormsModule, AsyncPipe, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    AsyncPipe,
+    RouterLink,
+    InputFieldComponent,
+    ButtonSignComponent,
+  ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
   private authService = inject(AuthService);
+  public changeViewPassword$ = new BehaviorSubject(false);
 
-  public isLoading$ = this.authService.authState$.pipe(
-    map((state) => state.isLoading),
+  public changeTypePassword$ = new BehaviorSubject<PasswordFieldType>(
+    'password',
   );
 
   public loginForm = new FormGroup({
@@ -34,6 +45,8 @@ export class LoginPageComponent {
   public onSubmit(event: Event): void {
     event.preventDefault();
     const form = this.loginForm;
+
+    markAllFieldsAsDirty(form);
 
     if (form.invalid) return;
 
@@ -48,8 +61,14 @@ export class LoginPageComponent {
 
     of(currentUser)
       .pipe(
-        exhaustMap((currentUser) => this.authService.loginUser(currentUser)),
+        exhaustMap((currentUser) =>
+          this.authService.loginUserAuth(currentUser),
+        ),
       )
       .subscribe(() => this.loginForm.reset());
+  }
+
+  public changePasswordView(viewPassword: PasswordFieldType): void {
+    this.changeTypePassword$.next(viewPassword);
   }
 }

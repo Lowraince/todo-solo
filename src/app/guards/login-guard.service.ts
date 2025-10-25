@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
+import { RootPages } from '../interfaces/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class LoginGuardService implements CanActivate {
 
   public canActivate(): boolean {
     if (this.localStorage.getTokenLocalStorage()) {
-      this.router.navigate(['/todos']);
+      this.router.navigate([`/${RootPages.MAIN}`]);
       return false;
     }
 

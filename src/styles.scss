@@ -14,6 +14,9 @@
 
   --color-input-focus: white;
   --color-input-error-border: red;
+
+  --color-loader-border: lightblue;
+  --color-loader-border-right: orange;
 }
 
 * {
@@ -34,4 +37,19 @@ button {
 a {
   transition: all 0.3s ease-in;
   cursor: pointer;
+}
+
+.loader {
+  width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid var(--color-loader-border);
+  border-right-color: var(--color-loader-border-right);
+  animation: l2 1s infinite linear;
+}
+
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
 }

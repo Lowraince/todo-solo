@@ -10,45 +10,39 @@ import { HttpClient } from '@angular/common/http';
 export class ApiService {
   private http = inject(HttpClient);
 
-  public postUser({
+  public postCreateUser({
     userName,
     password,
     name,
   }: UserProfile): Observable<GetToken> {
-    return this.http.post<GetToken>(
-      'http://localhost:3004/api/user/createUser',
-      {
-        userName,
-        password,
-        name,
-      },
-    );
+    return this.http.post<GetToken>('api/user/createUser', {
+      userName,
+      password,
+      name,
+    });
+  }
+
+  public postLoginUser({
+    userName,
+    password,
+  }: UserLogin): Observable<GetToken> {
+    return this.http.post<GetToken>('api/user/login', {
+      userName,
+      password,
+    });
   }
 
   public getUserProfile(token: string): Observable<UserProfile> {
-    return this.http.get<UserProfile>(
-      'http://localhost:3004/api/user/profile',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    return this.http.get<UserProfile>('api/user/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
   }
 
-  public checkUserName(userName: string): Observable<{ exists: boolean }> {
-    return this.http.get<{ exists: boolean }>(
-      `http://localhost:3004/api/user/check`,
-      {
-        params: { userName },
-      },
-    );
-  }
-
-  public loginUser({ userName, password }: UserLogin): Observable<GetToken> {
-    return this.http.post<GetToken>('http://localhost:3004/api/user/login', {
-      userName,
-      password,
+  public getCheckUserName(userName: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`api/user/check`, {
+      params: { userName },
     });
   }
 }
