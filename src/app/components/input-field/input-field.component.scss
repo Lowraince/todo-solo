@@ -20,9 +20,15 @@
   border: 2px solid var(--color-input-error-border);
 }
 
-.input-field:focus-within .input-field__input {
+.input-field:focus-within .input-field__input:not(.input-field__input_invalid) {
   border-color: var(--color-bg-tertiary);
   box-shadow: 0px 0px 10px var(--color-bg-tertiary);
+  outline: none;
+  background-color: var(--color-input-focus);
+}
+
+.input-field:focus-within .input-field__input.input-field__input_invalid {
+  border-color: var(--color-input-error-border);
   outline: none;
   background-color: var(--color-input-focus);
 }
@@ -90,4 +96,24 @@
     border-bottom: 8px solid transparent;
     border-right: 8px solid red;
   }
+}
+
+.status-wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+}
+
+.loader_input {
+  width: 18px;
+}
+
+.status__password-view {
+  display: flex;
 }

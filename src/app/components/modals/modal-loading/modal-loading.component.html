@@ -1,0 +1,24 @@
+@if (modal$ | async; as modalState) {
+  @if (modalState.isOpen) {
+    <div class="modal-loader__overlay">
+      <div class="modal-loader__content">
+        @if (modalState.message) {
+          <p>{{ modalState.message | capitalize }}</p>
+        }
+        <div class="status-wrapper">
+          @if (modalState.isLoading) {
+            <span class="loader loader_modal"></span>
+          }
+
+          @if (modalState.isSuccess) {
+            <svg app-check-icon></svg>
+          }
+
+          @if (modalState.isError) {
+            <p>error!!!!!!!!!!!!!!!</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+}

@@ -23,6 +23,13 @@
       </li>
       <li class="form__field">
         <app-input-field
+          [control]="registrationForm.controls.confirmPassword"
+          type="password"
+          inputName="confirm password"
+        ></app-input-field>
+      </li>
+      <li class="form__field">
+        <app-input-field
           [control]="registrationForm.controls.realName"
           type="text"
           inputName="name"
@@ -31,14 +38,14 @@
     </ul>
 
     <div class="registration__buttons">
-      <a routerLink="/login" class="link">Login</a>
-      <button
-        type="submit"
-        class="button button__registration button__registration_register"
-        [disabled]="isLoading$ | async"
+      <app-button-sign
+        [button_disabled]="registrationForm.invalid || registrationForm.pending"
+        >Sign up</app-button-sign
       >
-        Sign up
-      </button>
     </div>
   </form>
+  <p>
+    Do you already have an account?
+    <a routerLink="/login" class="link">Login</a>
+  </p>
 </div>

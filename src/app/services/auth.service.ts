@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
@@ -6,18 +6,21 @@ import {
   finalize,
   Observable,
   of,
+  switchMap,
   take,
   tap,
+  timer,
 } from 'rxjs';
 import { UserLogin, UserProfile } from '../interfaces/interface-api';
 import { ApiService } from './api.service';
 import { GetToken } from '../interfaces/types';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
+import { RootPages } from '../interfaces/enums';
+import { LoadingService } from './loading.service';
 
 interface AuthState {
   userProfile: UserProfile | null;
-  isLoading: boolean;
   error: string | null;
 }
 
@@ -28,23 +31,31 @@ export class AuthService {
   private apiService = inject(ApiService);
   private localStorage = inject(LocalStorageService);
   private router = inject(Router);
-  private destroyRef = inject(DestroyRef);
+  private modalLoaderService = inject(LoadingService);
 
   private authState = new BehaviorSubject<AuthState>({
     userProfile: null,
-    isLoading: false,
     error: null,
   });
 
   public authState$ = this.authState.asObservable();
 
   public registrationUser(newUser: UserProfile): Observable<GetToken> {
-    this.setLoading(true);
+    this.modalLoaderService.openModal('Account creation is in progress...');
 
-    return this.apiService.postUser(newUser).pipe(
+    return this.apiService.postCreateUser(newUser).pipe(
       tap((value: GetToken) => {
         this.localStorage.setTokenLocalStorage(value.token);
-        this.fetchUserProfile(value.token, false);
+
+        this.modalLoaderService.updateTextModalSuccess(
+          'Account created successfully.',
+        );
+
+        timer(1000)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.fetchUserProfile(value.token, false);
+          });
       }),
       catchError((error) => {
         console.error(`Error user create: ${error.message}`);
@@ -54,24 +65,22 @@ export class AuthService {
         });
         return EMPTY;
       }),
-      finalize(() => this.setLoading(false)),
     );
   }
 
   private fetchUserProfile(token: string, redirectOnError = true): void {
-    this.setLoading(true);
-
     this.apiService
       .getUserProfile(token)
       .pipe(
         tap((profile: UserProfile) => {
           this.authState.next({
             userProfile: profile,
-            isLoading: false,
             error: null,
           });
 
-          this.router.navigate(['/todos'], { replaceUrl: true });
+          this.modalLoaderService.hideModal();
+
+          this.router.navigate([`/${RootPages.MAIN}`], { replaceUrl: true });
         }),
         catchError((error) => {
           console.error(`Error user profile: ${error.message}`);
@@ -81,13 +90,13 @@ export class AuthService {
           });
 
           if (redirectOnError) {
-            this.router.navigate(['/login'], { replaceUrl: true });
+            this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
           }
 
           return EMPTY;
         }),
-        finalize(() => this.setLoading(false)),
         take(1),
+        finalize(() => this.modalLoaderService.hideModal()),
       )
       .subscribe();
   }
@@ -97,45 +106,31 @@ export class AuthService {
     if (token) {
       this.fetchUserProfile(token);
     } else {
-      this.router.navigate(['/login'], { replaceUrl: true });
+      this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
     }
   }
 
-  public loginUser({
+  public loginUserAuth({
     userName,
     password,
-  }: UserLogin): Observable<GetToken> | Observable<string> {
-    const token = this.localStorage.getTokenLocalStorage();
-    this.setLoading(true);
+  }: UserLogin): Observable<GetToken> {
+    this.modalLoaderService.openModal('Signing in...');
 
-    if (token) {
-      this.initProfile();
-      this.setLoading(false);
-      return of(token);
-    } else {
-      return this.apiService.loginUser({ userName, password }).pipe(
-        tap((value: GetToken) => {
-          this.localStorage.setTokenLocalStorage(value.token);
-        }),
-        catchError((error: Error) => {
-          console.error(`Login error: ${error.message}`);
-          this.authState.next({
-            ...this.authState.value,
-            error: `Error user create: ${error.message}`,
-          });
+    return this.apiService.postLoginUser({ userName, password }).pipe(
+      switchMap((value: GetToken) => {
+        this.localStorage.setTokenLocalStorage(value.token);
+        this.fetchUserProfile(value.token, false);
 
-          return EMPTY;
-        }),
-        finalize(() => this.setLoading(false)),
-      );
-    }
-  }
-
-  private setLoading(value: boolean): void {
-    this.authState.next({
-      ...this.authState.value,
-      isLoading: value,
-      error: null,
-    });
+        return of(value);
+      }),
+      catchError((error: Error) => {
+        console.error(`Login error: ${error.message}`);
+        this.authState.next({
+          ...this.authState.value,
+          error: `Login error: ${error.message}`,
+        });
+        return EMPTY;
+      }),
+    );
   }
 }

@@ -1,11 +1,13 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function strengthPassword(
+export function strengthPasswordValidator(
   control: AbstractControl,
 ): ValidationErrors | null {
   const value: string = control.value;
 
-  if (value.length === 0) return null;
+  if (!value) {
+    return null;
+  }
 
   const hasUpperCase = /[A-Z]/.test(value);
   const hasLowerCase = /[a-z]/.test(value);

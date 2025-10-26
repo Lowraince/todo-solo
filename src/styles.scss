@@ -4,6 +4,7 @@
   --color-bg-secondary: #fff5ee;
   --color-bg-tertiary: #f8ad7e;
   --color-border: #f0c6a8;
+  --color-bg-modal: #fff;
 
   --color-text-button-primary: white;
   --color-text-button-hover: white;
@@ -14,6 +15,9 @@
 
   --color-input-focus: white;
   --color-input-error-border: red;
+
+  --color-loader-border: lightblue;
+  --color-loader-border-right: orange;
 }
 
 * {
@@ -34,4 +38,18 @@ button {
 a {
   transition: all 0.3s ease-in;
   cursor: pointer;
+}
+
+.loader {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid var(--color-loader-border);
+  border-right-color: var(--color-loader-border-right);
+  animation: l2 1s infinite linear;
+}
+
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
 }

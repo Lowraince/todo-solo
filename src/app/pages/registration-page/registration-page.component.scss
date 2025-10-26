@@ -12,6 +12,10 @@
   padding: 0.5rem;
 }
 
+.form__registration {
+  margin-bottom: 0.5rem;
+}
+
 .registration__title {
   text-align: center;
   margin: 0;
@@ -38,7 +42,7 @@
 }
 
 .button__registration {
-  padding: 0.5rem 0.6rem;
+  padding: 0.5rem 2rem;
   border: none;
   border-radius: 5px;
   color: var(--color-text-button-primary);
@@ -51,9 +55,14 @@
 }
 
 .link {
-  padding: 0.3rem 0.6rem;
+  text-decoration: underline;
 
   &:hover {
     color: var(--color-text-button-hover);
   }
+}
+
+.button_disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

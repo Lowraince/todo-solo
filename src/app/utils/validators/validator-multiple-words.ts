@@ -1,9 +1,13 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export function multipleWords(
+export function multipleWordsValidator(
   control: AbstractControl,
 ): ValidationErrors | null {
   const value: string = control.value;
+
+  if (!value) {
+    return null;
+  }
 
   const words = value.trim().split(/\s+/);
 

@@ -6,15 +6,16 @@ import { RootPages } from '../interfaces/enums';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuardService implements CanActivate {
+export class LoginGuardService implements CanActivate {
   private router = inject(Router);
   private localStorage = inject(LocalStorageService);
 
   public canActivate(): boolean {
     if (this.localStorage.getTokenLocalStorage()) {
-      return true;
+      this.router.navigate([`/${RootPages.MAIN}`]);
+      return false;
     }
-    this.router.navigate([`/${RootPages.LOGIN}`]);
-    return false;
+
+    return true;
   }
 }

@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.modal-loader__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-loader__content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-bg-modal);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+}
+
+.loader_modal {
+  width: 100%;
+}

@@ -18,6 +18,10 @@
   margin-bottom: 1rem;
 }
 
+.login__form {
+  margin-bottom: 0.5rem;
+}
+
 .login__buttons {
   display: flex;
   justify-content: space-around;
@@ -25,7 +29,7 @@
 }
 
 .button__login {
-  padding: 0.5rem 0.6rem;
+  padding: 0.5rem 2rem;
   border: none;
   border-radius: 5px;
   color: var(--color-text-button-primary);
@@ -38,7 +42,7 @@
 }
 
 .link {
-  padding: 0.3rem 0.6rem;
+  text-decoration: underline;
 
   &:hover {
     color: var(--color-text-button-hover);
