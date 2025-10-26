@@ -90,7 +90,7 @@ export class RegistrationPageComponent {
 
     of(newUser)
       .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
-      .subscribe(() => form.reset());
+      .subscribe();
   }
 
   private passwordMatchValidator(

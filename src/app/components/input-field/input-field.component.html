@@ -13,7 +13,7 @@
     @if (registrationInput) {
       @if (applyAsyncValidator) {
         @if (control.pending) {
-          <span class="loader"></span>
+          <span class="loader loader_input"></span>
         } @else if (isValidAndTouched()) {
           <svg app-check-icon></svg>
         }

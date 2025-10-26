@@ -4,6 +4,7 @@
   --color-bg-secondary: #fff5ee;
   --color-bg-tertiary: #f8ad7e;
   --color-border: #f0c6a8;
+  --color-bg-modal: #fff;
 
   --color-text-button-primary: white;
   --color-text-button-hover: white;
@@ -40,7 +41,6 @@ a {
 }
 
 .loader {
-  width: 18px;
   aspect-ratio: 1;
   border-radius: 50%;
   border: 3px solid var(--color-loader-border);

@@ -16,8 +16,23 @@
 }
 
 .modal-loader__content {
-  background: white;
-  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-bg-modal);
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+}
+
+.loader_modal {
+  width: 100%;
 }

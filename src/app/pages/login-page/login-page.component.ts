@@ -65,7 +65,7 @@ export class LoginPageComponent {
           this.authService.loginUserAuth(currentUser),
         ),
       )
-      .subscribe(() => this.loginForm.reset());
+      .subscribe();
   }
 
   public changePasswordView(viewPassword: PasswordFieldType): void {

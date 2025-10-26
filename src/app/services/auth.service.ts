@@ -41,11 +41,15 @@ export class AuthService {
   public authState$ = this.authState.asObservable();
 
   public registrationUser(newUser: UserProfile): Observable<GetToken> {
-    this.modalLoaderService.openModal('Account creation is underway');
+    this.modalLoaderService.openModal('Account creation is in progress...');
 
     return this.apiService.postCreateUser(newUser).pipe(
       tap((value: GetToken) => {
         this.localStorage.setTokenLocalStorage(value.token);
+
+        this.modalLoaderService.updateTextModalSuccess(
+          'Account created successfully.',
+        );
 
         timer(1000)
           .pipe(take(1))
@@ -73,6 +77,9 @@ export class AuthService {
             userProfile: profile,
             error: null,
           });
+
+          this.modalLoaderService.hideModal();
+
           this.router.navigate([`/${RootPages.MAIN}`], { replaceUrl: true });
         }),
         catchError((error) => {
@@ -107,6 +114,8 @@ export class AuthService {
     userName,
     password,
   }: UserLogin): Observable<GetToken> {
+    this.modalLoaderService.openModal('Signing in...');
+
     return this.apiService.postLoginUser({ userName, password }).pipe(
       switchMap((value: GetToken) => {
         this.localStorage.setTokenLocalStorage(value.token);

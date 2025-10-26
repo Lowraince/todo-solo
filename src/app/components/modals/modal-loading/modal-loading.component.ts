@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LoadingService } from '../../../services/loading.service';
 import { AsyncPipe } from '@angular/common';
 import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
+import { CheckIconComponent } from '../../../icons/check-icon/check-icon.component';
 
 @Component({
   selector: 'app-modal-loading',
-  imports: [AsyncPipe, CapitalizePipe],
+  imports: [AsyncPipe, CapitalizePipe, CheckIconComponent],
   templateUrl: './modal-loading.component.html',
   styleUrl: './modal-loading.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
