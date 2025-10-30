@@ -1,5 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { UserLogin, UserProfile } from '../interfaces/interface-api';
+import {
+  GetUserProfile,
+  UserLogin,
+  UserProfile,
+} from '../interfaces/interface-api';
 import { Observable } from 'rxjs';
 import { GetToken } from '../interfaces/types';
 import { HttpClient } from '@angular/common/http';
@@ -13,12 +17,12 @@ export class ApiService {
   public postCreateUser({
     userName,
     password,
-    name,
+    realNameUser,
   }: UserProfile): Observable<GetToken> {
     return this.http.post<GetToken>('api/user/createUser', {
       userName,
       password,
-      name,
+      realNameUser,
     });
   }
 
@@ -32,8 +36,8 @@ export class ApiService {
     });
   }
 
-  public getUserProfile(token: string): Observable<UserProfile> {
-    return this.http.get<UserProfile>('api/user/profile', {
+  public getUserProfile(token: string): Observable<GetUserProfile> {
+    return this.http.get<GetUserProfile>('api/user/profile', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

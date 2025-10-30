@@ -85,8 +85,10 @@ export class RegistrationPageComponent {
     const newUser: UserProfile = {
       userName: value.userName.trim(),
       password: value.password.trim(),
-      name: value.realName.trim(),
+      realNameUser: value.realName.trim(),
     };
+
+    console.log(newUser);
 
     of(newUser)
       .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))

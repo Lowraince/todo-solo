@@ -1,12 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { HeaderMainComponent } from '../../components/header-main/header-main.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main-page',
-  imports: [],
+  imports: [HeaderMainComponent],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainPageComponent {
+export class MainPageComponent implements OnInit {
+  private authService = inject(AuthService);
 
+  public ngOnInit(): void {
+    this.authService.initProfile();
+  }
 }

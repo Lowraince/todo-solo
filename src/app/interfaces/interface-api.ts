@@ -1,7 +1,18 @@
 export interface UserProfile {
   userName: string;
-  name: string;
+  realNameUser: string;
   password: string;
 }
 
-export type UserLogin = Omit<UserProfile, 'name'>;
+export interface GetUserProfile {
+  data: {
+    isAdmin: boolean;
+    name: string;
+    password: string;
+    userName: string;
+  };
+}
+
+export type UserProfileState = GetUserProfile['data'];
+
+export type UserLogin = Omit<UserProfile, 'realNameUser'>;

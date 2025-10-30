@@ -1,12 +1,15 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { LocalStorageService } from '../services/local-storage.service';
+import { Router } from '@angular/router';
+import { RootPages } from '../interfaces/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +17,14 @@ import { LocalStorageService } from '../services/local-storage.service';
 export class HttpInterceptorService implements HttpInterceptor {
   private URLBASE = 'http://localhost:3004';
   private localStorage = inject(LocalStorageService);
+  private router = inject(Router);
 
   public intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const token = this.localStorage.getTokenLocalStorage();
-    console.log(token, 'mod req');
+
     let modifiedRequest = request;
 
     if (!request.url.startsWith('http')) {
@@ -35,9 +39,15 @@ export class HttpInterceptorService implements HttpInterceptor {
         },
       });
     }
+    return next.handle(modifiedRequest).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && token) {
+          this.localStorage.removeTokenLocalStorage();
+          this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
+        }
 
-    console.log(modifiedRequest, 'mod req');
-
-    return next.handle(modifiedRequest);
+        return throwError(() => error);
+      }),
+    );
   }
 }

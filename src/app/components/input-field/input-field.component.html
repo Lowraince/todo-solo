@@ -16,6 +16,8 @@
           <span class="loader loader_input"></span>
         } @else if (isValidAndTouched()) {
           <svg app-check-icon></svg>
+        } @else if (control.hasError("serverUnavailable")) {
+          <span class="loader loader_input"></span>
         }
       } @else {
         @if (isValidAndTouched()) {

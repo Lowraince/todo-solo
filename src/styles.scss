@@ -18,6 +18,9 @@
 
   --color-loader-border: lightblue;
   --color-loader-border-right: orange;
+
+  --color-icon: #f86d02;
+  --color-icon-hover: #f39954;
 }
 
 * {
@@ -52,4 +55,10 @@ a {
   to {
     transform: rotate(1turn);
   }
+}
+
+.wrapper {
+  margin: auto;
+  max-width: 1200px;
+  padding: 0 20px;
 }

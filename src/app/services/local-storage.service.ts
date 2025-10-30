@@ -11,4 +11,8 @@ export class LocalStorageService {
   public getTokenLocalStorage(): string | null {
     return localStorage.getItem('token-todo') || null;
   }
+
+  public removeTokenLocalStorage(): void {
+    localStorage.removeItem('token-todo');
+  }
 }

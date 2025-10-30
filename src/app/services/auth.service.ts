@@ -11,7 +11,12 @@ import {
   tap,
   timer,
 } from 'rxjs';
-import { UserLogin, UserProfile } from '../interfaces/interface-api';
+import {
+  GetUserProfile,
+  UserLogin,
+  UserProfile,
+  UserProfileState,
+} from '../interfaces/interface-api';
 import { ApiService } from './api.service';
 import { GetToken } from '../interfaces/types';
 import { LocalStorageService } from './local-storage.service';
@@ -20,7 +25,7 @@ import { RootPages } from '../interfaces/enums';
 import { LoadingService } from './loading.service';
 
 interface AuthState {
-  userProfile: UserProfile | null;
+  userProfile: UserProfileState | null;
   error: string | null;
 }
 
@@ -72,9 +77,9 @@ export class AuthService {
     this.apiService
       .getUserProfile(token)
       .pipe(
-        tap((profile: UserProfile) => {
+        tap((profile: GetUserProfile) => {
           this.authState.next({
-            userProfile: profile,
+            userProfile: profile.data,
             error: null,
           });
 
@@ -132,5 +137,16 @@ export class AuthService {
         return EMPTY;
       }),
     );
+  }
+
+  public logoutUser(): void {
+    this.localStorage.removeTokenLocalStorage();
+
+    this.authState.next({
+      userProfile: null,
+      error: null,
+    });
+
+    this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
   }
 }

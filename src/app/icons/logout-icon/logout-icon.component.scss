@@ -1,0 +1,8 @@
+:host {
+  fill: var(--color-icon);
+  cursor: pointer;
+
+  &:hover {
+    fill: var(--color-icon-hover);
+  }
+}
