@@ -27,6 +27,22 @@ export const routes: Routes = [
       import('./pages/main-page/main-page.component').then(
         (m) => m.MainPageComponent,
       ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/main-page/main-page.component').then(
+            (m) => m.MainPageComponent,
+          ),
+      },
+      {
+        path: ':todosDay',
+        loadComponent: () =>
+          import('./pages/main-page/main-page.component').then(
+            (m) => m.MainPageComponent,
+          ),
+      },
+    ],
     canActivate: [AuthGuardService],
   },
 ];

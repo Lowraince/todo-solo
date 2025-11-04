@@ -1,6 +1,6 @@
 @if (modal$ | async; as modalState) {
   @if (modalState.isOpen) {
-    <div class="modal-loader__overlay">
+    <div class="modal-overlay">
       <div class="modal-loader__content">
         @if (modalState.message) {
           <p>{{ modalState.message | capitalize }}</p>

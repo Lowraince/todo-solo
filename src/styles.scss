@@ -21,6 +21,12 @@
 
   --color-icon: #f86d02;
   --color-icon-hover: #f39954;
+
+  --color-bg-sidebar: #fbe2cf;
+  --color-bg-sidebar-active: #ffcba4;
+
+  --color-bg-cross-modal-close: black;
+  --color-bg-cross-modal-close-hover: orange;
 }
 
 * {
@@ -61,4 +67,17 @@ a {
   margin: auto;
   max-width: 1200px;
   padding: 0 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }

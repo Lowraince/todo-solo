@@ -1,5 +1,6 @@
 .wrapper__main-layout {
   display: grid;
   grid-template-columns: 140px 1fr;
+  padding: 1rem 20px;
   background-color: var(--color-bg-primary);
 }

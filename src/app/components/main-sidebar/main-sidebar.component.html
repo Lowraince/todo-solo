@@ -1,7 +1,34 @@
 <ul class="sidebar__items">
   @for (item of sidebarItems | async; track $index) {
-    <li class="sidebar__link">
-      {{ item }}
-    </li>
+    @if (item.active) {
+      <li
+        class="sidebar__link"
+        [ngClass]="{
+          sidebar__link_active: item.title === (activeItem | async),
+        }"
+        (click)="changeActiveLink(item.title)"
+      >
+        <div class="sidebar__icon">
+          @switch (item.title) {
+            @case ("Today") {
+              <svg app-sun-icon></svg>
+            }
+            @case ("Tomorrow") {
+              <svg app-sunset-icon></svg>
+            }
+            @case ("Missed") {
+              <svg app-calendar-miss-icon></svg>
+            }
+            @case ("For this week") {
+              <svg app-calendar-icon></svg>
+            }
+          }
+        </div>
+
+        <p class="sidebar__text">
+          {{ item.title }}
+        </p>
+      </li>
+    }
   }
 </ul>

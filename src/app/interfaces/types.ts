@@ -3,3 +3,5 @@ export type GetToken = {
 };
 
 export type PasswordFieldType = 'password' | 'text';
+
+export type SidebarItems = 'Today' | 'Tomorrow' | 'Missed' | 'For this week';

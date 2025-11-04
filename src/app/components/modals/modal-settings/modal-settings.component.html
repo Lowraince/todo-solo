@@ -1,0 +1,51 @@
+<div class="modal-overlay">
+  <div class="modal-settings">
+    <header class="modal-settings__header">
+      <div class="modal-settings__header-wrapper">
+        <h2>Settings</h2>
+        <span class="cross"></span>
+      </div>
+
+      <span class="custom-underline"></span>
+    </header>
+
+    <div class="modal-settings__content">
+      <ul>
+        @for (item of settings; track $index) {
+          <li>
+            {{ item }}
+          </li>
+        }
+      </ul>
+      <div class="projects">
+        <div class="theme__wrapper">
+          <p>Theme application</p>
+          <select class="theme__select" [formControl]="themeControl">
+            <option class="select__option" value="light">Light</option>
+            <option class="select__option" value="dark">Dark</option>
+          </select>
+        </div>
+        <h4 class="projects__title">Projects</h4>
+        <ul>
+          @for (item of sidebarItems | async; track $index) {
+            <li class="projects__link">
+              <p>
+                {{ item.title }}
+              </p>
+              <div
+                class="checkbox-settings"
+                (change)="toggleActiveSidebar(item)"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="item.active"
+                  class="custom-checkbox"
+                />
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
