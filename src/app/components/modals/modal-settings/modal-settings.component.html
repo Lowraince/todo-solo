@@ -45,6 +45,20 @@
             </li>
           }
         </ul>
+        <ul>
+          @for (item of optionValueTimer; track $index) {
+            <li class="projects__link">
+              <p>{{ item.label }}</p>
+              <app-select
+                [controlSelect]="item.control"
+                [valueOption]="item.values"
+                optionalValue="Minutes"
+                (changeValue)="onSelectChange($event)"
+              >
+              </app-select>
+            </li>
+          }
+        </ul>
       </div>
     </div>
   </div>

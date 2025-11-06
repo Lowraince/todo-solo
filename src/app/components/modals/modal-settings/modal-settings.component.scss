@@ -157,32 +157,3 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
-
-.theme__select {
-  padding: 0.2rem 0.4rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
-
-  &:hover {
-    border-color: #888;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 3px rgba(0, 123, 255, 0.4);
-  }
-
-  .select__option {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-  }
-}
