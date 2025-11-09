@@ -18,7 +18,7 @@ import { EmitterSelect } from '../../interfaces/types';
 })
 export class SelectComponent {
   @Input({ required: true }) public controlSelect!: FormControl<string | null>;
-  @Input({ required: true }) public valueOption!: string[];
+  @Input({ required: true }) public valueOption!: string[] | null;
   @Input() public optionalValue!: string;
 
   @Output() public changeValue = new EventEmitter<EmitterSelect>();

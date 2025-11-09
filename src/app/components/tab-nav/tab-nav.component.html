@@ -1,0 +1,29 @@
+<li
+  class="tab-nav"
+  [ngClass]="activeClassName()"
+  (click)="changeActiveNav(text)"
+>
+  <div class="tab-nav__icon">
+    @switch (text) {
+      @case ("Today") {
+        <svg app-sun-icon></svg>
+      }
+      @case ("Tomorrow") {
+        <svg app-sunset-icon></svg>
+      }
+      @case ("Missed") {
+        <svg app-calendar-miss-icon></svg>
+      }
+      @case ("For this week") {
+        <svg app-calendar-icon></svg>
+      }
+      @case ("General") {
+        <svg app-general-icon></svg>
+      }
+      @case ("Timer") {
+        <svg app-time-icon></svg>
+      }
+    }
+  </div>
+  <p class="tab-nav__text">{{ text }}</p>
+</li>

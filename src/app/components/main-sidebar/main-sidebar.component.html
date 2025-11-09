@@ -1,6 +1,6 @@
 <ul class="sidebar__items">
   @for (item of sidebarItems | async; track $index) {
-    @if (item.active) {
+    @if (item.isActive) {
       <li
         class="sidebar__link"
         [ngClass]="{

@@ -1,64 +1,77 @@
-<div class="modal-overlay">
-  <div class="modal-settings">
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-settings" (click)="$event.stopPropagation()">
     <header class="modal-settings__header">
       <div class="modal-settings__header-wrapper">
         <h2>Settings</h2>
-        <span class="cross"></span>
+        <span class="cross" (click)="closeModal()"></span>
       </div>
 
       <span class="custom-underline"></span>
     </header>
 
     <div class="modal-settings__content">
-      <ul>
-        @for (item of settings; track $index) {
-          <li>
-            {{ item }}
-          </li>
+      <ul class="modal-settings__nav-items">
+        @for (section of settingsSections; track $index) {
+          <app-tab-nav
+            [text]="section"
+            [activeNav]="activeSection"
+            (changeNav)="changeNavSettings($event)"
+          ></app-tab-nav>
         }
       </ul>
       <div class="projects">
-        <div class="theme__wrapper">
-          <p>Theme application</p>
-          <select class="theme__select" [formControl]="themeControl">
-            <option class="select__option" value="light">Light</option>
-            <option class="select__option" value="dark">Dark</option>
-          </select>
-        </div>
-        <h4 class="projects__title">Projects</h4>
-        <ul>
-          @for (item of sidebarItems | async; track $index) {
-            <li class="projects__link">
-              <p>
-                {{ item.title }}
-              </p>
-              <div
-                class="checkbox-settings"
-                (change)="toggleActiveSidebar(item)"
-              >
-                <input
-                  type="checkbox"
-                  [checked]="item.active"
-                  class="custom-checkbox"
-                />
-              </div>
-            </li>
-          }
-        </ul>
-        <ul>
-          @for (item of optionValueTimer; track $index) {
-            <li class="projects__link">
-              <p>{{ item.label }}</p>
-              <app-select
-                [controlSelect]="item.control"
-                [valueOption]="item.values"
-                optionalValue="Minutes"
-                (changeValue)="onSelectChange($event)"
-              >
-              </app-select>
-            </li>
-          }
-        </ul>
+        @if (activeSection === "General") {
+          <div class="theme__wrapper">
+            <p>Theme application</p>
+            <app-select
+              [controlSelect]="themeControl"
+              [valueOption]="appThemes | async"
+              (changeValue)="onSelectChange2($event.value)"
+            >
+            </app-select>
+          </div>
+          <h4 class="projects__title">Projects</h4>
+          <ul>
+            @for (item of sidebarItems | async; track $index) {
+              <li class="projects__link">
+                <p>
+                  {{ item.title }}
+                </p>
+                <app-checkbox
+                  [title]="item.title"
+                  [isActive]="item.isActive"
+                  (toggleItem)="toggleActiveSidebar($event)"
+                ></app-checkbox>
+                <!-- <div
+                  class="checkbox-settings"
+                  (change)="toggleActiveSidebar(item)"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="item.active"
+                    class="custom-checkbox"
+                  />
+                </div> -->
+              </li>
+            }
+          </ul>
+        } @else if (activeSection === "Timer") {
+          <h4 class="projects__title">Timer</h4>
+          <ul>
+            @for (item of optionValueTimer; track $index) {
+              <li class="projects__link projects__link_timer">
+                <p>{{ item.label }}</p>
+                <app-select
+                  [controlSelect]="item.control"
+                  [valueOption]="item.values"
+                  optionalValue="Minutes"
+                  (changeValue)="onSelectChange($event)"
+                >
+                </app-select>
+              </li>
+            }
+          </ul>
+        }
       </div>
     </div>
   </div>

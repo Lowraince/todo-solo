@@ -4,7 +4,7 @@ import { SidebarItems } from '../interfaces/types';
 
 export interface SidebarItemsState {
   title: SidebarItems;
-  active: boolean;
+  isActive: boolean;
 }
 
 interface Todo {
@@ -26,10 +26,10 @@ interface TodosState {
 export class TodosService {
   private todoState = new BehaviorSubject<TodosState>({
     sidebarItems: [
-      { title: 'Today', active: true },
-      { title: 'Tomorrow', active: true },
-      { title: 'Missed', active: true },
-      { title: 'For this week', active: true },
+      { title: 'Today', isActive: true },
+      { title: 'Tomorrow', isActive: true },
+      { title: 'Missed', isActive: true },
+      { title: 'For this week', isActive: true },
     ],
     activeSidebarItem: 'Today',
     todos: null,
@@ -45,14 +45,14 @@ export class TodosService {
     });
   }
 
-  public changeVisibleSidebar({ title, active }: SidebarItemsState): void {
+  public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {
     this.todoState.next({
       ...this.todoState.value,
       sidebarItems: this.todoState.value.sidebarItems.map((item) => {
         if (item.title === title) {
           return {
             ...item,
-            active: !active,
+            isActive: !isActive,
           };
         }
 

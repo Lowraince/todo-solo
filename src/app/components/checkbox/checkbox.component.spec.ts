@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsLinkComponent } from './settings-link.component';
+import { CheckboxComponent } from './checkbox.component';
 
-describe('SettingsLinkComponent', () => {
-  let component: SettingsLinkComponent;
-  let fixture: ComponentFixture<SettingsLinkComponent>;
+describe('CheckboxComponent', () => {
+  let component: CheckboxComponent;
+  let fixture: ComponentFixture<CheckboxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SettingsLinkComponent]
+      imports: [CheckboxComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SettingsLinkComponent);
+    fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
