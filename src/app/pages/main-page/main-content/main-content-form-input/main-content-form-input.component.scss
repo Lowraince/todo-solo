@@ -1,0 +1,45 @@
+.add-todo__form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  background-color: var(--color-bg-classic);
+}
+
+.add-todo__input {
+  width: 90%;
+  padding: 0.2rem;
+  border-radius: 5px;
+  border: 1px solid transparent;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.add-todo__icons {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.icons__values {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-todo__icon-add {
+  width: 25px;
+  height: 25px;
+}
+
+.add-todo__icon-more-values {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

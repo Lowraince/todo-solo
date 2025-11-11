@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SidebarItems } from '../interfaces/types';
+import { PriorityTodos, SidebarItems, SortTodos } from '../interfaces/types';
 
 export interface SidebarItemsState {
   title: SidebarItems;
   isActive: boolean;
 }
 
-interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
+interface ITodo {
+  idTodo: string;
+  pomodoroValue: number;
+  description: string;
+  timeCreate: string;
+  isComplete: boolean;
+  priority: PriorityTodos;
+  pomodoroValueComplete: number;
+  timeSpent: number;
 }
 
 interface TodosState {
   sidebarItems: SidebarItemsState[];
-  todos: Todo[] | null;
+  todos: ITodo[] | null;
   activeSidebarItem: SidebarItems;
-  sort: 'asc' | 'desc';
+  sort: SortTodos;
 }
 
 @Injectable({
@@ -33,7 +38,7 @@ export class TodosService {
     ],
     activeSidebarItem: 'Today',
     todos: null,
-    sort: 'asc',
+    sort: 'project_order',
   });
 
   public todoState$ = this.todoState.asObservable();

@@ -1,0 +1,15 @@
+:host {
+  fill: var(--color-icon);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &.icon_active {
+    opacity: 0.6;
+  }
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

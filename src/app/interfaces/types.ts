@@ -14,3 +14,11 @@ export type EmitterSelect = {
   control: FormControl;
   value: string | ThemeApp;
 };
+
+export type PriorityTodos =
+  | 'No priority'
+  | 'Low priority'
+  | 'Medium priority'
+  | 'High priority';
+
+export type SortTodos = 'project_order' | 'priority_order';

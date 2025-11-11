@@ -13,7 +13,7 @@
   display: block;
   content: "";
   height: 2px;
-  background-color: red;
+  background-color: var(--color-underline);
 }
 
 .modal-settings__header {

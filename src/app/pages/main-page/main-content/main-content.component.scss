@@ -1,0 +1,35 @@
+.main-content__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.main-content__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg-secondary);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+
+.main-content__svg-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem;
+  background-color: var(--color-bg-primary);
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.main-content__statistics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background-color: var(--color-bg-secondary);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}

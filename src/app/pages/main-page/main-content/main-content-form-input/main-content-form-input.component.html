@@ -1,0 +1,23 @@
+<form class="add-todo__form">
+  <svg app-plus-icon class="add-todo__icon-add"></svg>
+
+  <input
+    class="add-todo__input"
+    placeholder="To add a task to 'Tasks', press [Enter] to save"
+  />
+
+  <div class="add-todo__icons">
+    <div class="icons__values" (mouseleave)="onMouseLeave()">
+      @for (item of activeValues.arrayIcons; track $index) {
+        <svg
+          app-peach-icon
+          [ngClass]="{ icon_active: isActiveIcon(item) }"
+          (mouseenter)="onHover($index)"
+          (click)="onClick($index)"
+        ></svg>
+      }
+    </div>
+
+    <svg app-arrow-icon class="add-todo__icon-more-values"></svg>
+  </div>
+</form>

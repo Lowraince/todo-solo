@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { SettingsIconComponent } from '../../icons/settings-icon/settings-icon.component';
-import { LogoutIconComponent } from '../../icons/logout-icon/logout-icon.component';
-import { ModalSettingsService } from '../modals/modal-settings/settings-service/modal-settings.service';
+import { ModalSettingsService } from '../../../components/modals/modal-settings/settings-service/modal-settings.service';
+import { LogoutIconComponent } from '../../../icons/logout-icon/logout-icon.component';
+import { SettingsIconComponent } from '../../../icons/settings-icon/settings-icon.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header-main',

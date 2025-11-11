@@ -19,7 +19,7 @@ interface SettingsState {
 export class SettingsService {
   private settingsState = new BehaviorSubject<SettingsState>({
     appThemes: {
-      themes: ['light', 'dark'],
+      themes: ['light', 'dark', 'auto'],
       activeTheme: 'light',
     },
     timer: {

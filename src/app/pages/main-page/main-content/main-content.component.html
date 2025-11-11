@@ -1,0 +1,32 @@
+<div class="main-content__wrapper">
+  <header class="main-content__header">
+    <h2>{{ todoActiveLink | async }}</h2>
+    <div class="main-content__svg-wrapper">
+      <svg app-sort-icon></svg>
+    </div>
+  </header>
+  <section class="main-content__statistics">
+    <app-main-content-statistic
+      value="0"
+      [minute]="true"
+      description="Estimated time"
+    ></app-main-content-statistic>
+    <app-main-content-statistic
+      value="0"
+      description="Todos awaiting completion"
+    ></app-main-content-statistic>
+    <app-main-content-statistic
+      value="0"
+      [minute]="true"
+      description="Time spent"
+    >
+    </app-main-content-statistic>
+    <app-main-content-statistic
+      value="0"
+      description="Completed todos"
+    ></app-main-content-statistic>
+  </section>
+  <section>
+    <app-main-content-form-input></app-main-content-form-input>
+  </section>
+</div>
