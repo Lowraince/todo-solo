@@ -1,9 +1,10 @@
-<form class="add-todo__form">
-  <svg app-plus-icon class="add-todo__icon-add"></svg>
+<form class="add-todo__form" [formGroup]="addTodoForm">
+  <svg app-plus-icon class="add-todo__icon-add" (click)="addTodo()"></svg>
 
   <input
     class="add-todo__input"
     placeholder="To add a task to 'Tasks', press [Enter] to save"
+    formControlName="text"
   />
 
   <div class="add-todo__icons">
@@ -17,7 +18,17 @@
         ></svg>
       }
     </div>
-
-    <svg app-arrow-icon class="add-todo__icon-more-values"></svg>
+    <svg
+      (click)="openIncreaseModal()"
+      app-arrow-icon
+      class="add-todo__icon-more-values"
+    ></svg>
+    @if (modalIncrease | async) {
+      <app-modal-increase
+        [control]="addTodoForm.controls.values"
+        (valueChange)="onValueChange($event)"
+        (activeValueCountChange)="onInputValueChange($event)"
+      ></app-modal-increase>
+    }
   </div>
 </form>

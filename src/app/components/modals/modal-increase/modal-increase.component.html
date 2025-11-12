@@ -1,0 +1,24 @@
+<button
+  type="button"
+  class="button button__increase button__increase_minus"
+  (click)="changeValue('minus')"
+>
+  <svg app-minus-icon class="icon__increase"></svg>
+</button>
+
+<svg app-peach-icon class="icon_modal"></svg>
+
+<input
+  class="todo-inc__input"
+  type="number"
+  [formControl]="control"
+  (input)="onInput($event)"
+/>
+
+<button
+  type="button"
+  class="button button__increase button__increase_plus"
+  (click)="changeValue('plus')"
+>
+  <svg app-plus-icon class="icon__increase"></svg>
+</button>

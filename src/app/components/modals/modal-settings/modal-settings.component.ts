@@ -19,8 +19,8 @@ import {
   ThemeApp,
 } from '../../../interfaces/types';
 import { TabNavComponent } from '../../tab-nav/tab-nav.component';
-import { ModalSettingsService } from './settings-service/modal-settings.service';
 import { CheckboxComponent } from '../../checkbox/checkbox.component';
+import { ModalsOpenService } from '../../../services/modals-open.service';
 
 @Component({
   selector: 'app-modal-settings',
@@ -39,7 +39,7 @@ export class ModalSettingsComponent implements OnInit {
   private todoState = inject(TodosService);
   private settingsState = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
-  private modalSettingsService = inject(ModalSettingsService);
+  private modalOpenService = inject(ModalsOpenService);
 
   @HostListener('document:keydown', ['$event'])
   public handleKeydown(event: KeyboardEvent): void {
@@ -98,7 +98,7 @@ export class ModalSettingsComponent implements OnInit {
   }
 
   public closeModal(): void {
-    this.modalSettingsService.closeSettingsModal();
+    this.modalOpenService.closeModal('settingsAppModal');
   }
 
   public changeNavSettings(item: string): void {
