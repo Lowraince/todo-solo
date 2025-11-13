@@ -23,6 +23,16 @@ interface ActiveValues {
   lastIndex: number | null;
 }
 
+interface ActiveIcons {
+  isHovered: boolean;
+  isTarget: boolean;
+}
+
+interface ActiveIconsState {
+  icons: ActiveIcons[];
+  lastIndex: number | null;
+}
+
 @Component({
   selector: 'app-main-content-form-input',
   imports: [
@@ -44,6 +54,11 @@ export class MainContentFormInputComponent {
   public modalIncrease = this.openModalState.modalsState$.pipe(
     map((state) => state.increaseModal),
   );
+
+  public activeIconsState: ActiveIconsState = {
+    icons: this.iconsCreator(),
+    lastIndex: null,
+  };
 
   public activeValues: ActiveValues = {
     isComplete: false,
@@ -77,27 +92,14 @@ export class MainContentFormInputComponent {
   }
 
   private clearValues(formValues: FormControl<number>): void {
-    this.activeValues.arrayIcons.fill(0);
-
-    this.activeValues = {
-      ...this.activeValues,
-      isComplete: false,
-      lastIndex: null,
-    };
+    this.activeIconsState = this.resetActiveIconsState();
 
     formValues.setValue(0);
   }
 
   private setValues(formValues: FormControl<number>, index: number): void {
-    this.activeValues.arrayIcons.fill(0);
+    this.activeIconsState = this.setValueIconsState(index);
 
-    this.activeValues = {
-      ...this.activeValues,
-      isComplete: true,
-      lastIndex: index,
-    };
-
-    this.activeValues.arrayIcons.fill(1, 0, index);
     formValues.setValue(index);
   }
 
@@ -105,59 +107,44 @@ export class MainContentFormInputComponent {
     const formValues = this.addTodoForm.controls.values;
 
     if (formValues.value < 6 || formValues.value > 0) {
-      this.activeValues.lastIndex = formValues.value;
+      this.activeIconsState = {
+        ...this.activeIconsState,
+        lastIndex: formValues.value,
+      };
     }
 
     if (direction === 'plus') {
       if (formValues.value === 1000) return;
 
-      formValues.setValue(formValues.value + 1);
-      this.activeValues.arrayIcons.fill(1, 0, formValues.value);
-      this.activeValues.isComplete = true;
-    } else {
+      const formValuePlus = formValues.value + 1;
+
+      this.setValues(formValues, formValuePlus);
+    } else if (direction === 'minus') {
       if (formValues.value === 0) {
-        this.activeValues = {
-          ...this.activeValues,
-          isComplete: false,
-          lastIndex: null,
-        };
+        this.clearValues(formValues);
         return;
       }
-      this.activeValues.isComplete = true;
-      this.activeValues.arrayIcons.fill(0);
-      this.activeValues.arrayIcons.fill(1, 0, formValues.value - 1);
 
-      formValues.setValue(formValues.value - 1);
+      const formValueMinus = formValues.value - 1;
+
+      this.setValues(formValues, formValueMinus);
     }
   }
 
   public onInputValueChange(input: number): void {
+    console.log(input);
     if (input === 0) {
-      this.activeValues = {
-        ...this.activeValues,
-        isComplete: false,
-        lastIndex: null,
-      };
-
+      this.activeIconsState = this.resetActiveIconsState();
       return;
     }
 
     if (input < 6 || input > 0) {
-      this.activeValues = {
-        ...this.activeValues,
-        isComplete: true,
-        lastIndex: input - 1,
-      };
-      this.activeValues.arrayIcons.fill(0);
-      this.activeValues.arrayIcons.fill(1, 0, input);
+      this.activeIconsState = this.setValueIconsState(input);
     }
   }
 
   public onHoverValues(index: number): void {
-    if (!this.activeValues.isComplete) {
-      this.resetIcons();
-      this.activeValues.arrayIcons.fill(1, 0, index + 1);
-    }
+    this.activeIconsState = this.setValueIconsHover(index);
   }
 
   public onMouseLeave(): void {
@@ -173,12 +160,55 @@ export class MainContentFormInputComponent {
   }
 
   private resetIcons(): void {
-    if (!this.activeValues.isComplete) {
-      this.activeValues.arrayIcons.fill(0);
-    }
+    this.activeIconsState = {
+      ...this.activeIconsState,
+      icons: this.activeIconsState.icons.map((icon) => ({
+        ...icon,
+        isHovered: false,
+      })),
+    };
   }
 
   private isSameIcon(index: number): boolean {
-    return this.activeValues.lastIndex === index;
+    return this.activeIconsState.lastIndex === index;
+  }
+
+  private iconsCreator(): ActiveIcons[] {
+    return Array.from({ length: 5 }, () => ({
+      isHovered: false,
+      isTarget: false,
+    }));
+  }
+
+  private resetActiveIconsState(): ActiveIconsState {
+    return {
+      icons: this.activeIconsState.icons.map((icon) => ({
+        ...icon,
+        isHovered: false,
+        isTarget: false,
+      })),
+      lastIndex: null,
+    };
+  }
+
+  private setValueIconsState(index: number): ActiveIconsState {
+    return {
+      icons: this.activeIconsState.icons.map((icon, iconIndex) => ({
+        ...icon,
+        isTarget: iconIndex <= index - 1,
+        isHovered: false,
+      })),
+      lastIndex: index,
+    };
+  }
+
+  private setValueIconsHover(index: number): ActiveIconsState {
+    return {
+      ...this.activeIconsState,
+      icons: this.activeIconsState.icons.map((icon, iconIndex) => ({
+        ...icon,
+        isHovered: iconIndex <= index,
+      })),
+    };
   }
 }

@@ -19,9 +19,7 @@
     }
   }
 
-  @media (any-hover: hover) {
-    &:hover {
-      opacity: 1;
-    }
+  &.icon_target {
+    opacity: 1;
   }
 }

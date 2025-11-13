@@ -9,10 +9,13 @@
 
   <div class="add-todo__icons">
     <div class="icons__values" (mouseleave)="onMouseLeave()">
-      @for (item of activeValues.arrayIcons; track $index) {
+      @for (icon of activeIconsState.icons; track $index) {
         <svg
           app-peach-icon
-          [ngClass]="{ icon_active: isActiveIcon(item) }"
+          [ngClass]="{
+            icon_active: icon.isHovered || icon.isTarget,
+            icon_target: icon.isHovered && icon.isTarget,
+          }"
           (mouseenter)="onHoverValues($index)"
           (click)="onClick($index)"
         ></svg>
