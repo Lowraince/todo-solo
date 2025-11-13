@@ -41,11 +41,6 @@ interface ActiveValues {
 export class MainContentFormInputComponent {
   private openModalState = inject(ModalsOpenService);
 
-  public addTodoForm = new FormGroup({
-    text: new FormControl('', [Validators.required, emptyValidator]),
-    values: new FormControl(0, { nonNullable: true }),
-  });
-
   public modalIncrease = this.openModalState.modalsState$.pipe(
     map((state) => state.increaseModal),
   );
@@ -56,6 +51,11 @@ export class MainContentFormInputComponent {
     lastIndex: null,
   };
 
+  public addTodoForm = new FormGroup({
+    text: new FormControl('', [Validators.required, emptyValidator]),
+    values: new FormControl(0, { nonNullable: true }),
+  });
+
   public addTodo(): void {
     const form = this.addTodoForm;
 
@@ -64,39 +64,45 @@ export class MainContentFormInputComponent {
     console.log(form.value);
   }
 
-  public onHover(index: number): void {
-    if (!this.activeValues.isComplete) {
-      this.resetIcons();
-      this.activeValues.arrayIcons.fill(1, 0, index + 1);
-    }
-  }
-
-  public isActiveIcon(item: number): boolean {
-    return item === 1;
-  }
-
   public onClick(index: number): void {
     const formValues = this.addTodoForm.controls.values;
-    const isSameIcon = this.activeValues.lastIndex === index;
 
-    this.activeValues.arrayIcons.fill(0);
+    const indexPlusOne = index + 1;
 
-    if (isSameIcon) {
-      this.activeValues.lastIndex = null;
-      this.activeValues.isComplete = false;
-      formValues.setValue(0);
+    if (this.isSameIcon(indexPlusOne)) {
+      this.clearValues(formValues);
     } else {
-      this.activeValues.arrayIcons.fill(1, 0, index + 1);
-      this.activeValues.lastIndex = index;
-      this.activeValues.isComplete = true;
-      formValues.setValue(index + 1);
+      this.setValues(formValues, indexPlusOne);
     }
   }
 
-  public onValueChange(direction: ChangeDirection): void {
-    const formValues = this.addTodoForm.controls.values;
+  private clearValues(formValues: FormControl<number>): void {
+    this.activeValues.arrayIcons.fill(0);
 
-    if (!formValues) return;
+    this.activeValues = {
+      ...this.activeValues,
+      isComplete: false,
+      lastIndex: null,
+    };
+
+    formValues.setValue(0);
+  }
+
+  private setValues(formValues: FormControl<number>, index: number): void {
+    this.activeValues.arrayIcons.fill(0);
+
+    this.activeValues = {
+      ...this.activeValues,
+      isComplete: true,
+      lastIndex: index,
+    };
+
+    this.activeValues.arrayIcons.fill(1, 0, index);
+    formValues.setValue(index);
+  }
+
+  public onValueChangeDirection(direction: ChangeDirection): void {
+    const formValues = this.addTodoForm.controls.values;
 
     if (formValues.value < 6 || formValues.value > 0) {
       this.activeValues.lastIndex = formValues.value;
@@ -147,8 +153,19 @@ export class MainContentFormInputComponent {
     }
   }
 
+  public onHoverValues(index: number): void {
+    if (!this.activeValues.isComplete) {
+      this.resetIcons();
+      this.activeValues.arrayIcons.fill(1, 0, index + 1);
+    }
+  }
+
   public onMouseLeave(): void {
     this.resetIcons();
+  }
+
+  public isActiveIcon(item: number): boolean {
+    return item === 1;
   }
 
   public openIncreaseModal(): void {
@@ -159,5 +176,9 @@ export class MainContentFormInputComponent {
     if (!this.activeValues.isComplete) {
       this.activeValues.arrayIcons.fill(0);
     }
+  }
+
+  private isSameIcon(index: number): boolean {
+    return this.activeValues.lastIndex === index;
   }
 }

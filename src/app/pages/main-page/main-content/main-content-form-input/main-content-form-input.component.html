@@ -13,7 +13,7 @@
         <svg
           app-peach-icon
           [ngClass]="{ icon_active: isActiveIcon(item) }"
-          (mouseenter)="onHover($index)"
+          (mouseenter)="onHoverValues($index)"
           (click)="onClick($index)"
         ></svg>
       }
@@ -26,7 +26,7 @@
     @if (modalIncrease | async) {
       <app-modal-increase
         [control]="addTodoForm.controls.values"
-        (valueChange)="onValueChange($event)"
+        (valueChange)="onValueChangeDirection($event)"
         (activeValueCountChange)="onInputValueChange($event)"
       ></app-modal-increase>
     }
