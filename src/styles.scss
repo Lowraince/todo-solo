@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --color-bg-primary: #ffcba4;
-  --color-bg-secondary: #fff5ee;
+  --color-bg-primary: #fff;
+  --color-bg-secondary: #f9f7f7;
   --color-bg-tertiary: #f8ad7e;
   --color-border: #f0c6a8;
   --color-bg-modal: #fff;
-  --color-bg-classic: #fff;
+  --color-bg-modal-secondary: #616161;
 
   --color-text-button-primary: white;
-  --color-text-button-hover: white;
+  --color-text-button-hover: #f86d02;
   --color-bg-button-register: green;
   --color-bg-button-register-hover: rgb(2, 151, 2);
 
@@ -21,10 +21,11 @@
   --color-loader-border-right: orange;
 
   --color-icon: #f86d02;
-  --color-icon-hover: #f39954;
+  --color-icon-hover: #f86d02;
+  --color-icon-input: black;
 
-  --color-bg-sidebar: #fbe2cf;
-  --color-bg-sidebar-active: #ffcba4;
+  --color-bg-sidebar: #fff;
+  --color-bg-sidebar-active: rgb(255 250 244);
 
   --color-bg-cross-modal-close: black;
   --color-bg-cross-modal-close-hover: orange;
@@ -39,10 +40,24 @@
   --box-shadow-color: rgb(167, 167, 167);
 }
 
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    155deg,
+    rgb(243 243 243) 0%,
+    rgb(129 129 129) 100%
+  );
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Roboto, Verdana, sans-serif;
 }
 
 ul {

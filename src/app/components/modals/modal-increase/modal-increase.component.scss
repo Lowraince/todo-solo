@@ -6,12 +6,9 @@
   gap: 0.2rem;
   top: 23px;
   right: -20px;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-modal-secondary);
   padding: 0.2rem;
-  box-shadow:
-    0 1px 5px 2px var(--box-shadow-color, rgba(0, 0, 0, 0.1)),
-    0 2px 4px -1px var(--box-shadow-color, rgba(0, 0, 0, 0.06));
-  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
 
@@ -23,7 +20,6 @@
 .todo-inc__input {
   width: 40px;
   text-align: center;
-  border: none;
   border-radius: 5px;
 
   &:focus {
@@ -58,4 +54,10 @@
 .button__increase_plus {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.button_disabled {
+  pointer-events: none;
+  cursor: auto;
+  opacity: 0.2;
 }

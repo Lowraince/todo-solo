@@ -2,6 +2,7 @@
   type="button"
   class="button button__increase button__increase_minus"
   (click)="changeValue('minus')"
+  [ngClass]="{ button_disabled: isMinValue() }"
 >
   <svg app-minus-icon class="icon__increase"></svg>
 </button>
@@ -19,6 +20,7 @@
   type="button"
   class="button button__increase button__increase_plus"
   (click)="changeValue('plus')"
+  [ngClass]="{ button_disabled: isMaxValue() }"
 >
   <svg app-plus-icon class="icon__increase"></svg>
 </button>

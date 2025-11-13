@@ -17,12 +17,6 @@ import {
 } from '@angular/forms';
 import { emptyValidator } from '../../../../utils/validators/validator-empty';
 
-interface ActiveValues {
-  isComplete: boolean;
-  arrayIcons: number[];
-  lastIndex: number | null;
-}
-
 interface ActiveIcons {
   isHovered: boolean;
   isTarget: boolean;
@@ -60,12 +54,6 @@ export class MainContentFormInputComponent {
     lastIndex: null,
   };
 
-  public activeValues: ActiveValues = {
-    isComplete: false,
-    arrayIcons: Array.from({ length: 5 }, () => 0),
-    lastIndex: null,
-  };
-
   public addTodoForm = new FormGroup({
     text: new FormControl('', [Validators.required, emptyValidator]),
     values: new FormControl(0, { nonNullable: true }),
@@ -79,7 +67,7 @@ export class MainContentFormInputComponent {
     console.log(form.value);
   }
 
-  public onClick(index: number): void {
+  public onClickIconValue(index: number): void {
     const formValues = this.addTodoForm.controls.values;
 
     const indexPlusOne = index + 1;
@@ -89,18 +77,6 @@ export class MainContentFormInputComponent {
     } else {
       this.setValues(formValues, indexPlusOne);
     }
-  }
-
-  private clearValues(formValues: FormControl<number>): void {
-    this.activeIconsState = this.resetActiveIconsState();
-
-    formValues.setValue(0);
-  }
-
-  private setValues(formValues: FormControl<number>, index: number): void {
-    this.activeIconsState = this.setValueIconsState(index);
-
-    formValues.setValue(index);
   }
 
   public onValueChangeDirection(direction: ChangeDirection): void {
@@ -132,7 +108,6 @@ export class MainContentFormInputComponent {
   }
 
   public onInputValueChange(input: number): void {
-    console.log(input);
     if (input === 0) {
       this.activeIconsState = this.resetActiveIconsState();
       return;
@@ -151,12 +126,20 @@ export class MainContentFormInputComponent {
     this.resetIcons();
   }
 
-  public isActiveIcon(item: number): boolean {
-    return item === 1;
-  }
-
   public openIncreaseModal(): void {
     this.openModalState.openModal('increaseModal');
+  }
+
+  private clearValues(formValues: FormControl<number>): void {
+    this.activeIconsState = this.resetActiveIconsState();
+
+    formValues.setValue(0);
+  }
+
+  private setValues(formValues: FormControl<number>, index: number): void {
+    this.activeIconsState = this.setValueIconsState(index);
+
+    formValues.setValue(index);
   }
 
   private resetIcons(): void {

@@ -13,6 +13,7 @@ import { PlusIconComponent } from '../../../icons/plus-icon/plus-icon.component'
 import { PeachIconComponent } from '../../../icons/peach-icon/peach-icon.component';
 import { ModalsOpenService } from '../../../services/modals-open.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 export type ChangeDirection = 'plus' | 'minus';
 
@@ -23,6 +24,7 @@ export type ChangeDirection = 'plus' | 'minus';
     PlusIconComponent,
     PeachIconComponent,
     ReactiveFormsModule,
+    NgClass,
   ],
   templateUrl: './modal-increase.component.html',
   styleUrl: './modal-increase.component.scss',
@@ -63,7 +65,6 @@ export class ModalIncreaseComponent {
 
     input.value = value;
 
-    console.log(typeof value, 'last');
     this.updateValue(number);
   }
 
@@ -79,5 +80,13 @@ export class ModalIncreaseComponent {
 
   public changeValue(direction: ChangeDirection): void {
     this.valueChange.emit(direction);
+  }
+
+  public isMinValue(): boolean {
+    return this.control.value === 0;
+  }
+
+  public isMaxValue(): boolean {
+    return this.control.value === 1000;
   }
 }

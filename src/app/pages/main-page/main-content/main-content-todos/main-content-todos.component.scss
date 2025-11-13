@@ -1,0 +1,16 @@
+.todos__empty-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: url(/assets/images/todo-empty.jpg);
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+}

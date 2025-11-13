@@ -1,4 +1,8 @@
-<app-header-main></app-header-main> <app-main-layout></app-main-layout>
-@if (modalAppSettings | async) {
-  <app-modal-settings></app-modal-settings>
-}
+<div class="page-container">
+  <app-header-main></app-header-main>
+  <app-main-layout></app-main-layout>
+
+  @if (modalAppSettings | async) {
+    <app-modal-settings></app-modal-settings>
+  }
+</div>

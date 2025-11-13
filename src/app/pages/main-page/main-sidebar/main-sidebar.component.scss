@@ -1,11 +1,11 @@
 .sidebar__items {
-  background-color: var(--color-bg-secondary);
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  border: none;
   border-radius: 10px;
   min-height: 170px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar__icon {
@@ -19,14 +19,13 @@
   background-color: var(--color-bg-sidebar);
   margin-bottom: 0.5rem;
   padding: 0.4rem;
-  border: 1px solid var(--color-border);
   gap: 0.5rem;
   border-radius: 10px;
   cursor: pointer;
 
   @media (any-hover: hover) {
     &:hover {
-      color: red;
+      color: var(--color-text-button-hover);
     }
   }
 
@@ -39,8 +38,9 @@
   background-color: var(--color-bg-sidebar-active);
   cursor: auto;
   pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
 }
 
 .sidebar__text {
-  font-size: 0.9rem;
+  font-size: 1em;
 }

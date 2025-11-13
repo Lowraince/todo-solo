@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: none;
   border-radius: 5px;
   padding: 0.5rem;
-  background-color: var(--color-bg-classic);
+  background-color: white;
+  border: 1px solid #dddddd;
 }
 
 .add-todo__input {
@@ -43,4 +43,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    fill: red;
+  }
 }
