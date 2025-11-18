@@ -1,5 +1,37 @@
-<div class="todos__empty-wrapper">
-  <span class="circle"></span>
-  <p>No tasks</p>
-  <p>Click in the input field above to add the task.</p>
+<ul class="todos__container">
+  @for (todo of todosUncomplete | async; track $index) {
+    <app-todo
+      [todo]="todo"
+      (changeComplete)="changeComplete($event)"
+    ></app-todo>
+  }
+</ul>
+
+@if (isEmptyOrUncomplete | async) {
+  <div class="todos__empty-wrapper">
+    <span class="circle"></span>
+    <p>No tasks</p>
+    <p>Click in the input field above to add the task.</p>
+  </div>
+}
+
+<div class="todos__button-wrapper">
+  <button
+    class="button button__todos"
+    (click)="showTodosCompleteHanlder()"
+    [ngClass]="{ button__todos_active: showTodosComplete }"
+  >
+    {{ isShowTodosComplete() }}
+  </button>
 </div>
+
+@if (showTodosComplete) {
+  <ul class="todos__container">
+    @for (todo of todosComplete | async; track $index) {
+      <app-todo
+        [todo]="todo"
+        (changeComplete)="changeComplete($event)"
+      ></app-todo>
+    }
+  </ul>
+}

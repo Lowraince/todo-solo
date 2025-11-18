@@ -1,0 +1,36 @@
+<li class="todo">
+  <div class="todo__content">
+    <div class="todo__icons">
+      <svg
+        (click)="changeCompleteHandler()"
+        [ngClass]="{ icon_active: todo.isComplete }"
+        app-complete-icon
+      ></svg>
+      <svg app-video-icon></svg>
+    </div>
+    <div class="todo__text-wrapper">
+      <p class="todo__description">
+        {{ todo.description }}
+      </p>
+      <div class="todo__values">
+        @for (item of [].constructor(todo.valueComplete); track $index) {
+          <svg app-peach-icon></svg>
+        }
+        @for (item of [].constructor(todo.value); track $index) {
+          <svg app-peach-icon class="icon_todo"></svg>
+        }
+      </div>
+    </div>
+  </div>
+  @if (dateView) {
+    <div class="todo__date-wrapper">
+      <svg app-settings-icon (click)="openModalTodo()"></svg>
+      <p class="todo__date">{{ todoData }}</p>
+      @if (isOpenModal | async) {
+        <app-modal-setting-todo [flagActive]="todo.priority">
+          <app-input-increase [control]="valueControl"></app-input-increase>
+        </app-modal-setting-todo>
+      }
+    </div>
+  }
+</li>

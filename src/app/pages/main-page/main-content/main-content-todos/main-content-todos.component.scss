@@ -3,6 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 .circle {
@@ -13,4 +15,45 @@
   background-size: cover;
   background-position: center;
   display: inline-block;
+}
+
+.todos__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.button__todos {
+  padding: 2px 20px 2px 10px;
+  border: none;
+  border-radius: 10px;
+  position: relative;
+
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: var(--color-bg-button-hover);
+    }
+  }
+}
+
+.button__todos::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #000;
+}
+
+.button__todos_active::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.todos__button-wrapper {
+  text-align: center;
+  margin: 1rem 0 1rem;
 }

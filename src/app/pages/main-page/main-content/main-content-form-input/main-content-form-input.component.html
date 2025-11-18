@@ -27,11 +27,14 @@
       class="add-todo__icon-more-values"
     ></svg>
     @if (modalIncrease | async) {
-      <app-modal-increase
-        [control]="addTodoForm.controls.values"
-        (valueChange)="onValueChangeDirection($event)"
-        (activeValueCountChange)="onInputValueChange($event)"
-      ></app-modal-increase>
+      <app-modal-increase>
+        <app-input-increase
+          [control]="addTodoForm.controls.values"
+          (valueChange)="onValueChangeDirection($event)"
+          (activeValueCountChange)="onInputValueChange($event)"
+        >
+        </app-input-increase>
+      </app-modal-increase>
     }
   </div>
 </form>

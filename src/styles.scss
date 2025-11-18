@@ -5,10 +5,15 @@
   --color-bg-tertiary: #f8ad7e;
   --color-border: #f0c6a8;
   --color-bg-modal: #fff;
-  --color-bg-modal-secondary: #616161;
+  --color-bg-modal-secondary: rgb(255 194 176);
+
+  --color-bg-header-linear: #ff9c7d;
+  --color-bg-header-linear-2: #ffc9b8;
 
   --color-text-button-primary: white;
   --color-text-button-hover: #f86d02;
+
+  --color-bg-button-hover: rgb(255 194 176);
   --color-bg-button-register: green;
   --color-bg-button-register-hover: rgb(2, 151, 2);
 
@@ -25,12 +30,12 @@
   --color-icon-input: black;
 
   --color-bg-sidebar: #fff;
-  --color-bg-sidebar-active: rgb(255 250 244);
+  --color-bg-sidebar-active: rgb(255 194 176);
 
   --color-bg-cross-modal-close: black;
   --color-bg-cross-modal-close-hover: orange;
 
-  --color-underline: rgb(189, 189, 189);
+  --color-underline: #d9d1d1;
 
   --arrow-select-border: #000;
   --custom-select-bg: #fff;
@@ -38,6 +43,11 @@
   --custom-select-border: #ccc;
 
   --box-shadow-color: rgb(167, 167, 167);
+
+  --flag-no-prio: gray;
+  --flag-low-prio: green;
+  --flag-medium-prio: yellow;
+  --flag-high-prio: red;
 }
 
 body {
@@ -72,6 +82,7 @@ button {
 a {
   transition: all 0.3s ease-in;
   cursor: pointer;
+  font-family: Roboto, Verdana, sans-serif;
 }
 
 .loader {

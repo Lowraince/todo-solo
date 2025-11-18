@@ -5,8 +5,6 @@ import {
   EMPTY,
   finalize,
   Observable,
-  of,
-  switchMap,
   take,
   tap,
   timer,
@@ -122,11 +120,9 @@ export class AuthService {
     this.modalLoaderService.openModal('Signing in...');
 
     return this.apiService.postLoginUser({ userName, password }).pipe(
-      switchMap((value: GetToken) => {
+      tap((value: GetToken) => {
         this.localStorage.setTokenLocalStorage(value.token);
         this.fetchUserProfile(value.token, false);
-
-        return of(value);
       }),
       catchError((error: Error) => {
         console.error(`Login error: ${error.message}`);

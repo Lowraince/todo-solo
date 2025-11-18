@@ -1,0 +1,8 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<g>
+	<path d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10c5.5,0,10-4.5,10-10S17.5,2,12,2z M12,20c-4.4,0-8-3.6-8-8s3.6-8,8-8s8,3.6,8,8
+		S16.4,20,12,20z" id="id_101" class="cycle"></path>
+	<path d="M14.3,9.3L11,12.6l-1.3-1.3c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l2,2c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l4-4
+		c0.4-0.4,0.4-1,0-1.4S14.7,8.9,14.3,9.3z" id="id_102"  class="check"></path>
+</g>
+</svg>

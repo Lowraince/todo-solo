@@ -3,10 +3,7 @@ import { PeachIconComponent } from '../../../../icons/peach-icon/peach-icon.comp
 import { PlusIconComponent } from '../../../../icons/plus-icon/plus-icon.component';
 import { ArrowIconComponent } from '../../../../icons/arrow-icon/arrow-icon.component';
 import { AsyncPipe, NgClass } from '@angular/common';
-import {
-  ChangeDirection,
-  ModalIncreaseComponent,
-} from '../../../../components/modals/modal-increase/modal-increase.component';
+import { ModalIncreaseComponent } from '../../../../components/modals/modal-increase/modal-increase.component';
 import { ModalsOpenService } from '../../../../services/modals-open.service';
 import { map } from 'rxjs';
 import {
@@ -16,6 +13,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { emptyValidator } from '../../../../utils/validators/validator-empty';
+import { ITodoCome, TodosService } from '../../../../services/todos.service';
+import {
+  ChangeDirection,
+  InputIncreaseComponent,
+} from '../../../../components/input-increase/input-increase.component';
 
 interface ActiveIcons {
   isHovered: boolean;
@@ -37,6 +39,7 @@ interface ActiveIconsState {
     ModalIncreaseComponent,
     AsyncPipe,
     ReactiveFormsModule,
+    InputIncreaseComponent,
   ],
   templateUrl: './main-content-form-input.component.html',
   styleUrl: './main-content-form-input.component.scss',
@@ -44,6 +47,7 @@ interface ActiveIconsState {
 })
 export class MainContentFormInputComponent {
   private openModalState = inject(ModalsOpenService);
+  private todosState = inject(TodosService);
 
   public modalIncrease = this.openModalState.modalsState$.pipe(
     map((state) => state.increaseModal),
@@ -64,7 +68,17 @@ export class MainContentFormInputComponent {
 
     if (form.invalid) return;
 
-    console.log(form.value);
+    const text = form.value.text;
+    const values = form.value.values;
+
+    if (!text && !values) return;
+
+    const newTodo: ITodoCome = {
+      description: text!,
+      value: values!,
+    };
+
+    this.todosState.addTodo(newTodo);
   }
 
   public onClickIconValue(index: number): void {

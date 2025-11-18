@@ -2,7 +2,11 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  background-color: var(--color-bg-primary);
+  background: linear-gradient(
+    45deg,
+    var(--color-bg-header-linear),
+    var(--color-bg-header-linear-2)
+  );
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }

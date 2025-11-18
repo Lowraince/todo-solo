@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.todo-inc__icon-wrapper {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.todo-inc__input {
+  width: 40px;
+  text-align: center;
+  border-radius: 5px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.icon__increase {
+  width: 18px;
+  height: 18px;
+}
+
+.button__increase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+}
+
+.button_disabled {
+  pointer-events: none;
+  cursor: auto;
+  opacity: 0.2;
+}

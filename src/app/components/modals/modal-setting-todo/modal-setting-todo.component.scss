@@ -1,0 +1,74 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: -9px;
+  right: 84px;
+  background-color: var(--color-bg-modal);
+  border: 1px solid rgb(177, 177, 177);
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.todo-settings__wrapper {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--color-underline);
+}
+
+.todo-settings__wrapper_buttons {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  gap: 0.2rem;
+}
+
+.todo-settings__description {
+  font-size: 0.7rem;
+  color: gray;
+  margin-bottom: 0.2rem;
+}
+
+.todo-settings__value {
+  padding: 0.2rem;
+  border: 1px solid #d9d1d1;
+  border-radius: 5px;
+}
+
+.todo-settings__flags-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem;
+}
+
+.flag-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+
+  @media (any-hover: hover) {
+    &:hover {
+      border: 1px solid gray;
+    }
+  }
+}
+
+.flag_active {
+  cursor: auto;
+  pointer-events: none;
+  background-color: #e1e1e1;
+}
+
+.button__todo-settings {
+  border: none;
+  padding: 0.2rem;
+  background-color: transparent;
+
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: var(--color-bg-button-hover);
+    }
+  }
+}

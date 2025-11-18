@@ -1,0 +1,18 @@
+:host {
+  cursor: pointer;
+
+  .check {
+    fill: transparent;
+  }
+
+  .cycle {
+    fill: rgb(173, 172, 172);
+  }
+
+  &.icon_active {
+    .check,
+    .cycle {
+      fill: green;
+    }
+  }
+}
