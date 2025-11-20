@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class MainContentStatisticComponent {
   @Input({ required: true }) public description!: string;
-  @Input({ required: true }) public value!: string;
+  @Input({ required: true }) public value!: number | null;
   @Input() public minute: boolean = false;
 }

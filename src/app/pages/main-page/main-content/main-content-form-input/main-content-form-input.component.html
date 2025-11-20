@@ -1,10 +1,17 @@
 <form class="add-todo__form" [formGroup]="addTodoForm">
-  <svg app-plus-icon class="add-todo__icon-add" (click)="addTodo()"></svg>
+  <div class="add-todo__action-wrapper">
+    @if (isLoading$ | async) {
+      <span class="loader loader__add-todo"></span>
+    } @else {
+      <svg app-plus-icon class="add-todo__icon-add" (click)="addTodo()"></svg>
+    }
+  </div>
 
   <input
     class="add-todo__input"
     placeholder="To add a task to 'Tasks', press [Enter] to save"
     formControlName="text"
+    (keydown.enter)="addTodo()"
   />
 
   <div class="add-todo__icons">

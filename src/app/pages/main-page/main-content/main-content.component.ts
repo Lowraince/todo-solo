@@ -26,4 +26,8 @@ export class MainContentComponent {
   public todoActiveLink = this.todoState.todoState$.pipe(
     map((state) => state.activeSidebarItem),
   );
+
+  public todoComplete$ = this.todoState.todoState$.pipe(
+    map((state) => state.todos.filter((todo) => todo.isComplete).length),
+  );
 }

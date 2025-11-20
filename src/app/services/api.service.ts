@@ -7,12 +7,15 @@ import {
 import { Observable } from 'rxjs';
 import { GetToken } from '../interfaces/types';
 import { HttpClient } from '@angular/common/http';
+import { ITodo, ITodoAdd } from './todos.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private http = inject(HttpClient);
+  private localStorage = inject(LocalStorageService);
 
   public postCreateUser({
     userName,
@@ -48,5 +51,13 @@ export class ApiService {
     return this.http.get<{ exists: boolean }>(`api/user/check`, {
       params: { userName },
     });
+  }
+
+  public postDataTodo(data: ITodoAdd): Observable<ITodo> {
+    return this.http.post<ITodo>(`api/todos`, data);
+  }
+
+  public getDataTodo(): Observable<ITodo[]> {
+    return this.http.get<ITodo[]>('api/todos');
   }
 }

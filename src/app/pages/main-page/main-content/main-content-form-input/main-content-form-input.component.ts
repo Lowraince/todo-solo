@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { PeachIconComponent } from '../../../../icons/peach-icon/peach-icon.component';
 import { PlusIconComponent } from '../../../../icons/plus-icon/plus-icon.component';
 import { ArrowIconComponent } from '../../../../icons/arrow-icon/arrow-icon.component';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ModalIncreaseComponent } from '../../../../components/modals/modal-increase/modal-increase.component';
 import { ModalsOpenService } from '../../../../services/modals-open.service';
-import { map } from 'rxjs';
+import { BehaviorSubject, exhaustMap, finalize, map, Subject, tap } from 'rxjs';
 import {
   FormControl,
   FormGroup,
@@ -13,11 +19,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { emptyValidator } from '../../../../utils/validators/validator-empty';
-import { ITodoCome, TodosService } from '../../../../services/todos.service';
+import { TodosService } from '../../../../services/todos.service';
 import {
   ChangeDirection,
   InputIncreaseComponent,
 } from '../../../../components/input-increase/input-increase.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface ActiveIcons {
   isHovered: boolean;
@@ -45,9 +52,41 @@ interface ActiveIconsState {
   styleUrl: './main-content-form-input.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainContentFormInputComponent {
+export class MainContentFormInputComponent implements OnInit {
   private openModalState = inject(ModalsOpenService);
   private todosState = inject(TodosService);
+  private activeSidebar: string = '';
+  private destroyRef = inject(DestroyRef);
+
+  private addClick$ = new Subject<{ description: string; value: number }>();
+  public isLoading$ = new BehaviorSubject(false);
+
+  public ngOnInit(): void {
+    this.initActiveSidebar();
+    this.onClickInit();
+  }
+
+  public initActiveSidebar(): void {
+    this.todosState.todoState$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap((state) => (this.activeSidebar = state.activeSidebarItem)),
+      )
+      .subscribe();
+  }
+
+  public onClickInit(): void {
+    this.addClick$
+      .pipe(
+        tap(() => this.isLoading$.next(true)),
+        exhaustMap((object) =>
+          this.todosState
+            .addTodo(object)
+            .pipe(finalize(() => this.isLoading$.next(false))),
+        ),
+      )
+      .subscribe();
+  }
 
   public modalIncrease = this.openModalState.modalsState$.pipe(
     map((state) => state.increaseModal),
@@ -73,12 +112,12 @@ export class MainContentFormInputComponent {
 
     if (!text && !values) return;
 
-    const newTodo: ITodoCome = {
+    const newTodo = {
       description: text!,
       value: values!,
     };
 
-    this.todosState.addTodo(newTodo);
+    this.addClick$.next(newTodo);
   }
 
   public onClickIconValue(index: number): void {

@@ -39,6 +39,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         },
       });
     }
+
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && token) {

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, take, tap } from 'rxjs';
 import { SidebarItems, SortTodos } from '../interfaces/types';
 import { PriorityTodos, PriorityType } from '../interfaces/enums';
+import { ApiService } from './api.service';
 
 export interface SidebarItemsState {
   title: SidebarItems;
@@ -20,6 +21,7 @@ export interface ITodo {
 }
 
 export type ITodoCome = Pick<ITodo, 'description' | 'value'>;
+export type ITodoAdd = Omit<ITodo, 'idTodo' | 'isComplete'>;
 
 interface TodosState {
   sidebarItems: SidebarItemsState[];
@@ -32,6 +34,8 @@ interface TodosState {
   providedIn: 'root',
 })
 export class TodosService {
+  private apiService = inject(ApiService);
+
   private todoState = new BehaviorSubject<TodosState>({
     sidebarItems: [
       { title: 'Today', isActive: true },
@@ -46,30 +50,57 @@ export class TodosService {
 
   public todoState$ = this.todoState.asObservable();
 
-  public addTodo({ value, description }: ITodoCome): void {
+  public addTodo({
+    description,
+    value,
+  }: {
+    description: string;
+    value: number;
+  }): Observable<ITodoAdd> {
     const presentTime = `${new Date().getDate()}, ${
       new Date().getMonth() + 1
     }, ${new Date().getFullYear()}`;
 
-    const newTodo: ITodo = {
-      idTodo: crypto.randomUUID(),
+    const newTodo: ITodoAdd = {
       value,
       valueComplete: 0,
       description,
       timeToCreate: presentTime,
-      isComplete: false,
       timeSpent: 0,
       priority: PriorityTodos.NO_PRIO,
     };
 
     const currentState = this.todoState.value;
 
-    console.log(newTodo);
+    return this.apiService.postDataTodo(newTodo).pipe(
+      tap((todo) => {
+        console.log(todo, 'todo');
+        this.todoState.next({
+          ...currentState,
+          todos: [...currentState.todos, todo],
+        });
 
-    this.todoState.next({
-      ...currentState,
-      todos: [...currentState.todos, newTodo],
-    });
+        console.log(this.todoState);
+      }),
+    );
+  }
+
+  public getTodos(): void {
+    const currentState = this.todoState.value;
+
+    this.apiService
+      .getDataTodo()
+      .pipe(
+        tap((todos: ITodo[]) => {
+          console.log(todos, 'todos');
+          this.todoState.next({
+            ...currentState,
+            todos: todos,
+          });
+        }),
+        take(1),
+      )
+      .subscribe();
   }
 
   public changeSidebarItem(activeSidebarItem: SidebarItems): void {

@@ -8,6 +8,8 @@ export type PasswordFieldType = 'password' | 'text';
 
 export type SidebarItems = 'Today' | 'Tomorrow' | 'Missed' | 'For this week';
 
+export type SidebarItemsWithoutMissed = Omit<SidebarItems, 'Missed'>;
+
 export type ThemeApp = 'light' | 'dark';
 
 export type EmitterSelect = {

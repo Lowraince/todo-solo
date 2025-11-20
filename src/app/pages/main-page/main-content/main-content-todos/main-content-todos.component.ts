@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { TodosService } from '../../../../services/todos.service';
 import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -11,7 +16,7 @@ import { TodoComponent } from '../../../../components/todo/todo.component';
   styleUrl: './main-content-todos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainContentTodosComponent {
+export class MainContentTodosComponent implements OnInit {
   private todosState = inject(TodosService);
 
   public showTodosComplete: boolean = true;
@@ -32,6 +37,10 @@ export class MainContentTodosComponent {
   ]).pipe(
     map(([todos, uncomplete]) => todos.length === 0 || uncomplete.length === 0),
   );
+
+  public ngOnInit(): void {
+    this.todosState.getTodos();
+  }
 
   public showTodosCompleteHanlder(): void {
     this.showTodosComplete = !this.showTodosComplete;

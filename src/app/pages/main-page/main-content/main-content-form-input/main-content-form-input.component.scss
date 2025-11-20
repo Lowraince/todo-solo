@@ -48,3 +48,16 @@
     fill: red;
   }
 }
+
+.add-todo__action-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+}
+
+.loader__add-todo {
+  width: 18px;
+  height: 18px;
+}

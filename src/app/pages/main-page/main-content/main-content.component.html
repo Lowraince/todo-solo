@@ -7,22 +7,22 @@
   </header>
   <section class="main-content__statistics">
     <app-main-content-statistic
-      value="0"
+      [value]="0"
       [minute]="true"
       description="Estimated time"
     ></app-main-content-statistic>
     <app-main-content-statistic
-      value="0"
+      [value]="0"
       description="Todos awaiting completion"
     ></app-main-content-statistic>
     <app-main-content-statistic
-      value="0"
+      [value]="0"
       [minute]="true"
       description="Time spent"
     >
     </app-main-content-statistic>
     <app-main-content-statistic
-      value="0"
+      [value]="todoComplete$ | async"
       description="Completed todos"
     ></app-main-content-statistic>
   </section>
