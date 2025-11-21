@@ -53,24 +53,33 @@ export class TodosService {
   public addTodo({
     description,
     value,
+    activeSidebar,
   }: {
     description: string;
     value: number;
-  }): Observable<ITodoAdd> {
-    const presentTime = `${new Date().getDate()}, ${
-      new Date().getMonth() + 1
-    }, ${new Date().getFullYear()}`;
+    activeSidebar: SidebarItems;
+  }): Observable<ITodo> {
+    let presentTime = new Date();
+
+    if (activeSidebar === 'Tomorrow') {
+      presentTime = this.nextDay(presentTime);
+    } else if (activeSidebar === 'For this week') {
+      console.log('for this week');
+    }
 
     const newTodo: ITodoAdd = {
       value,
       valueComplete: 0,
       description,
-      timeToCreate: presentTime,
+      timeToCreate: presentTime.toISOString(),
       timeSpent: 0,
       priority: PriorityTodos.NO_PRIO,
     };
 
     const currentState = this.todoState.value;
+
+    console.log(newTodo);
+    console.log(activeSidebar);
 
     return this.apiService.postDataTodo(newTodo).pipe(
       tap((todo) => {
@@ -142,5 +151,11 @@ export class TodosService {
       ...this.todoState.value,
       todos: todo,
     });
+  }
+
+  private nextDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1);
+    return newDate;
   }
 }

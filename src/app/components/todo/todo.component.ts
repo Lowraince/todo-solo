@@ -14,7 +14,7 @@ import { VideoIconComponent } from '../../icons/video-icon/video-icon.component'
 import { PeachIconComponent } from '../../icons/peach-icon/peach-icon.component';
 import { SettingsIconComponent } from '../../icons/settings-icon/settings-icon.component';
 import { ModalsOpenService } from '../../services/modals-open.service';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
 import { InputIncreaseComponent } from '../input-increase/input-increase.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -54,17 +54,24 @@ export class TodoComponent implements OnInit {
     map((state) => state.settingsTodoModal),
   );
 
+  public isOpen$ = new BehaviorSubject<boolean>(false);
+
   public ngOnInit(): void {
     this.todoData = this.getFormattedDate(this.todo.timeToCreate);
-    this.test();
+    this.initValueControl();
   }
 
-  public test(): void {
+  public initValueControl(): void {
     this.valueControl.setValue(this.todo.value);
   }
 
   public openModalTodo(): void {
-    this.openModalService.openModal('settingsTodoModal');
+    this.isOpen$.next(true);
+    // this.openModalService.openModal('settingsTodoModal');
+  }
+
+  public closeModal(event: boolean): void {
+    this.isOpen$.next(event);
   }
 
   public changeCompleteHandler(): void {
@@ -75,18 +82,20 @@ export class TodoComponent implements OnInit {
   }
 
   public getFormattedDate(timeCreate: string): string {
-    const [day, month, year] = timeCreate.split(', ').map(Number);
-    const todoDate = new Date(year, month - 1, day);
+    const dataCreateISO = timeCreate.slice(0, 10);
 
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const today1 = new Date();
+    const tomorrow1 = new Date(today1);
+    tomorrow1.setDate(today1.getDate() + 1);
 
-    if (this.isDateEqual(todoDate, today)) {
+    const todayISO = today1.toISOString().slice(0, 10);
+    const tomorrowISO = tomorrow1.toISOString().slice(0, 10);
+
+    if (todayISO === dataCreateISO) {
       return 'Today';
     }
 
-    if (this.isDateEqual(todoDate, tomorrow)) {
+    if (tomorrowISO === dataCreateISO) {
       return 'Tomorrow';
     }
 
@@ -105,14 +114,8 @@ export class TodoComponent implements OnInit {
       'December',
     ];
 
-    return `${day} ${months[month - 1]}`;
-  }
+    const [, month, day] = dataCreateISO.split('-').map(Number);
 
-  private isDateEqual(date: Date, targetDate: Date): boolean {
-    return (
-      date.getDate() === targetDate.getDate() &&
-      date.getMonth() === targetDate.getMonth() &&
-      date.getFullYear() === targetDate.getFullYear()
-    );
+    return `${day} ${months[month - 1].slice(0, 3)}.`;
   }
 }

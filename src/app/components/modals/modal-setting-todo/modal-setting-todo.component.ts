@@ -2,13 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   inject,
   Input,
+  Output,
 } from '@angular/core';
-import { ModalsOpenService } from '../../../services/modals-open.service';
-import { TodosService } from '../../../services/todos.service';
-import { map } from 'rxjs';
 import { getPriority } from '../../../utils/get-priority';
 import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component';
 import { PriorityTodos } from '../../../interfaces/enums';
@@ -23,19 +22,18 @@ import { NgClass } from '@angular/common';
 })
 export class ModalSettingTodoComponent {
   @Input({ required: true }) public flagActive!: string;
+  @Input({ required: true }) public modalActive!: boolean;
 
-  private openModalState = inject(ModalsOpenService);
-  private todoState = inject(TodosService);
+  @Output() public changeModalOpen = new EventEmitter<boolean>();
+
   private element = inject(ElementRef);
 
   public priorityArray = getPriority();
 
-  private todos = this.todoState.todoState$.pipe(map((state) => state.todos));
-
   @HostListener('document:click', ['$event'])
   public onClickOutside(event: Event): void {
     if (!this.element.nativeElement.contains(event.target)) {
-      this.openModalState.closeModal('settingsTodoModal');
+      this.changeModalOpen.emit(false);
     }
   }
 

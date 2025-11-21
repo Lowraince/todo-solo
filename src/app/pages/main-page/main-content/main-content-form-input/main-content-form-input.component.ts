@@ -25,6 +25,7 @@ import {
   InputIncreaseComponent,
 } from '../../../../components/input-increase/input-increase.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SidebarItems } from '../../../../interfaces/types';
 
 interface ActiveIcons {
   isHovered: boolean;
@@ -55,10 +56,14 @@ interface ActiveIconsState {
 export class MainContentFormInputComponent implements OnInit {
   private openModalState = inject(ModalsOpenService);
   private todosState = inject(TodosService);
-  private activeSidebar: string = '';
+  private activeSidebar: SidebarItems | null = null;
   private destroyRef = inject(DestroyRef);
 
-  private addClick$ = new Subject<{ description: string; value: number }>();
+  private addClick$ = new Subject<{
+    description: string;
+    value: number;
+    activeSidebar: SidebarItems;
+  }>();
   public isLoading$ = new BehaviorSubject(false);
 
   public ngOnInit(): void {
@@ -76,6 +81,10 @@ export class MainContentFormInputComponent implements OnInit {
   }
 
   public onClickInit(): void {
+    // this.addClick$
+    //   .pipe(tap((value) => this.todosState.addTodo(value)))
+    //   .subscribe();
+
     this.addClick$
       .pipe(
         tap(() => this.isLoading$.next(true)),
@@ -110,11 +119,12 @@ export class MainContentFormInputComponent implements OnInit {
     const text = form.value.text;
     const values = form.value.values;
 
-    if (!text && !values) return;
+    if (!text && !values && !this.activeSidebar) return;
 
     const newTodo = {
       description: text!,
       value: values!,
+      activeSidebar: this.activeSidebar!,
     };
 
     this.addClick$.next(newTodo);

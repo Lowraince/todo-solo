@@ -24,10 +24,18 @@
   </div>
   @if (dateView) {
     <div class="todo__date-wrapper">
-      <svg app-settings-icon (click)="openModalTodo()"></svg>
+      <svg
+        app-settings-icon
+        (click)="openModalTodo()"
+        [ngClass]="{ icon_active: isOpen$ | async }"
+      ></svg>
       <p class="todo__date">{{ todoData }}</p>
-      @if (isOpenModal | async) {
-        <app-modal-setting-todo [flagActive]="todo.priority">
+      @if (isOpen$ | async) {
+        <app-modal-setting-todo
+          [flagActive]="todo.priority"
+          [modalActive]="(isOpen$ | async)!"
+          (changeModalOpen)="closeModal($event)"
+        >
           <app-input-increase [control]="valueControl"></app-input-increase>
         </app-modal-setting-todo>
       }

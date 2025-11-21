@@ -1,3 +1,16 @@
 :host {
   cursor: pointer;
+  transition: all 0.3s ease-in;
+
+  @media (any-hover: hover) {
+    &:hover {
+      fill: var(--color-icon-hover);
+      transform: rotate(95deg);
+    }
+  }
+
+  &.icon_active {
+    fill: var(--color-icon-hover);
+    transform: rotate(95deg);
+  }
 }
