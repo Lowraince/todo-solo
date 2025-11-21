@@ -68,7 +68,7 @@ export class MainContentFormInputComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initActiveSidebar();
-    this.onClickInit();
+    this.onClickAddTodoInit();
   }
 
   public initActiveSidebar(): void {
@@ -80,14 +80,11 @@ export class MainContentFormInputComponent implements OnInit {
       .subscribe();
   }
 
-  public onClickInit(): void {
-    // this.addClick$
-    //   .pipe(tap((value) => this.todosState.addTodo(value)))
-    //   .subscribe();
-
+  public onClickAddTodoInit(): void {
     this.addClick$
       .pipe(
         tap(() => this.isLoading$.next(true)),
+        takeUntilDestroyed(this.destroyRef),
         exhaustMap((object) =>
           this.todosState
             .addTodo(object)

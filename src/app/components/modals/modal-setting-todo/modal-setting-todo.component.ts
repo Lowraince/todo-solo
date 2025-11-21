@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { getPriority } from '../../../utils/get-priority';
 import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component';
-import { PriorityTodos } from '../../../interfaces/enums';
+import { PriorityTodos, PriorityType } from '../../../interfaces/enums';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -25,6 +25,7 @@ export class ModalSettingTodoComponent {
   @Input({ required: true }) public modalActive!: boolean;
 
   @Output() public changeModalOpen = new EventEmitter<boolean>();
+  @Output() public priorityChanged = new EventEmitter<PriorityType>();
 
   private element = inject(ElementRef);
 
@@ -44,7 +45,11 @@ export class ModalSettingTodoComponent {
       [PriorityTodos.MEDIUM_PRIO]: 'medium_prio',
       [PriorityTodos.HIGH_PRIO]: 'high_prio',
     };
-
+    // console.log(objectClass[className]);
     return objectClass[className];
+  }
+
+  public changePriority(priority: PriorityType): void {
+    this.priorityChanged.emit(priority);
   }
 }

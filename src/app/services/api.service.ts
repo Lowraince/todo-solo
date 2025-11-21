@@ -8,14 +8,12 @@ import { Observable } from 'rxjs';
 import { GetToken } from '../interfaces/types';
 import { HttpClient } from '@angular/common/http';
 import { ITodo, ITodoAdd } from './todos.service';
-import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private http = inject(HttpClient);
-  private localStorage = inject(LocalStorageService);
 
   public postCreateUser({
     userName,
@@ -59,5 +57,12 @@ export class ApiService {
 
   public getDataTodo(): Observable<ITodo[]> {
     return this.http.get<ITodo[]>('api/todos');
+  }
+
+  public patchDataTodo(
+    idTodo: string,
+    update: Partial<ITodo>,
+  ): Observable<ITodo> {
+    return this.http.patch<ITodo>(`api/todos/${idTodo}`, update);
   }
 }

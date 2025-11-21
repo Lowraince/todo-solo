@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 interface AppModals {
   settingsAppModal: boolean;
   increaseModal: boolean;
-  settingsTodoModal: boolean;
 }
 
 export type ModalName = keyof AppModals;
@@ -16,7 +15,6 @@ export class ModalsOpenService {
   private modalsState = new BehaviorSubject<AppModals>({
     settingsAppModal: false,
     increaseModal: false,
-    settingsTodoModal: false,
   });
 
   public modalsState$ = this.modalsState.asObservable();

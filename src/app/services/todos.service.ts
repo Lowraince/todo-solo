@@ -119,6 +119,31 @@ export class TodosService {
     });
   }
 
+  public changePriorityTodo({
+    idTodo,
+    priority,
+  }: {
+    idTodo: string;
+    priority: PriorityType;
+  }): Observable<ITodo> {
+    const currentState = this.todoState.value;
+
+    return this.apiService.patchDataTodo(idTodo, { priority }).pipe(
+      tap((newTodo) => {
+        this.todoState.next({
+          ...currentState,
+          todos: currentState.todos.map((todo) => {
+            if (todo.idTodo === idTodo) {
+              return newTodo;
+            }
+
+            return todo;
+          }),
+        });
+      }),
+    );
+  }
+
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {
     this.todoState.next({
       ...this.todoState.value,

@@ -3,11 +3,12 @@
   flex-direction: column;
   position: absolute;
   top: -9px;
-  right: 84px;
+  right: 104%;
   background-color: var(--color-bg-modal);
   border: 1px solid rgb(177, 177, 177);
   border-radius: 5px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 999;
 }
 
 .todo-settings__wrapper {

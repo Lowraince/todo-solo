@@ -35,6 +35,7 @@
           [flagActive]="todo.priority"
           [modalActive]="(isOpen$ | async)!"
           (changeModalOpen)="closeModal($event)"
+          (priorityChanged)="changePriority($event)"
         >
           <app-input-increase [control]="valueControl"></app-input-increase>
         </app-modal-setting-todo>

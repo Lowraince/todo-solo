@@ -19,6 +19,7 @@
       <div
         class="flag-wrapper"
         [ngClass]="{ flag_active: item === flagActive }"
+        (click)="changePriority(item)"
       >
         <svg [class]="getClassPriority(item)" app-flag-icon></svg>
       </div>
