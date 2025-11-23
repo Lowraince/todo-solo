@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
+  --color-text-white: #fff;
+
   --color-bg-primary: #fff;
   --color-bg-secondary: #f9f7f7;
   --color-bg-tertiary: #f8ad7e;
@@ -21,6 +23,8 @@
 
   --color-input-focus: white;
   --color-input-error-border: red;
+
+  --color-bg-error: #ff4d4d;
 
   --color-loader-border: lightblue;
   --color-loader-border-right: orange;

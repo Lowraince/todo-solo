@@ -1,5 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, take, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  take,
+  tap,
+  throwError,
+  timer,
+} from 'rxjs';
 import { SidebarItems, SortTodos } from '../interfaces/types';
 import { PriorityTodos, PriorityType } from '../interfaces/enums';
 import { ApiService } from './api.service';
@@ -28,6 +35,7 @@ interface TodosState {
   todos: ITodo[];
   activeSidebarItem: SidebarItems;
   sort: SortTodos;
+  errorMessages: string[];
 }
 
 @Injectable({
@@ -46,6 +54,7 @@ export class TodosService {
     activeSidebarItem: 'Today',
     todos: [],
     sort: 'project_order',
+    errorMessages: [],
   });
 
   public todoState$ = this.todoState.asObservable();
@@ -128,20 +137,42 @@ export class TodosService {
   }): Observable<ITodo> {
     const currentState = this.todoState.value;
 
-    return this.apiService.patchDataTodo(idTodo, { priority }).pipe(
-      tap((newTodo) => {
-        this.todoState.next({
-          ...currentState,
-          todos: currentState.todos.map((todo) => {
-            if (todo.idTodo === idTodo) {
-              return newTodo;
-            }
+    return Math.random() > 0.5
+      ? throwError(() => {
+          this.todoState.next({
+            ...currentState,
+            errorMessages: [
+              ...currentState.errorMessages,
+              'Failed to update task priority',
+            ],
+          });
 
-            return todo;
+          timer(2000).subscribe(() => {
+            this.todoState.next({
+              ...currentState,
+              errorMessages: currentState.errorMessages.filter(
+                (errorMessage) =>
+                  errorMessage !== 'Failed to update task priority',
+              ),
+            });
+          });
+
+          return new Error('Simulated fail');
+        })
+      : this.apiService.patchDataTodo(idTodo, { priority }).pipe(
+          tap((newTodo) => {
+            this.todoState.next({
+              ...currentState,
+              todos: currentState.todos.map((todo) => {
+                if (todo.idTodo === idTodo) {
+                  return newTodo;
+                }
+
+                return todo;
+              }),
+            });
           }),
-        });
-      }),
-    );
+        );
   }
 
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {

@@ -10,7 +10,10 @@
 }
 
 .todo__content {
-  display: flex;
+  display: grid;
+  position: relative;
+  grid-template-columns: 50px 1fr;
+  width: 100%;
 }
 
 .todo__icons {
@@ -32,6 +35,7 @@
   display: flex;
   align-items: center;
 }
+
 .todo__date-wrapper {
   display: flex;
   position: relative;

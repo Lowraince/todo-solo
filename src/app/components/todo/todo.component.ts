@@ -13,7 +13,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { VideoIconComponent } from '../../icons/video-icon/video-icon.component';
 import { PeachIconComponent } from '../../icons/peach-icon/peach-icon.component';
 import { SettingsIconComponent } from '../../icons/settings-icon/settings-icon.component';
-import { BehaviorSubject, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Subject, switchMap } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
 import { InputIncreaseComponent } from '../input-increase/input-increase.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -67,8 +67,19 @@ export class TodoComponent implements OnInit {
   }
 
   public initChangePrio(): void {
+    console.log();
     this.changePrio$
-      .pipe(switchMap((newPrio) => this.todoState.changePriorityTodo(newPrio)))
+      .pipe(
+        switchMap((newPrio) =>
+          this.todoState.changePriorityTodo(newPrio).pipe(
+            catchError((error) => {
+              console.error(error, 'error change priority');
+
+              return EMPTY;
+            }),
+          ),
+        ),
+      )
       .subscribe();
   }
 

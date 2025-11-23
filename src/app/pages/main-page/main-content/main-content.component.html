@@ -1,6 +1,6 @@
 <div class="main-content__wrapper">
   <header class="main-content__header">
-    <h2>{{ todoActiveLink | async }}</h2>
+    <h2>{{ todoActiveLink$ | async }}</h2>
     <div class="main-content__svg-wrapper">
       <svg app-sort-icon></svg>
     </div>
@@ -31,5 +31,8 @@
   </section>
   <section class="main-content__todos">
     <app-main-content-todos></app-main-content-todos>
+    @for (errorText of todoErrors$ | async; track $index) {
+      <app-modal-error [text]="errorText"></app-modal-error>
+    }
   </section>
 </div>

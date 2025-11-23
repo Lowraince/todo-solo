@@ -11,6 +11,7 @@ import { AsyncPipe } from '@angular/common';
 import { HeaderMainComponent } from './main-header/header-main.component';
 import { ModalsOpenService } from '../../services/modals-open.service';
 import { map } from 'rxjs';
+import { ModalConfirmComponent } from '../../components/modals/modal-confirm/modal-confirm.component';
 
 @Component({
   selector: 'app-main-page',
@@ -19,6 +20,7 @@ import { map } from 'rxjs';
     MainLayoutComponent,
     ModalSettingsComponent,
     AsyncPipe,
+    ModalConfirmComponent,
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss',
@@ -28,8 +30,12 @@ export class MainPageComponent implements OnInit {
   private authService = inject(AuthService);
   public modalOpenService = inject(ModalsOpenService);
 
-  public modalAppSettings = this.modalOpenService.modalsState$.pipe(
+  public modalAppSettings$ = this.modalOpenService.modalsState$.pipe(
     map((state) => state.settingsAppModal),
+  );
+
+  public modalConfirm$ = this.modalOpenService.modalsState$.pipe(
+    map((state) => state.confirmModal),
   );
 
   public ngOnInit(): void {

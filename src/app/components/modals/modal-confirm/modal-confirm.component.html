@@ -1,0 +1,17 @@
+<div class="modal-overlay" (click)="noHandler()">
+  <div
+    style="background-color: red; padding: 0.5rem"
+    (click)="$event.stopPropagation()"
+  >
+    <p>
+      Do you really want to delete "{{
+        modalCurrentDescription$ | async | slice: 0 : 10
+      }}" ?
+    </p>
+    <p>This task will be deleted and will not be restored.</p>
+    <div>
+      <button class="button" (click)="yesHandler()">Ok</button>
+      <button class="button" (click)="noHandler()">Cancel</button>
+    </div>
+  </div>
+</div>

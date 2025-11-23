@@ -6,6 +6,7 @@ import { SortIconComponent } from '../../../icons/sort-icon/sort-icon.component'
 import { MainContentStatisticComponent } from './main-content-statistic/main-content-statistic.component';
 import { MainContentFormInputComponent } from './main-content-form-input/main-content-form-input.component';
 import { MainContentTodosComponent } from './main-content-todos/main-content-todos.component';
+import { ModalErrorComponent } from '../../../components/modals/modal-error/modal-error.component';
 
 @Component({
   selector: 'app-main-content',
@@ -15,6 +16,7 @@ import { MainContentTodosComponent } from './main-content-todos/main-content-tod
     MainContentStatisticComponent,
     MainContentFormInputComponent,
     MainContentTodosComponent,
+    ModalErrorComponent,
   ],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
@@ -23,11 +25,15 @@ import { MainContentTodosComponent } from './main-content-todos/main-content-tod
 export class MainContentComponent {
   private todoState = inject(TodosService);
 
-  public todoActiveLink = this.todoState.todoState$.pipe(
+  public todoActiveLink$ = this.todoState.todoState$.pipe(
     map((state) => state.activeSidebarItem),
   );
 
   public todoComplete$ = this.todoState.todoState$.pipe(
     map((state) => state.todos.filter((todo) => todo.isComplete).length),
+  );
+
+  public todoErrors$ = this.todoState.todoState$.pipe(
+    map((state) => state.errorMessages),
   );
 }

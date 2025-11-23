@@ -2,7 +2,11 @@
   <app-header-main></app-header-main>
   <app-main-layout></app-main-layout>
 
-  @if (modalAppSettings | async) {
+  @if (modalAppSettings$ | async) {
     <app-modal-settings></app-modal-settings>
+  }
+
+  @if (modalConfirm$ | async) {
+    <app-modal-confirm></app-modal-confirm>
   }
 </div>
