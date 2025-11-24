@@ -18,7 +18,7 @@
     @for (item of priorityArray; track $index) {
       <div
         class="flag-wrapper"
-        [ngClass]="{ flag_active: item === flagActive }"
+        [ngClass]="{ flag_active: item === todo.priority }"
         (click)="changePriority(item)"
       >
         <svg [class]="getClassPriority(item)" app-flag-icon></svg>

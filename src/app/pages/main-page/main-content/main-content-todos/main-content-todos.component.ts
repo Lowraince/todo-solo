@@ -39,7 +39,7 @@ export class MainContentTodosComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    this.todosState.getTodos();
+    this.todosState.getTodos().subscribe();
   }
 
   public showTodosCompleteHanlder(): void {

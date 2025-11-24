@@ -15,8 +15,9 @@ import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component'
 import { PriorityTodos, PriorityType } from '../../../interfaces/enums';
 import { NgClass } from '@angular/common';
 import { ModalsOpenService } from '../../../services/modals-open.service';
-import { map, tap } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ITodo, TodosService } from '../../../services/todos.service';
 
 @Component({
   selector: 'app-modal-setting-todo',
@@ -26,15 +27,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalSettingTodoComponent implements OnInit {
-  @Input({ required: true }) public flagActive!: string;
+  @Input({ required: true }) public todo!: ITodo;
   @Input({ required: true }) public modalActive!: boolean;
-  @Input({ required: true }) public description!: string;
 
   @Output() public changeModalOpen = new EventEmitter<boolean>();
   @Output() public priorityChanged = new EventEmitter<PriorityType>();
 
   private element = inject(ElementRef);
   private openModalService = inject(ModalsOpenService);
+  private todosState = inject(TodosService);
   private destroyRef = inject(DestroyRef);
 
   private modalConfirm$ = this.openModalService.modalsState$.pipe(
@@ -80,15 +81,12 @@ export class ModalSettingTodoComponent implements OnInit {
   }
 
   public deleteClickHandler(): void {
-    console.log(this.description);
     this.openModalService
-      .openConfirmModal(this.description)
-      .subscribe((value) => {
-        if (value) {
-          console.log('yes');
-        } else {
-          console.log('no');
-        }
-      });
+      .openConfirmModal(this.todo.description)
+      .pipe(
+        filter(Boolean),
+        switchMap(() => this.todosState.deleteTodo(this.todo.idTodo)),
+      )
+      .subscribe();
   }
 }

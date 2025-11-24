@@ -1,12 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  take,
-  tap,
-  throwError,
-  timer,
-} from 'rxjs';
+import { BehaviorSubject, Observable, tap, throwError, timer } from 'rxjs';
 import { SidebarItems, SortTodos } from '../interfaces/types';
 import { PriorityTodos, PriorityType } from '../interfaces/enums';
 import { ApiService } from './api.service';
@@ -103,22 +96,18 @@ export class TodosService {
     );
   }
 
-  public getTodos(): void {
+  public getTodos(): Observable<ITodo[]> {
     const currentState = this.todoState.value;
 
-    this.apiService
-      .getDataTodo()
-      .pipe(
-        tap((todos: ITodo[]) => {
-          console.log(todos, 'todos');
-          this.todoState.next({
-            ...currentState,
-            todos: todos,
-          });
-        }),
-        take(1),
-      )
-      .subscribe();
+    return this.apiService.getDataTodo().pipe(
+      tap((todos: ITodo[]) => {
+        console.log(todos, 'todos');
+        this.todoState.next({
+          ...currentState,
+          todos: todos,
+        });
+      }),
+    );
   }
 
   public changeSidebarItem(activeSidebarItem: SidebarItems): void {
@@ -173,6 +162,19 @@ export class TodosService {
             });
           }),
         );
+  }
+
+  public deleteTodo(idTodo: string): Observable<{ success: true }> {
+    return this.apiService.deleteDataTodo(idTodo).pipe(
+      tap(() => {
+        const currentState = this.todoState.value;
+
+        this.todoState.next({
+          ...currentState,
+          todos: currentState.todos.filter((todo) => todo.idTodo !== idTodo),
+        });
+      }),
+    );
   }
 
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {

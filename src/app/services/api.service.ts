@@ -65,4 +65,9 @@ export class ApiService {
   ): Observable<ITodo> {
     return this.http.patch<ITodo>(`api/todos/${idTodo}`, update);
   }
+
+  public deleteDataTodo(idTodo: string): Observable<{ success: true }> {
+    console.log('delete');
+    return this.http.delete<{ success: true }>(`api/todos/${idTodo}`);
+  }
 }

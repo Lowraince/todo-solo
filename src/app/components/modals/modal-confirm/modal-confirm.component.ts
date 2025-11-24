@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ModalsOpenService } from '../../../services/modals-open.service';
-import { AsyncPipe, SlicePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
+import { SliceModalDescriptionPipe } from '../../../pipes/slice-modal-description.pipe';
+import { ConfirmIconComponent } from '../../../icons/confirm-icon/confirm-icon.component';
 
 @Component({
   selector: 'app-modal-confirm',
-  imports: [AsyncPipe, SlicePipe],
+  imports: [AsyncPipe, SliceModalDescriptionPipe, ConfirmIconComponent],
   templateUrl: './modal-confirm.component.html',
   styleUrl: './modal-confirm.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
