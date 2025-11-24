@@ -1,11 +1,19 @@
 <li class="todo">
   <div class="todo__content">
     <div class="todo__icons">
-      <svg
-        (click)="changeCompleteHandler()"
-        [ngClass]="{ icon_active: todo.isComplete }"
-        app-complete-icon
-      ></svg>
+      <div class="todo__change-wrapper" (click)="changeCompleteHandler()">
+        @if (todo.isComplete) {
+          <svg
+            [ngClass]="{ icon_active: todo.isComplete }"
+            app-complete-icon
+          ></svg>
+        } @else {
+          <span class="todo__cycle" [class]="getClassPriority(todo.priority)">
+            <div class="inner"></div
+          ></span>
+        }
+      </div>
+
       <svg app-video-icon></svg>
     </div>
     <div class="todo__text-wrapper">

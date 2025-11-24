@@ -59,6 +59,6 @@ export class MainContentTodosComponent implements OnInit {
     id: string;
     complete: boolean;
   }): void {
-    this.todosState.changeCompleteTodo(id, complete);
+    this.todosState.changeCompleteTodo(id, complete).subscribe();
   }
 }

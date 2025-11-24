@@ -193,22 +193,26 @@ export class TodosService {
     });
   }
 
-  public changeCompleteTodo(id: string, complete: boolean): void {
-    const todo = this.todoState.value.todos.map((todo) => {
-      if (todo.idTodo === id) {
-        return {
-          ...todo,
-          isComplete: complete,
-        };
-      }
+  public changeCompleteTodo(
+    idTodo: string,
+    complete: boolean,
+  ): Observable<ITodo> {
+    return this.apiService.patchDataTodo(idTodo, { isComplete: complete }).pipe(
+      tap((newTodo) => {
+        const currentState = this.todoState.value;
 
-      return todo;
-    });
+        this.todoState.next({
+          ...currentState,
+          todos: currentState.todos.map((todo) => {
+            if (todo.idTodo === newTodo.idTodo) {
+              return newTodo;
+            }
 
-    this.todoState.next({
-      ...this.todoState.value,
-      todos: todo,
-    });
+            return todo;
+          }),
+        });
+      }),
+    );
   }
 
   private nextDay(date: Date): Date {

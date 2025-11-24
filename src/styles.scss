@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --color-text-white: #fff;
+  --color-text-second: gray;
 
   --color-bg-primary: #fff;
   --color-bg-secondary: #f9f7f7;
@@ -50,7 +51,7 @@
 
   --flag-no-prio: gray;
   --flag-low-prio: green;
-  --flag-medium-prio: yellow;
+  --flag-medium-prio: #f86d02;
   --flag-high-prio: red;
 }
 

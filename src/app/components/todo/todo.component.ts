@@ -18,6 +18,7 @@ import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-se
 import { InputIncreaseComponent } from '../input-increase/input-increase.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PriorityType } from '../../interfaces/enums';
+import { getClassPriority } from '../../utils/class-priority';
 
 @Component({
   selector: 'app-todo',
@@ -138,5 +139,9 @@ export class TodoComponent implements OnInit {
     const [, month, day] = dataCreateISO.split('-').map(Number);
 
     return `${day} ${months[month - 1].slice(0, 3)}.`;
+  }
+
+  public getClassPriority(priority: PriorityType): string {
+    return getClassPriority(priority);
   }
 }

@@ -18,6 +18,7 @@ import { ModalsOpenService } from '../../../services/modals-open.service';
 import { filter, map, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ITodo, TodosService } from '../../../services/todos.service';
+import { getClassPriority } from '../../../utils/class-priority';
 
 @Component({
   selector: 'app-modal-setting-todo',
@@ -65,17 +66,6 @@ export class ModalSettingTodoComponent implements OnInit {
     }
   }
 
-  public getClassPriority(className: PriorityTodos): string {
-    const objectClass = {
-      [PriorityTodos.NO_PRIO]: 'no_prio',
-      [PriorityTodos.LOW_PRIO]: 'low_prio',
-      [PriorityTodos.MEDIUM_PRIO]: 'medium_prio',
-      [PriorityTodos.HIGH_PRIO]: 'high_prio',
-    };
-
-    return objectClass[className];
-  }
-
   public changePriority(priority: PriorityType): void {
     this.priorityChanged.emit(priority);
   }
@@ -88,5 +78,9 @@ export class ModalSettingTodoComponent implements OnInit {
         switchMap(() => this.todosState.deleteTodo(this.todo.idTodo)),
       )
       .subscribe();
+  }
+
+  public getClassPriority(priority: PriorityTodos): string {
+    return getClassPriority(priority);
   }
 }
