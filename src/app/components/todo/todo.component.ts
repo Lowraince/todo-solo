@@ -13,9 +13,20 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { VideoIconComponent } from '../../icons/video-icon/video-icon.component';
 import { PeachIconComponent } from '../../icons/peach-icon/peach-icon.component';
 import { SettingsIconComponent } from '../../icons/settings-icon/settings-icon.component';
-import { BehaviorSubject, catchError, EMPTY, Subject, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  EMPTY,
+  Subject,
+  switchMap,
+} from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
-import { InputIncreaseComponent } from '../input-increase/input-increase.component';
+import {
+  ChangeDirection,
+  InputIncreaseComponent,
+} from '../input-increase/input-increase.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PriorityType } from '../../interfaces/enums';
 import { getClassPriority } from '../../utils/class-priority';
@@ -49,7 +60,7 @@ export class TodoComponent implements OnInit {
   }>();
 
   public todoData: string = '';
-  public valueControl = new FormControl(0);
+  public valueControl = new FormControl(0, { nonNullable: true });
 
   public isOpen$ = new BehaviorSubject<boolean>(false);
   public changePrio$ = new Subject<{
@@ -61,6 +72,21 @@ export class TodoComponent implements OnInit {
     this.todoData = this.getFormattedDate(this.todo.timeToCreate);
     this.initValueControl();
     this.initChangePrio();
+    this.initChangeControl();
+  }
+
+  public initChangeControl(): void {
+    this.valueControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(800),
+        switchMap((value) => {
+          const idTodo = this.todo.idTodo;
+
+          return this.todoState.changeValueTodo(idTodo, value);
+        }),
+      )
+      .subscribe();
   }
 
   public initValueControl(): void {
@@ -68,7 +94,6 @@ export class TodoComponent implements OnInit {
   }
 
   public initChangePrio(): void {
-    console.log();
     this.changePrio$
       .pipe(
         switchMap((newPrio) =>
@@ -143,5 +168,32 @@ export class TodoComponent implements OnInit {
 
   public getClassPriority(priority: PriorityType): string {
     return getClassPriority(priority);
+  }
+
+  public onValueChangeDirection(direction: ChangeDirection): void {
+    const controlValue = this.valueControl.value;
+    if (direction === 'plus') {
+      if (controlValue === 1000) return;
+
+      const formValuePlus = controlValue + 1;
+
+      this.changeValue(formValuePlus);
+    } else if (direction === 'minus') {
+      if (controlValue === 0) {
+        this.valueControl.setValue(0);
+        return;
+      }
+      const formValueMinus = controlValue - 1;
+
+      this.changeValue(formValueMinus);
+    }
+  }
+
+  public onInputValueChange(input: number): void {
+    this.valueControl.setValue(input);
+  }
+
+  private changeValue(value: number): void {
+    this.valueControl.setValue(value);
   }
 }

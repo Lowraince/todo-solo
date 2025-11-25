@@ -86,9 +86,14 @@ export class MainContentFormInputComponent implements OnInit {
         tap(() => this.isLoading$.next(true)),
         takeUntilDestroyed(this.destroyRef),
         exhaustMap((object) =>
-          this.todosState
-            .addTodo(object)
-            .pipe(finalize(() => this.isLoading$.next(false))),
+          this.todosState.addTodo(object).pipe(
+            tap(() => {
+              this.addTodoForm.reset();
+              this.resetActiveIconsState();
+              console.log(this.activeIconsState);
+            }),
+            finalize(() => this.isLoading$.next(false)),
+          ),
         ),
       )
       .subscribe();
@@ -169,17 +174,17 @@ export class MainContentFormInputComponent implements OnInit {
 
   public onInputValueChange(input: number): void {
     if (input === 0) {
-      this.activeIconsState = this.resetActiveIconsState();
+      this.resetActiveIconsState();
       return;
     }
 
     if (input < 6 || input > 0) {
-      this.activeIconsState = this.setValueIconsState(input);
+      this.setValueIconsState(input);
     }
   }
 
   public onHoverValues(index: number): void {
-    this.activeIconsState = this.setValueIconsHover(index);
+    this.setValueIconsHover(index);
   }
 
   public onMouseLeave(): void {
@@ -191,13 +196,13 @@ export class MainContentFormInputComponent implements OnInit {
   }
 
   private clearValues(formValues: FormControl<number>): void {
-    this.activeIconsState = this.resetActiveIconsState();
+    this.resetActiveIconsState();
 
     formValues.setValue(0);
   }
 
   private setValues(formValues: FormControl<number>, index: number): void {
-    this.activeIconsState = this.setValueIconsState(index);
+    this.setValueIconsState(index);
 
     formValues.setValue(index);
   }
@@ -223,10 +228,9 @@ export class MainContentFormInputComponent implements OnInit {
     }));
   }
 
-  private resetActiveIconsState(): ActiveIconsState {
-    return {
-      icons: this.activeIconsState.icons.map((icon) => ({
-        ...icon,
+  private resetActiveIconsState(): void {
+    this.activeIconsState = {
+      icons: this.activeIconsState.icons.map(() => ({
         isHovered: false,
         isTarget: false,
       })),
@@ -234,8 +238,8 @@ export class MainContentFormInputComponent implements OnInit {
     };
   }
 
-  private setValueIconsState(index: number): ActiveIconsState {
-    return {
+  private setValueIconsState(index: number): void {
+    this.activeIconsState = {
       icons: this.activeIconsState.icons.map((icon, iconIndex) => ({
         ...icon,
         isTarget: iconIndex <= index - 1,
@@ -245,8 +249,8 @@ export class MainContentFormInputComponent implements OnInit {
     };
   }
 
-  private setValueIconsHover(index: number): ActiveIconsState {
-    return {
+  private setValueIconsHover(index: number): void {
+    this.activeIconsState = {
       ...this.activeIconsState,
       icons: this.activeIconsState.icons.map((icon, iconIndex) => ({
         ...icon,

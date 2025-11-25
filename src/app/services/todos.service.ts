@@ -177,6 +177,25 @@ export class TodosService {
     );
   }
 
+  public changeValueTodo(idTodo: string, value: number): Observable<ITodo> {
+    return this.apiService.patchDataTodo(idTodo, { value }).pipe(
+      tap((newTodo) => {
+        const currentState = this.todoState.value;
+
+        this.todoState.next({
+          ...currentState,
+          todos: currentState.todos.map((todo) => {
+            if (todo.idTodo === newTodo.idTodo) {
+              return newTodo;
+            }
+
+            return todo;
+          }),
+        });
+      }),
+    );
+  }
+
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {
     this.todoState.next({
       ...this.todoState.value,

@@ -3,9 +3,11 @@
 }
 
 .statistic__value {
+  color: var(--color-text-secondary);
   font-size: 1.5rem;
 }
 
 .statistic__minute {
   font-size: 0.8rem;
+  color: var(--color-text-black);
 }
