@@ -5,7 +5,7 @@
   border-radius: 5px;
   padding: 0.5rem;
   background-color: white;
-  border: 1px solid #dddddd;
+  border: 1.5px solid var(--color-form-border);
 }
 
 .add-todo__input {
@@ -17,6 +17,11 @@
   &:focus {
     outline: none;
   }
+}
+
+.add-todo__form:focus-within {
+  border-color: var(--color-form-border-active);
+  box-shadow: 0 0 2px 1px var(--color-form-border-active);
 }
 
 .add-todo__icons {

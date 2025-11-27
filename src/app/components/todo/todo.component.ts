@@ -129,20 +129,20 @@ export class TodoComponent implements OnInit {
   }
 
   public getFormattedDate(timeCreate: string): string {
-    const dataCreateISO = timeCreate.slice(0, 10);
+    const todoCreateISO = timeCreate.slice(0, 10);
 
-    const today1 = new Date();
-    const tomorrow1 = new Date(today1);
-    tomorrow1.setDate(today1.getDate() + 1);
+    const computerDay = new Date();
+    const computerTomorrow = new Date(computerDay);
+    computerTomorrow.setDate(computerDay.getDate() + 1);
 
-    const todayISO = today1.toISOString().slice(0, 10);
-    const tomorrowISO = tomorrow1.toISOString().slice(0, 10);
+    const todayISO = computerDay.toISOString().slice(0, 10);
+    const tomorrowISO = computerTomorrow.toISOString().slice(0, 10);
 
-    if (todayISO === dataCreateISO) {
+    if (todayISO === todoCreateISO) {
       return 'Today';
     }
 
-    if (tomorrowISO === dataCreateISO) {
+    if (tomorrowISO === todoCreateISO) {
       return 'Tomorrow';
     }
 
@@ -161,7 +161,7 @@ export class TodoComponent implements OnInit {
       'December',
     ];
 
-    const [, month, day] = dataCreateISO.split('-').map(Number);
+    const [, month, day] = todoCreateISO.split('-').map(Number);
 
     return `${day} ${months[month - 1].slice(0, 3)}.`;
   }

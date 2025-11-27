@@ -132,7 +132,9 @@ export class MainContentFormInputComponent implements OnInit {
     this.addClick$.next(newTodo);
   }
 
-  public onClickIconValue(index: number): void {
+  public onClickIconValue(event: Event, index: number): void {
+    event.preventDefault();
+
     const formValues = this.addTodoForm.controls.values;
 
     const indexPlusOne = index + 1;

@@ -7,6 +7,8 @@ import { SunsetIconComponent } from '../../../icons/sunset-icon/sunset-icon.comp
 import { CalendarMissIconComponent } from '../../../icons/calendar-miss-icon/calendar-miss-icon.component';
 import { CalendarIconComponent } from '../../../icons/calendar-icon/calendar-icon.component';
 import { SidebarItems } from '../../../interfaces/types';
+import { Router } from '@angular/router';
+import { RootPages } from '../../../interfaces/enums';
 
 @Component({
   selector: 'app-main-sidebar',
@@ -24,6 +26,7 @@ import { SidebarItems } from '../../../interfaces/types';
 })
 export class MainSidebarComponent {
   private todoState = inject(TodosService);
+  private router = inject(Router);
 
   public sidebarItems = this.todoState.todoState$.pipe(
     map((state) => state.sidebarItems),
@@ -33,8 +36,9 @@ export class MainSidebarComponent {
     map((state) => state.activeSidebarItem),
   );
 
-  public changeActiveLink(item: string): void {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    this.todoState.changeSidebarItem(item as SidebarItems);
+  public changeActiveLink(item: SidebarItems): void {
+    this.todoState.changeSidebarItem(item);
+    const sidebar = item.toLowerCase();
+    this.router.navigate([RootPages.MAIN, sidebar]);
   }
 }

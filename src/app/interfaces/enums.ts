@@ -12,4 +12,13 @@ export enum PriorityTodos {
   HIGH_PRIO = 'High priority',
 }
 
+export enum SidebarItems {
+  TODAY = 'Today',
+  TOMORROW = 'Tomorrow',
+  MISSED = 'Missed',
+  FOR_WEEK = 'For this week',
+}
+
+export type SidebarItemsType = `${SidebarItems}`;
+
 export type PriorityType = `${PriorityTodos}`;

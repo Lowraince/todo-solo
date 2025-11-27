@@ -24,7 +24,7 @@
             icon_target: icon.isHovered && icon.isTarget,
           }"
           (mouseenter)="onHoverValues($index)"
-          (click)="onClickIconValue($index)"
+          (mousedown)="onClickIconValue($event, $index)"
         ></svg>
       }
     </div>

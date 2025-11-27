@@ -55,8 +55,10 @@ export class ApiService {
     return this.http.post<ITodo>(`api/todos`, data);
   }
 
-  public getDataTodo(): Observable<ITodo[]> {
-    return this.http.get<ITodo[]>('api/todos');
+  public getDataTodo(activeSidebar: string): Observable<ITodo[]> {
+    return this.http.get<ITodo[]>('api/todos', {
+      params: { filter: activeSidebar },
+    });
   }
 
   public patchDataTodo(
@@ -67,7 +69,6 @@ export class ApiService {
   }
 
   public deleteDataTodo(idTodo: string): Observable<{ success: true }> {
-    console.log('delete');
     return this.http.delete<{ success: true }>(`api/todos/${idTodo}`);
   }
 }

@@ -96,12 +96,11 @@ export class TodosService {
     );
   }
 
-  public getTodos(): Observable<ITodo[]> {
-    const currentState = this.todoState.value;
-
-    return this.apiService.getDataTodo().pipe(
+  public getTodos(activeSidebar: string): Observable<ITodo[]> {
+    return this.apiService.getDataTodo(activeSidebar).pipe(
       tap((todos: ITodo[]) => {
-        console.log(todos, 'todos');
+        const currentState = this.todoState.value;
+        console.log(todos);
         this.todoState.next({
           ...currentState,
           todos: todos,
