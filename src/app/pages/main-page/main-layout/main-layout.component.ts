@@ -38,6 +38,8 @@ export class MainLayoutComponent implements OnInit {
           if (!day) {
             this.router.navigate([RootPages.MAIN, SidebarItems.TODAY]);
           }
+
+          console.log('initLayout');
         }),
         filter((day): day is string => !!day),
         switchMap((day) => this.todosState.getTodos(day)),

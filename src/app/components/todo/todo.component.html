@@ -57,7 +57,7 @@
         (click)="openModalTodo()"
         [ngClass]="{ icon_active: isOpen$ | async }"
       ></svg>
-      <p class="todo__date">{{ todoData }}</p>
+      <p class="todo__date">{{ getFormattedDate(todo.timeToCreate) }}</p>
     </div>
   }
 </li>

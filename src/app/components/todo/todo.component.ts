@@ -138,6 +138,9 @@ export class TodoComponent implements OnInit {
     const todayISO = computerDay.toISOString().slice(0, 10);
     const tomorrowISO = computerTomorrow.toISOString().slice(0, 10);
 
+    console.log(todoCreateISO);
+    console.log(todayISO);
+
     if (todayISO === todoCreateISO) {
       return 'Today';
     }

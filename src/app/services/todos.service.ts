@@ -114,6 +114,8 @@ export class TodosService {
       ...this.todoState.value,
       activeSidebarItem,
     });
+
+    console.log(this.todoState.value);
   }
 
   public changePriorityTodo({
