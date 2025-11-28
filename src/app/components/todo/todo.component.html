@@ -52,12 +52,21 @@
   </div>
   @if (dateView) {
     <div class="todo__date-wrapper">
-      <svg
-        app-settings-icon
-        (click)="openModalTodo()"
-        [ngClass]="{ icon_active: isOpen$ | async }"
-      ></svg>
-      <p class="todo__date">{{ getFormattedDate(todo.timeToCreate) }}</p>
+      <div>
+        <svg
+          app-settings-icon
+          (click)="openModalTodo()"
+          [ngClass]="{ icon_active: isOpen$ | async }"
+        ></svg>
+      </div>
+      <p
+        class="todo__date"
+        [ngClass]="{
+          todo__date_past: changeColorPastDate(todo.timeToCreate),
+        }"
+      >
+        {{ getFormattedDate(todo.timeToCreate) }}
+      </p>
     </div>
   }
 </li>

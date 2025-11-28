@@ -10,7 +10,6 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TodosService } from '../../../services/todos.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, filter, map, switchMap, tap } from 'rxjs';
-import { RootPages, SidebarItems } from '../../../interfaces/enums';
 
 @Component({
   selector: 'app-main-layout',
@@ -35,16 +34,16 @@ export class MainLayoutComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
         map((parameter) => parameter.get('todosDay')),
         tap((day) => {
-          if (!day) {
-            this.router.navigate([RootPages.MAIN, SidebarItems.TODAY]);
-          }
+          console.log(day, 'Init route');
 
-          console.log('initLayout');
+          // if (!day) {
+          //   this.router.navigate([RootPages.MAIN, SidebarItems.TODAY]);
+          // }
         }),
         filter((day): day is string => !!day),
         switchMap((day) => this.todosState.getTodos(day)),
         catchError((error) => {
-          console.log(error, 'something wrong');
+          console.error(error, 'something wrong');
           return EMPTY;
         }),
       )

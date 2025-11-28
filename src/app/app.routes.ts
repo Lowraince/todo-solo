@@ -22,23 +22,23 @@ export const routes: Routes = [
     canActivate: [LoginGuardService],
   },
   {
-    path: `${RootPages.MAIN}`,
+    path: RootPages.MAIN,
     loadComponent: () =>
       import('./pages/main-page/main-page.component').then(
         (m) => m.MainPageComponent,
       ),
     children: [
       {
-        path: '',
-        redirectTo: SidebarItems.TODAY.toLowerCase(),
-        pathMatch: 'full',
-      },
-      {
         path: ':todosDay',
         loadComponent: () =>
           import('./pages/main-page/main-content/main-content.component').then(
             (m) => m.MainContentComponent,
           ),
+      },
+      {
+        path: '',
+        redirectTo: SidebarItems.TODAY.toLowerCase(),
+        pathMatch: 'full',
       },
     ],
     canActivate: [AuthGuardService],

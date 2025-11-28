@@ -88,8 +88,6 @@ export class RegistrationPageComponent {
       realNameUser: value.realName.trim(),
     };
 
-    console.log(newUser);
-
     of(newUser)
       .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
       .subscribe();

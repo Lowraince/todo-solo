@@ -80,27 +80,20 @@ export class TodosService {
 
     const currentState = this.todoState.value;
 
-    console.log(newTodo);
-    console.log(activeSidebar);
-
     return this.apiService.postDataTodo(newTodo).pipe(
       tap((todo) => {
-        console.log(todo, 'todo');
         this.todoState.next({
           ...currentState,
           todos: [...currentState.todos, todo],
         });
-
-        console.log(this.todoState);
       }),
     );
   }
 
-  public getTodos(activeSidebar: string): Observable<ITodo[]> {
-    return this.apiService.getDataTodo(activeSidebar).pipe(
+  public getTodos(active: string): Observable<ITodo[]> {
+    return this.apiService.getDataTodo(active).pipe(
       tap((todos: ITodo[]) => {
         const currentState = this.todoState.value;
-        console.log(todos);
         this.todoState.next({
           ...currentState,
           todos: todos,
@@ -114,8 +107,6 @@ export class TodosService {
       ...this.todoState.value,
       activeSidebarItem,
     });
-
-    console.log(this.todoState.value);
   }
 
   public changePriorityTodo({

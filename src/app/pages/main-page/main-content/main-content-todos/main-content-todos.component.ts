@@ -3,6 +3,7 @@ import { TodosService } from '../../../../services/todos.service';
 import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TodoComponent } from '../../../../components/todo/todo.component';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
   selector: 'app-main-content-todos',
@@ -13,22 +14,42 @@ import { TodoComponent } from '../../../../components/todo/todo.component';
 })
 export class MainContentTodosComponent {
   private todosState = inject(TodosService);
+  private settingsState = inject(SettingsService);
 
   public showTodosComplete: boolean = true;
 
-  public todos = this.todosState.todoState$.pipe(map((state) => state.todos));
-  public isEmptyTodos = this.todos.pipe(map((todos) => todos?.length === 0));
+  private timerDurationSetting$ = this.settingsState.settingsState$.pipe(
+    map((state) => state.timer.timeDuration),
+  );
 
-  public todosComplete = this.todos.pipe(
+  public todos$ = this.todosState.todoState$.pipe(map((state) => state.todos));
+  public isEmptyTodos$ = this.todos$.pipe(map((todos) => todos?.length === 0));
+
+  public todosComplete$ = this.todos$.pipe(
     map((todos) => todos.filter((todo) => todo.isComplete)),
   );
-  public todosUncomplete = this.todos.pipe(
+
+  public todosUncomplete$ = this.todos$.pipe(
     map((todos) => todos.filter((todo) => !todo.isComplete)),
   );
 
+  // public todosValueTime$ = combineLatest([
+  //   this.timerDurationSetting$,
+  //   this.todosUncomplete$.pipe(filter((todos) => todos && todos.length > 0)),
+  // ]).pipe(
+  //   tap(([time, uncompleteTodos]) =>
+  //     console.log(`${time} - "Время"`, `${uncompleteTodos} - todos`),
+  //   ),
+  //   map(([time, uncompleteTodos]) => {
+  //     return uncompleteTodos.reduce((accumulator, current) => {
+  //       return accumulator + current.value * Number(time);
+  //     }, 0);
+  //   }),
+  // );
+
   public isEmptyOrUncomplete = combineLatest([
-    this.todos,
-    this.todosUncomplete,
+    this.todos$,
+    this.todosUncomplete$,
   ]).pipe(
     map(([todos, uncomplete]) => todos.length === 0 || uncomplete.length === 0),
   );

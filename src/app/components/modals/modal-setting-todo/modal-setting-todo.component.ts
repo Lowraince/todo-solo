@@ -15,7 +15,7 @@ import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component'
 import { PriorityTodos, PriorityType } from '../../../interfaces/enums';
 import { NgClass } from '@angular/common';
 import { ModalsOpenService } from '../../../services/modals-open.service';
-import { filter, map, switchMap, tap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ITodo, TodosService } from '../../../services/todos.service';
 import { getClassPriority } from '../../../utils/class-priority';
@@ -49,10 +49,7 @@ export class ModalSettingTodoComponent implements OnInit {
 
   public ngOnInit(): void {
     this.modalConfirm$
-      .pipe(
-        tap((value) => console.log(value)),
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => (this.modalConfirmIsOpen = value));
   }
 

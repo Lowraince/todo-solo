@@ -1,11 +1,20 @@
-<ul class="todos__container">
-  @for (todo of todosUncomplete | async; track $index) {
-    <app-todo
-      [todo]="todo"
-      (changeComplete)="changeComplete($event)"
-    ></app-todo>
-  }
-</ul>
+<div class="todos__uncomplete-wrapper">
+  <!-- @if (todosValueTime$ | async; as totalTime) {
+    <p class="uncomplete__sum-values">
+      <span>Tasks</span> <span class="middle-dot"></span>
+      <span>{{ totalTime }}m</span>
+    </p>
+  } -->
+
+  <ul class="todos__container">
+    @for (todo of todosUncomplete$ | async; track $index) {
+      <app-todo
+        [todo]="todo"
+        (changeComplete)="changeComplete($event)"
+      ></app-todo>
+    }
+  </ul>
+</div>
 
 @if (isEmptyOrUncomplete | async) {
   <div class="todos__empty-wrapper">
@@ -27,7 +36,7 @@
 
 @if (showTodosComplete) {
   <ul class="todos__container">
-    @for (todo of todosComplete | async; track $index) {
+    @for (todo of todosComplete$ | async; track $index) {
       <app-todo
         [todo]="todo"
         (changeComplete)="changeComplete($event)"

@@ -90,7 +90,6 @@ export class MainContentFormInputComponent implements OnInit {
             tap(() => {
               this.addTodoForm.reset();
               this.resetActiveIconsState();
-              console.log(this.activeIconsState);
             }),
             finalize(() => this.isLoading$.next(false)),
           ),

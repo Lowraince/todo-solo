@@ -39,6 +39,7 @@ export class MainSidebarComponent {
   public changeActiveLink(item: SidebarItems): void {
     this.todoState.changeSidebarItem(item);
     const sidebar = item.toLowerCase();
+    console.log('?');
     this.router.navigate([RootPages.MAIN, sidebar]);
   }
 }

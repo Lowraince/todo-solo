@@ -21,6 +21,7 @@ import {
   EMPTY,
   Subject,
   switchMap,
+  tap,
 } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
 import {
@@ -59,7 +60,6 @@ export class TodoComponent implements OnInit {
     complete: boolean;
   }>();
 
-  public todoData: string = '';
   public valueControl = new FormControl(0, { nonNullable: true });
 
   public isOpen$ = new BehaviorSubject<boolean>(false);
@@ -69,8 +69,6 @@ export class TodoComponent implements OnInit {
   }>();
 
   public ngOnInit(): void {
-    this.todoData = this.getFormattedDate(this.todo.timeToCreate);
-    this.initValueControl();
     this.initChangePrio();
     this.initChangeControl();
   }
@@ -80,6 +78,9 @@ export class TodoComponent implements OnInit {
       .pipe(
         distinctUntilChanged(),
         debounceTime(800),
+        tap(() => {
+          console.log('controlChange');
+        }),
         switchMap((value) => {
           const idTodo = this.todo.idTodo;
 
@@ -87,10 +88,6 @@ export class TodoComponent implements OnInit {
         }),
       )
       .subscribe();
-  }
-
-  public initValueControl(): void {
-    this.valueControl.setValue(this.todo.value);
   }
 
   public initChangePrio(): void {
@@ -110,6 +107,7 @@ export class TodoComponent implements OnInit {
   }
 
   public openModalTodo(): void {
+    this.valueControl.setValue(this.todo.value, { emitEvent: false });
     this.isOpen$.next(true);
   }
 
@@ -131,21 +129,11 @@ export class TodoComponent implements OnInit {
   public getFormattedDate(timeCreate: string): string {
     const todoCreateISO = timeCreate.slice(0, 10);
 
-    const computerDay = new Date();
-    const computerTomorrow = new Date(computerDay);
-    computerTomorrow.setDate(computerDay.getDate() + 1);
-
-    const todayISO = computerDay.toISOString().slice(0, 10);
-    const tomorrowISO = computerTomorrow.toISOString().slice(0, 10);
-
-    console.log(todoCreateISO);
-    console.log(todayISO);
-
-    if (todayISO === todoCreateISO) {
+    if (this.formatedDateISO('today') === todoCreateISO) {
       return 'Today';
     }
 
-    if (tomorrowISO === todoCreateISO) {
+    if (this.formatedDateISO('tomorrow') === todoCreateISO) {
       return 'Tomorrow';
     }
 
@@ -167,6 +155,12 @@ export class TodoComponent implements OnInit {
     const [, month, day] = todoCreateISO.split('-').map(Number);
 
     return `${day} ${months[month - 1].slice(0, 3)}.`;
+  }
+
+  public changeColorPastDate(timeCreate: string): boolean {
+    const todoCreateISO = timeCreate.slice(0, 10);
+
+    return todoCreateISO < this.formatedDateISO('today');
   }
 
   public getClassPriority(priority: PriorityType): string {
@@ -198,5 +192,20 @@ export class TodoComponent implements OnInit {
 
   private changeValue(value: number): void {
     this.valueControl.setValue(value);
+  }
+
+  private formatedDateISO(day: 'today' | 'tomorrow'): string {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    switch (day) {
+      case 'today': {
+        return today.toISOString().slice(0, 10);
+      }
+      case 'tomorrow': {
+        return tomorrow.toISOString().slice(0, 10);
+      }
+    }
   }
 }

@@ -31,7 +31,6 @@ export class SettingsService {
   public settingsState$ = this.settingsState.asObservable();
 
   public changeTimeDuration(timeDuration: string): void {
-    console.log(timeDuration, 'duration');
     const currentState = this.settingsState.value;
     this.settingsState.next({
       ...currentState,
@@ -43,7 +42,6 @@ export class SettingsService {
   }
 
   public changeTimeRest(timeRest: string): void {
-    console.log(timeRest, 'rest duration');
     const currentState = this.settingsState.value;
     this.settingsState.next({
       ...currentState,

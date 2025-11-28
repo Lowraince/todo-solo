@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SettingsService } from '../../../services/settings.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -110,27 +110,19 @@ export class ModalSettingsComponent implements OnInit {
 
   private initTheme(): void {
     this.activeTheme
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap(() => console.log('initTheme')),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((theme) => this.themeControl.setValue(theme));
   }
 
   private initTimer(): void {
-    this.timer
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap(() => console.log('initTimer')),
-      )
-      .subscribe((time) => {
-        if (time) {
-          this.timerForm.setValue({
-            timeDuration: time.timeDuration,
-            timeRest: time.timeRest,
-          });
-        }
-      });
+    this.timer.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((time) => {
+      if (time) {
+        this.timerForm.setValue({
+          timeDuration: time.timeDuration,
+          timeRest: time.timeRest,
+        });
+      }
+    });
   }
 
   public sidebarItems = this.todoState.todoState$.pipe(

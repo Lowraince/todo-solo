@@ -118,4 +118,8 @@
 
 .todo__date {
   flex-shrink: 0;
+
+  &_past {
+    color: var(--color-date-text-past);
+  }
 }

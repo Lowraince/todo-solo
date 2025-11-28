@@ -6,6 +6,24 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+.uncomplete__sum-values {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.middle-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  content: "";
+  border: none;
+  border-radius: 50%;
+  background-color: black;
+}
 
 .circle {
   width: 100px;
