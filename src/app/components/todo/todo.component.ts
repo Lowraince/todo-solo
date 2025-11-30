@@ -29,8 +29,8 @@ import {
   InputIncreaseComponent,
 } from '../input-increase/input-increase.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { PriorityType } from '../../interfaces/enums';
 import { getClassPriority } from '../../utils/class-priority';
+import { PriorityType } from '../../interfaces/types';
 
 @Component({
   selector: 'app-todo',

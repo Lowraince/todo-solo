@@ -1,4 +1,5 @@
-import { PriorityTodos, PriorityType } from '../interfaces/enums';
+import { PriorityTodos } from '../interfaces/enums';
+import { PriorityType } from '../interfaces/types';
 
 export function getClassPriority(className: PriorityType): string {
   const objectClass = {

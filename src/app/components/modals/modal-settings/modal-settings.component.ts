@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SelectComponent } from '../../select/select.component';
 import {
   EmitterSelect,
-  SidebarItems,
+  SidebarItemsType,
   ThemeApp,
 } from '../../../interfaces/types';
 import { TabNavComponent } from '../../tab-nav/tab-nav.component';
@@ -126,20 +126,20 @@ export class ModalSettingsComponent implements OnInit {
   }
 
   public sidebarItems = this.todoState.todoState$.pipe(
-    map((state) => state.sidebarItems.filter((item) => item.title !== 'Today')),
+    map((state) => state.sidebarItems.filter((item) => item.title !== 'today')),
   );
 
-  public toggleActiveSidebar({
-    title,
-    isActive,
-  }: {
-    title: string;
-    isActive: boolean;
-  }): void {
-    if (this.isSidebarItemsApp(title)) {
-      this.todoState.changeVisibleSidebar({ title, isActive });
-    }
-  }
+  // public toggleActiveSidebar({
+  //   title,
+  //   isActive,
+  // }: {
+  //   title: SidebarItemsType;
+  //   isActive: boolean;
+  // }): void {
+  //   if (this.isSidebarItemsApp(title)) {
+  //     this.todoState.changeVisibleSidebar({ title, isActive });
+  //   }
+  // }
 
   public changeTheme(item: string): void {
     console.log(item);
@@ -163,7 +163,7 @@ export class ModalSettingsComponent implements OnInit {
     }
   }
 
-  private isSidebarItemsApp(value: string): value is SidebarItems {
+  private isSidebarItemsApp(value: string): value is SidebarItemsType {
     return (
       value === 'Tomorrow' || value === 'Missed' || value === 'For this week'
     );

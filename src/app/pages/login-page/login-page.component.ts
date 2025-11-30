@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { UserLogin } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { BehaviorSubject, exhaustMap, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PasswordFieldType } from '../../interfaces/types';
@@ -59,13 +59,15 @@ export class LoginPageComponent {
       password: formValue.password,
     };
 
-    of(currentUser)
-      .pipe(
-        exhaustMap((currentUser) =>
-          this.authService.loginUserAuth(currentUser),
-        ),
-      )
-      .subscribe();
+    console.log(currentUser);
+
+    // of(currentUser)
+    //   .pipe(
+    //     exhaustMap((currentUser) =>
+    //       this.authService.loginUserAuth(currentUser),
+    //     ),
+    //   )
+    //   .subscribe();
   }
 
   public changePasswordView(viewPassword: PasswordFieldType): void {

@@ -12,13 +12,14 @@ import {
 } from '@angular/core';
 import { getPriority } from '../../../utils/get-priority';
 import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component';
-import { PriorityTodos, PriorityType } from '../../../interfaces/enums';
+import { PriorityTodos } from '../../../interfaces/enums';
 import { NgClass } from '@angular/common';
 import { ModalsOpenService } from '../../../services/modals-open.service';
 import { filter, map, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ITodo, TodosService } from '../../../services/todos.service';
 import { getClassPriority } from '../../../utils/class-priority';
+import { PriorityType } from '../../../interfaces/types';
 
 @Component({
   selector: 'app-modal-setting-todo',

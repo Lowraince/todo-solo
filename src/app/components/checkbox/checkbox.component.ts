@@ -5,6 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { SidebarItemsType } from '../../interfaces/types';
 
 @Component({
   selector: 'app-checkbox',
@@ -14,11 +15,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxComponent {
-  @Input({ required: true }) public title!: string;
+  @Input({ required: true }) public title!: SidebarItemsType;
   @Input({ required: true }) public isActive!: boolean;
 
   @Output() public toggleItem = new EventEmitter<{
-    title: string;
+    title: SidebarItemsType;
     isActive: boolean;
   }>();
 

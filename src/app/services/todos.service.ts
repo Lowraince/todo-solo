@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError, timer } from 'rxjs';
-import { SidebarItems, SortTodos } from '../interfaces/types';
-import { PriorityTodos, PriorityType } from '../interfaces/enums';
+import { PriorityType, SidebarItemsType, SortTodos } from '../interfaces/types';
+import { PriorityTodos, SidebarItems } from '../interfaces/enums';
 import { ApiService } from './api.service';
 
 export interface SidebarItemsState {
-  title: SidebarItems;
+  title: SidebarItemsType;
   isActive: boolean;
 }
 
@@ -26,7 +26,7 @@ export type ITodoAdd = Omit<ITodo, 'idTodo' | 'isComplete'>;
 interface TodosState {
   sidebarItems: SidebarItemsState[];
   todos: ITodo[];
-  activeSidebarItem: SidebarItems;
+  activeSidebarItem: SidebarItemsType | null;
   sort: SortTodos;
   errorMessages: string[];
 }
@@ -39,12 +39,12 @@ export class TodosService {
 
   private todoState = new BehaviorSubject<TodosState>({
     sidebarItems: [
-      { title: 'Today', isActive: true },
-      { title: 'Tomorrow', isActive: true },
-      { title: 'Missed', isActive: true },
-      { title: 'For this week', isActive: true },
+      { title: SidebarItems.TODAY, isActive: true },
+      { title: SidebarItems.TOMORROW, isActive: true },
+      { title: SidebarItems.MISSED, isActive: true },
+      { title: SidebarItems.FOR_WEEK, isActive: true },
     ],
-    activeSidebarItem: 'Today',
+    activeSidebarItem: null,
     todos: [],
     sort: 'project_order',
     errorMessages: [],
@@ -59,13 +59,13 @@ export class TodosService {
   }: {
     description: string;
     value: number;
-    activeSidebar: SidebarItems;
+    activeSidebar: SidebarItemsType;
   }): Observable<ITodo> {
     let presentTime = new Date();
 
-    if (activeSidebar === 'Tomorrow') {
+    if (activeSidebar === 'tomorrow') {
       presentTime = this.nextDay(presentTime);
-    } else if (activeSidebar === 'For this week') {
+    } else if (activeSidebar === 'for this week') {
       console.log('for this week');
     }
 
@@ -90,23 +90,17 @@ export class TodosService {
     );
   }
 
-  public getTodos(active: string): Observable<ITodo[]> {
+  public getTodos(active: SidebarItemsType): Observable<ITodo[]> {
     return this.apiService.getDataTodo(active).pipe(
       tap((todos: ITodo[]) => {
         const currentState = this.todoState.value;
         this.todoState.next({
           ...currentState,
+          activeSidebarItem: active,
           todos: todos,
         });
       }),
     );
-  }
-
-  public changeSidebarItem(activeSidebarItem: SidebarItems): void {
-    this.todoState.next({
-      ...this.todoState.value,
-      activeSidebarItem,
-    });
   }
 
   public changePriorityTodo({

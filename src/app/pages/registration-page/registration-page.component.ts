@@ -11,7 +11,6 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { UserProfile } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, of } from 'rxjs';
 import { markAllFieldsAsDirty } from '../../utils/mark-all-field-dirty';
 import { multipleWordsValidator } from '../../utils/validators/validator-multiple-words';
 import { usernameAsyncValidator } from '../../utils/validators/async-validators/async-validator-username';
@@ -88,9 +87,11 @@ export class RegistrationPageComponent {
       realNameUser: value.realName.trim(),
     };
 
-    of(newUser)
-      .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
-      .subscribe();
+    console.log(newUser);
+
+    // of(newUser)
+    //   .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
+    //   .subscribe();
   }
 
   private passwordMatchValidator(

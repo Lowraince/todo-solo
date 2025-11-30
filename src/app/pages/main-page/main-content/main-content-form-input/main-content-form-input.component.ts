@@ -25,7 +25,7 @@ import {
   InputIncreaseComponent,
 } from '../../../../components/input-increase/input-increase.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SidebarItems } from '../../../../interfaces/types';
+import { SidebarItemsType } from '../../../../interfaces/types';
 
 interface ActiveIcons {
   isHovered: boolean;
@@ -56,13 +56,13 @@ interface ActiveIconsState {
 export class MainContentFormInputComponent implements OnInit {
   private openModalState = inject(ModalsOpenService);
   private todosState = inject(TodosService);
-  private activeSidebar: SidebarItems | null = null;
+  private activeSidebar: SidebarItemsType | null = null;
   private destroyRef = inject(DestroyRef);
 
   private addClick$ = new Subject<{
     description: string;
     value: number;
-    activeSidebar: SidebarItems;
+    activeSidebar: SidebarItemsType;
   }>();
   public isLoading$ = new BehaviorSubject(false);
 

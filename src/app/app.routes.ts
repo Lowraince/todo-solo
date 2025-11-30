@@ -27,7 +27,13 @@ export const routes: Routes = [
       import('./pages/main-page/main-page.component').then(
         (m) => m.MainPageComponent,
       ),
+    canActivate: [AuthGuardService],
     children: [
+      {
+        path: '',
+        redirectTo: SidebarItems.TODAY,
+        pathMatch: 'full',
+      },
       {
         path: ':todosDay',
         loadComponent: () =>
@@ -35,12 +41,6 @@ export const routes: Routes = [
             (m) => m.MainContentComponent,
           ),
       },
-      {
-        path: '',
-        redirectTo: SidebarItems.TODAY.toLowerCase(),
-        pathMatch: 'full',
-      },
     ],
-    canActivate: [AuthGuardService],
   },
 ];

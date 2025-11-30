@@ -21,11 +21,15 @@ export class HeaderMainComponent {
     map((state) => state.userProfile),
   );
 
+  // public ngOnInit(): void {
+  //   this.authService.initProfile();
+  // }
+
   public openSettingsModal(): void {
     this.modalOpenService.openModal('settingsAppModal');
   }
 
   public logoutHandler(): void {
-    this.authService.logoutUser();
+    // this.authService.logoutUser();
   }
 }
