@@ -129,17 +129,17 @@ export class ModalSettingsComponent implements OnInit {
     map((state) => state.sidebarItems.filter((item) => item.title !== 'today')),
   );
 
-  // public toggleActiveSidebar({
-  //   title,
-  //   isActive,
-  // }: {
-  //   title: SidebarItemsType;
-  //   isActive: boolean;
-  // }): void {
-  //   if (this.isSidebarItemsApp(title)) {
-  //     this.todoState.changeVisibleSidebar({ title, isActive });
-  //   }
-  // }
+  public toggleActiveSidebar({
+    title,
+    isActive,
+  }: {
+    title: SidebarItemsType;
+    isActive: boolean;
+  }): void {
+    if (this.isSidebarItemsApp(title)) {
+      this.todoState.changeVisibleSidebar({ title, isActive });
+    }
+  }
 
   public changeTheme(item: string): void {
     console.log(item);

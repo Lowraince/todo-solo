@@ -1,10 +1,25 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { UserProfileState } from '../interfaces/interface-api';
+import {
+  BehaviorSubject,
+  map,
+  Observable,
+  switchMap,
+  take,
+  tap,
+  timer,
+} from 'rxjs';
+import {
+  GetUserProfile,
+  PostCreateUser,
+  postLoginUser,
+  UserProfileState,
+} from '../interfaces/interface-api';
 import { ApiService } from './api.service';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { LoadingService } from './loading.service';
+import { GetToken } from '../interfaces/types';
+import { RootPages } from '../interfaces/enums';
 
 interface AuthState {
   userProfile: UserProfileState | null;
@@ -26,6 +41,68 @@ export class AuthService {
   });
 
   public authState$ = this.authState.asObservable();
+
+  public registrationUser(newUser: PostCreateUser): Observable<GetUserProfile> {
+    this.modalLoaderService.openModal('Account creation is in progress...');
+
+    return this.apiService.postCreateUser(newUser).pipe(
+      map((userToken: GetToken) => userToken.token),
+      switchMap((token: string) =>
+        this.afterSuccessfullAuth(token).pipe(
+          tap(() =>
+            this.modalLoaderService.updateTextModalSuccess(
+              'Account created successfully.',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  public fetchUserProfile(): Observable<GetUserProfile> {
+    return this.apiService.getUserProfile().pipe(
+      tap((userProfile: GetUserProfile) => {
+        const currentState = this.authState.value;
+        this.authState.next({
+          ...currentState,
+          userProfile: userProfile.data,
+        });
+
+        timer(800)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.modalLoaderService.hideModal();
+            this.router.navigate([RootPages.MAIN]);
+          });
+      }),
+    );
+  }
+
+  public loginUserAuth({
+    userName,
+    password,
+  }: postLoginUser): Observable<GetUserProfile> {
+    this.modalLoaderService.openModal('Signing in...');
+
+    return this.apiService.postLoginUser({ userName, password }).pipe(
+      map((userToken: GetToken) => userToken.token),
+      switchMap((token: string) =>
+        this.afterSuccessfullAuth(token).pipe(
+          tap(() =>
+            tap(() =>
+              this.modalLoaderService.updateTextModalSuccess('Welcome back!'),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  private afterSuccessfullAuth(token: string): Observable<GetUserProfile> {
+    this.localStorage.setTokenLocalStorage(token);
+
+    return this.fetchUserProfile();
+  }
 
   // public registrationUser(newUser: UserProfile): Observable<GetToken> {
   //   this.modalLoaderService.openModal('Account creation is in progress...');

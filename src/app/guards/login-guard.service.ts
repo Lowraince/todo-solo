@@ -12,11 +12,9 @@ export class LoginGuardService implements CanActivate {
 
   public canActivate(): boolean {
     if (this.localStorage.getTokenLocalStorage()) {
-      console.log('test');
       this.router.navigate([`/${RootPages.MAIN}`]);
       return false;
     }
-    console.log('test');
     return true;
   }
 }

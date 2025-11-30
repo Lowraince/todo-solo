@@ -1,9 +1,3 @@
-export interface UserProfile {
-  userName: string;
-  realNameUser: string;
-  password: string;
-}
-
 export interface GetUserProfile {
   data: {
     isAdmin: boolean;
@@ -15,4 +9,6 @@ export interface GetUserProfile {
 
 export type UserProfileState = GetUserProfile['data'];
 
-export type UserLogin = Omit<UserProfile, 'realNameUser'>;
+export type PostCreateUser = Omit<UserProfileState, 'isAdmin'>;
+
+export type postLoginUser = Pick<UserProfileState, 'userName' | 'password'>;

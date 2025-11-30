@@ -11,6 +11,7 @@
 }
 
 .button_disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }

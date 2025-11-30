@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import {
   GetUserProfile,
-  UserLogin,
-  UserProfile,
+  PostCreateUser,
+  postLoginUser,
 } from '../interfaces/interface-api';
 import { Observable } from 'rxjs';
 import { GetToken } from '../interfaces/types';
@@ -18,31 +18,27 @@ export class ApiService {
   public postCreateUser({
     userName,
     password,
-    realNameUser,
-  }: UserProfile): Observable<GetToken> {
+    name,
+  }: PostCreateUser): Observable<GetToken> {
     return this.http.post<GetToken>('api/user/createUser', {
       userName,
       password,
-      realNameUser,
+      name,
     });
   }
 
   public postLoginUser({
     userName,
     password,
-  }: UserLogin): Observable<GetToken> {
+  }: postLoginUser): Observable<GetToken> {
     return this.http.post<GetToken>('api/user/login', {
       userName,
       password,
     });
   }
 
-  public getUserProfile(token: string): Observable<GetUserProfile> {
-    return this.http.get<GetUserProfile>('api/user/profile', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  public getUserProfile(): Observable<GetUserProfile> {
+    return this.http.get<GetUserProfile>('api/user/profile');
   }
 
   public getCheckUserName(userName: string): Observable<{ exists: boolean }> {
