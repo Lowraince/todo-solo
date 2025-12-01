@@ -59,15 +59,7 @@ export class LoginPageComponent {
       password: formValue.password,
     };
 
-    console.log(currentUser);
-
-    // of(currentUser)
-    //   .pipe(
-    //     exhaustMap((currentUser) =>
-    //       this.authService.loginUserAuth(currentUser),
-    //     ),
-    //   )
-    //   .subscribe();
+    this.authService.loginUserAuth(currentUser).subscribe();
   }
 
   public changePasswordView(viewPassword: PasswordFieldType): void {

@@ -30,28 +30,24 @@ export class LoadingService {
   public updateTextModalSuccess(message: string): void {
     const modal = this.modal.value;
 
-    if (modal) {
-      this.modal.next({
-        ...modal,
-        message,
-        isLoading: false,
-        isSuccess: true,
-      });
-    }
+    this.modal.next({
+      ...modal,
+      message,
+      isLoading: false,
+      isSuccess: true,
+    });
   }
 
   public updateTextModalError(message: string): void {
     const modal = this.modal.value;
 
-    if (modal) {
-      this.modal.next({
-        ...modal,
-        message,
-        isLoading: false,
-        isSuccess: false,
-        isError: true,
-      });
-    }
+    this.modal.next({
+      ...modal,
+      message,
+      isLoading: false,
+      isSuccess: false,
+      isError: true,
+    });
   }
 
   public hideModal(): void {

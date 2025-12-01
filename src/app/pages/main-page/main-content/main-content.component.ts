@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
 import { filter, map, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -14,6 +9,7 @@ import { MainContentTodosComponent } from './main-content-todos/main-content-tod
 import { ModalErrorComponent } from '../../../components/modals/modal-error/modal-error.component';
 import { ActivatedRoute } from '@angular/router';
 import { SidebarItemsType } from '../../../interfaces/types';
+import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-main-content',
@@ -24,6 +20,7 @@ import { SidebarItemsType } from '../../../interfaces/types';
     MainContentFormInputComponent,
     MainContentTodosComponent,
     ModalErrorComponent,
+    CapitalizePipe,
   ],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
@@ -32,7 +29,6 @@ import { SidebarItemsType } from '../../../interfaces/types';
 export class MainContentComponent {
   private todoState = inject(TodosService);
   private route = inject(ActivatedRoute);
-  private destroyRef = inject(DestroyRef);
 
   public todoActiveLink$ = this.todoState.todoState$.pipe(
     map((state) => state.activeSidebarItem),

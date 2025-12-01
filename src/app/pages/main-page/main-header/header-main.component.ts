@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map } from 'rxjs';
+import { map, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LogoutIconComponent } from '../../../icons/logout-icon/logout-icon.component';
 import { SettingsIconComponent } from '../../../icons/settings-icon/settings-icon.component';
@@ -18,18 +18,28 @@ export class HeaderMainComponent {
   private modalOpenService = inject(ModalsOpenService);
 
   public profile$ = this.authService.authState$.pipe(
+    tap((state) => console.log(state)),
     map((state) => state.userProfile),
   );
 
-  // public ngOnInit(): void {
-  //   this.authService.initProfile();
-  // }
+  public ngOnInit(): void {
+    this.profile$
+      .pipe(
+        take(1),
+        tap((profile) => {
+          if (!profile) {
+            this.authService.fetchUserProfile(false).subscribe();
+          }
+        }),
+      )
+      .subscribe();
+  }
 
   public openSettingsModal(): void {
     this.modalOpenService.openModal('settingsAppModal');
   }
 
   public logoutHandler(): void {
-    // this.authService.logoutUser();
+    this.authService.logoutUser();
   }
 }
