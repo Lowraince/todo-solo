@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { filter, map, switchMap, tap } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SortIconComponent } from '../../../icons/sort-icon/sort-icon.component';
 import { MainContentStatisticComponent } from './main-content-statistic/main-content-statistic.component';
@@ -38,6 +38,10 @@ export class MainContentComponent {
     map((state) => state.todos.filter((todo) => todo.isComplete).length),
   );
 
+  public todoUncomplete$ = this.todoState.todoState$.pipe(
+    map((state) => state.todos.filter((todo) => !todo.isComplete).length),
+  );
+
   public todoErrors$ = this.todoState.todoState$.pipe(
     map((state) => state.errorMessages),
   );
@@ -49,7 +53,6 @@ export class MainContentComponent {
   private initGetTodos(): void {
     this.route.paramMap
       .pipe(
-        tap((parameterMap) => console.log(parameterMap)),
         map((parameterMap) => parameterMap.get('todosDay')),
         filter((day): day is SidebarItemsType => day !== null),
         switchMap((day) => this.todoState.getTodos(day)),

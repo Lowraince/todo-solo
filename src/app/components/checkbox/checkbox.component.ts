@@ -24,6 +24,6 @@ export class CheckboxComponent {
   }>();
 
   public toggleActive(): void {
-    this.toggleItem.emit({ title: this.title, isActive: this.isActive });
+    this.toggleItem.emit({ title: this.title, isActive: !this.isActive });
   }
 }

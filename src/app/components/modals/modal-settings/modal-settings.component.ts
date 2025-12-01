@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { map } from 'rxjs';
+import { map, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SettingsService } from '../../../services/settings.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -21,6 +21,9 @@ import {
 import { TabNavComponent } from '../../tab-nav/tab-nav.component';
 import { CheckboxComponent } from '../../checkbox/checkbox.component';
 import { ModalsOpenService } from '../../../services/modals-open.service';
+import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
+import { Router } from '@angular/router';
+import { RootPages, SidebarItems } from '../../../interfaces/enums';
 
 @Component({
   selector: 'app-modal-settings',
@@ -30,16 +33,18 @@ import { ModalsOpenService } from '../../../services/modals-open.service';
     SelectComponent,
     TabNavComponent,
     CheckboxComponent,
+    CapitalizePipe,
   ],
   templateUrl: './modal-settings.component.html',
   styleUrl: './modal-settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalSettingsComponent implements OnInit {
-  private todoState = inject(TodosService);
+  private todosState = inject(TodosService);
   private settingsState = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
   private modalOpenService = inject(ModalsOpenService);
+  private router = inject(Router);
 
   @HostListener('document:keydown', ['$event'])
   public handleKeydown(event: KeyboardEvent): void {
@@ -92,6 +97,10 @@ export class ModalSettingsComponent implements OnInit {
     map((state) => state.timer),
   );
 
+  public activeSidebar = this.todosState.todoState$.pipe(
+    map((state) => state.activeSidebarItem),
+  );
+
   public ngOnInit(): void {
     this.initTheme();
     this.initTimer();
@@ -125,7 +134,7 @@ export class ModalSettingsComponent implements OnInit {
     });
   }
 
-  public sidebarItems = this.todoState.todoState$.pipe(
+  public sidebarItems = this.todosState.todoState$.pipe(
     map((state) => state.sidebarItems.filter((item) => item.title !== 'today')),
   );
 
@@ -136,9 +145,18 @@ export class ModalSettingsComponent implements OnInit {
     title: SidebarItemsType;
     isActive: boolean;
   }): void {
-    if (this.isSidebarItemsApp(title)) {
-      this.todoState.changeVisibleSidebar({ title, isActive });
-    }
+    this.activeSidebar
+      .pipe(
+        take(1),
+        tap((activeSidebar) => {
+          if (activeSidebar === title) {
+            this.router.navigate([RootPages.MAIN, SidebarItems.TODAY]);
+          }
+        }),
+      )
+      .subscribe();
+
+    this.todosState.changeVisibleSidebar({ title, isActive });
   }
 
   public changeTheme(item: string): void {

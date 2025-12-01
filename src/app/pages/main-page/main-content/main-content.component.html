@@ -12,7 +12,7 @@
       description="Estimated time"
     ></app-main-content-statistic>
     <app-main-content-statistic
-      [value]="0"
+      [value]="todoUncomplete$ | async"
       description="Todos awaiting completion"
     ></app-main-content-statistic>
     <app-main-content-statistic

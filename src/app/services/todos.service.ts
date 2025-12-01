@@ -183,13 +183,16 @@ export class TodosService {
   }
 
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {
+    console.log(this.todoState.value.activeSidebarItem);
+    console.log(title);
+    console.log(isActive);
     this.todoState.next({
       ...this.todoState.value,
       sidebarItems: this.todoState.value.sidebarItems.map((item) => {
         if (item.title === title) {
           return {
             ...item,
-            isActive: !isActive,
+            isActive,
           };
         }
 

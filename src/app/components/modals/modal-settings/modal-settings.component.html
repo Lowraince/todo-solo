@@ -35,7 +35,7 @@
             @for (item of sidebarItems | async; track $index) {
               <li class="projects__link">
                 <p>
-                  {{ item.title }}
+                  {{ item.title | capitalize }}
                 </p>
                 <app-checkbox
                   [title]="item.title"

@@ -18,7 +18,6 @@ export class HeaderMainComponent {
   private modalOpenService = inject(ModalsOpenService);
 
   public profile$ = this.authService.authState$.pipe(
-    tap((state) => console.log(state)),
     map((state) => state.userProfile),
   );
 

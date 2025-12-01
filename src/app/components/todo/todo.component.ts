@@ -21,7 +21,6 @@ import {
   EMPTY,
   Subject,
   switchMap,
-  tap,
 } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
 import {
@@ -78,9 +77,6 @@ export class TodoComponent implements OnInit {
       .pipe(
         distinctUntilChanged(),
         debounceTime(800),
-        tap(() => {
-          console.log('controlChange');
-        }),
         switchMap((value) => {
           const idTodo = this.todo.idTodo;
 

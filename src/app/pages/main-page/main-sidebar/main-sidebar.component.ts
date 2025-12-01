@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { SunIconComponent } from '../../../icons/sun-icon/sun-icon.component';
 import { SunsetIconComponent } from '../../../icons/sunset-icon/sunset-icon.component';
@@ -31,12 +31,10 @@ export class MainSidebarComponent {
   private router = inject(Router);
 
   public sidebarItems$ = this.todoState.todoState$.pipe(
-    tap((state) => console.log(state.activeSidebarItem, 'items')),
     map((state) => state.sidebarItems),
   );
 
   public activeSidebar$ = this.todoState.todoState$.pipe(
-    tap((state) => console.log(state.activeSidebarItem, 'active')),
     map((state) => state.activeSidebarItem),
   );
 
