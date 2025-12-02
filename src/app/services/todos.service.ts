@@ -66,7 +66,7 @@ export class TodosService {
     if (activeSidebar === 'tomorrow') {
       presentTime = this.nextDay(presentTime);
     } else if (activeSidebar === 'for this week') {
-      console.log('for this week');
+      presentTime = this.endOfWeek(presentTime);
     }
 
     const newTodo: ITodoAdd = {
@@ -183,9 +183,6 @@ export class TodosService {
   }
 
   public changeVisibleSidebar({ title, isActive }: SidebarItemsState): void {
-    console.log(this.todoState.value.activeSidebarItem);
-    console.log(title);
-    console.log(isActive);
     this.todoState.next({
       ...this.todoState.value,
       sidebarItems: this.todoState.value.sidebarItems.map((item) => {
@@ -227,5 +224,15 @@ export class TodosService {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 1);
     return newDate;
+  }
+
+  private endOfWeek(date: Date): Date {
+    const currentDay = date.getDay();
+    const daysUntilSunday = 7 - currentDay;
+
+    const endOfWeek = new Date(date);
+    endOfWeek.setDate(date.getDate() + daysUntilSunday);
+
+    return endOfWeek;
   }
 }

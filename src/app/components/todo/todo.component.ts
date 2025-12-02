@@ -102,9 +102,10 @@ export class TodoComponent implements OnInit {
       .subscribe();
   }
 
-  public openModalTodo(): void {
+  public openModalTodo(event: Event): void {
+    event.stopPropagation();
     this.valueControl.setValue(this.todo.value, { emitEvent: false });
-    this.isOpen$.next(true);
+    this.isOpen$.next(!this.isOpen$.value);
   }
 
   public closeModal(event: boolean): void {

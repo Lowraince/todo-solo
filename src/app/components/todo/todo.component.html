@@ -52,10 +52,12 @@
   </div>
   @if (dateView) {
     <div class="todo__date-wrapper">
-      <div class="todo__setting-icon-wrapper">
+      <div
+        class="todo__setting-icon-wrapper"
+        (mousedown)="openModalTodo($event)"
+      >
         <svg
           app-settings-icon
-          (click)="openModalTodo()"
           [ngClass]="{ icon_active: isOpen$ | async }"
         ></svg>
       </div>
