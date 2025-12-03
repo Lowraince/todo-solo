@@ -1,0 +1,8 @@
+@use "../../../../styles/statistic";
+
+.statistic__time-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}

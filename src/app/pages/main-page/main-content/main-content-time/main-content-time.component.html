@@ -1,0 +1,15 @@
+<div class="statistic__column">
+  <div class="statistic__time-wrapper">
+    @if (hours > 0) {
+      <p class="statistic__value">
+        {{ hours }}<span class="statistic__suffix">h</span>
+      </p>
+    }
+
+    <p class="statistic__value">
+      {{ minutes }}<span class="statistic__suffix">m</span>
+    </p>
+  </div>
+
+  <p class="statistic__description">{{ description }}</p>
+</div>

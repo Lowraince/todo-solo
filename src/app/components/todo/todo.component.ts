@@ -21,6 +21,7 @@ import {
   EMPTY,
   Subject,
   switchMap,
+  tap,
 } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
 import {
@@ -91,6 +92,7 @@ export class TodoComponent implements OnInit {
       .pipe(
         switchMap((newPrio) =>
           this.todoState.changePriorityTodo(newPrio).pipe(
+            tap(() => this.isOpen$.next(false)),
             catchError((error) => {
               console.error(error, 'error change priority');
 
@@ -102,8 +104,7 @@ export class TodoComponent implements OnInit {
       .subscribe();
   }
 
-  public openModalTodo(event: Event): void {
-    event.stopPropagation();
+  public toggleModalTodo(): void {
     this.valueControl.setValue(this.todo.value, { emitEvent: false });
     this.isOpen$.next(!this.isOpen$.value);
   }
