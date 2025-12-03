@@ -1,4 +1,8 @@
 <div class="modal-sort">
-  <button class="button">By tasks</button>
-  <button class="button">By priority</button>
+  <button class="button button__sort" (click)="changeSort('project_order')">
+    By tasks
+  </button>
+  <button class="button button__sort" (click)="changeSort('priority_order')">
+    By priority
+  </button>
 </div>

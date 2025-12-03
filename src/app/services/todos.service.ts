@@ -220,6 +220,15 @@ export class TodosService {
     );
   }
 
+  public changeSortTodos(sort: SortTodos): void {
+    const currentState = this.todoState.value;
+
+    this.todoState.next({
+      ...currentState,
+      sort,
+    });
+  }
+
   private nextDay(date: Date): Date {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + 1);

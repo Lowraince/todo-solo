@@ -1,12 +1,22 @@
 :host {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  background-color: var(--color-bg-modal-secondary);
+  padding: 0.2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.modal-sort {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 0px;
-  right: 100%;
-  background-color: var(--color-bg-modal);
-  border: 1px solid rgb(177, 177, 177);
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  gap: 0.2rem;
+}
+
+.button__sort {
+  border: none;
+  flex: 1;
+  white-space: nowrap;
 }

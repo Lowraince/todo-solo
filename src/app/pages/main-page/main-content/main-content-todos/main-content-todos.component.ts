@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TodosService } from '../../../../services/todos.service';
-import { combineLatest, map } from 'rxjs';
+import { ITodo, TodosService } from '../../../../services/todos.service';
+import { combineLatest, filter, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TodoComponent } from '../../../../components/todo/todo.component';
 import { SettingsService } from '../../../../services/settings.service';
@@ -18,11 +18,16 @@ export class MainContentTodosComponent {
 
   public showTodosComplete: boolean = true;
 
+  public isTodosSortPrio = this.todosState.todoState$.pipe(
+    map((state) => state.sort === 'priority_order'),
+  );
+
   private timerDurationSetting$ = this.settingsState.settingsState$.pipe(
     map((state) => state.timer.timeDuration),
   );
 
   public todos$ = this.todosState.todoState$.pipe(map((state) => state.todos));
+
   public isEmptyTodos$ = this.todos$.pipe(map((todos) => todos?.length === 0));
 
   public todosComplete$ = this.todos$.pipe(
@@ -33,19 +38,87 @@ export class MainContentTodosComponent {
     map((todos) => todos.filter((todo) => !todo.isComplete)),
   );
 
-  // public todosValueTime$ = combineLatest([
-  //   this.timerDurationSetting$,
-  //   this.todosUncomplete$.pipe(filter((todos) => todos && todos.length > 0)),
-  // ]).pipe(
-  //   tap(([time, uncompleteTodos]) =>
-  //     console.log(`${time} - "Время"`, `${uncompleteTodos} - todos`),
-  //   ),
-  //   map(([time, uncompleteTodos]) => {
-  //     return uncompleteTodos.reduce((accumulator, current) => {
-  //       return accumulator + current.value * Number(time);
-  //     }, 0);
-  //   }),
-  // );
+  public todosUncompletePrioWithTime$ = combineLatest([
+    this.todos$,
+    this.timerDurationSetting$,
+  ]).pipe(
+    filter(
+      ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
+    ),
+    map(([todos, timeDuration]) => {
+      const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
+
+      const noPrio = uncompleteTodos.filter(
+        (todo) => todo.priority === 'No priority',
+      );
+      const lowPrio = uncompleteTodos.filter(
+        (todo) => todo.priority === 'Low priority',
+      );
+      const mediumPrio = uncompleteTodos.filter(
+        (todo) => todo.priority === 'Medium priority',
+      );
+      const highPrio = uncompleteTodos.filter(
+        (todo) => todo.priority === 'High priority',
+      );
+      const calculateTime = (todoList: ITodo[]): string => {
+        const minsSum = todoList.reduce(
+          (accumulator, current) =>
+            accumulator + current.value * Number(timeDuration),
+          0,
+        );
+        const hours = Math.floor(minsSum / 60);
+        const minutes = minsSum % 60;
+
+        return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      };
+
+      return [
+        {
+          key: 'High priority',
+          value: highPrio,
+          time: calculateTime(highPrio),
+        },
+        {
+          key: 'Medium priority',
+          value: mediumPrio,
+          time: calculateTime(mediumPrio),
+        },
+        {
+          key: 'Low priority',
+          value: lowPrio,
+          time: calculateTime(lowPrio),
+        },
+        {
+          key: 'No priority',
+          value: noPrio,
+          time: calculateTime(noPrio),
+        },
+      ];
+    }),
+  );
+
+  public todosAndEstimatedTime$ = combineLatest([
+    this.todos$,
+    this.timerDurationSetting$,
+  ]).pipe(
+    filter(
+      ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
+    ),
+    map(([todos, timeDuration]) => {
+      const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
+
+      const minsSum = uncompleteTodos.reduce(
+        (accumulator, current) =>
+          accumulator + current.value * Number(timeDuration),
+        0,
+      );
+
+      const hours = Math.floor(minsSum / 60);
+      const minutes = minsSum % 60;
+
+      return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+    }),
+  );
 
   public isEmptyOrUncomplete = combineLatest([
     this.todos$,

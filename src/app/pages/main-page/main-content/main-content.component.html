@@ -20,7 +20,7 @@
     >
     </app-main-content-quantity>
     <app-main-content-time
-      [time]="0"
+      [time]="todosAndSpentTime$ | async"
       description="Time spent"
     ></app-main-content-time>
 
