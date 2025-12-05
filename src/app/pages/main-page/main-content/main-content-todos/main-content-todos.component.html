@@ -3,87 +3,57 @@
     @for (todoGroup of todosUncompletePrioWithTime$ | async; track $index) {
       @switch (todoGroup.key) {
         @case ("High priority") {
-          @if (todoGroup.value.length > 0) {
-            <p class="uncomplete__sum-values">
-              <span>{{ todoGroup.key }}</span> <span class="middle-dot"></span>
-              <span>{{ todoGroup.time }}</span>
-            </p>
-          }
-          <ul class="todos__container">
-            @for (todo of todoGroup.value; track $index) {
-              <app-todo
-                [todo]="todo"
-                (changeComplete)="changeComplete($event)"
-              ></app-todo>
-            }
-          </ul>
+          <app-todos-list-section
+            [todosGroupLength]="todoGroup.value.length"
+            [todosGroupSectionName]="todoGroup.key"
+            [todosGroupTime]="todoGroup.time"
+            [todosGroup]="todoGroup.value"
+          >
+          </app-todos-list-section>
         }
         @case ("Medium priority") {
-          @if (todoGroup.value.length > 0) {
-            <p class="uncomplete__sum-values">
-              <span>{{ todoGroup.key }}</span> <span class="middle-dot"></span>
-              <span>{{ todoGroup.time }}</span>
-            </p>
-          }
-          <ul class="todos__container">
-            @for (todo of todoGroup.value; track $index) {
-              <app-todo
-                [todo]="todo"
-                (changeComplete)="changeComplete($event)"
-              ></app-todo>
-            }
-          </ul>
+          <app-todos-list-section
+            [todosGroupLength]="todoGroup.value.length"
+            [todosGroupSectionName]="todoGroup.key"
+            [todosGroupTime]="todoGroup.time"
+            [todosGroup]="todoGroup.value"
+          >
+          </app-todos-list-section>
         }
         @case ("Low priority") {
-          @if (todoGroup.value.length > 0) {
-            <p class="uncomplete__sum-values">
-              <span>{{ todoGroup.key }}</span> <span class="middle-dot"></span>
-              <span>{{ todoGroup.time }}</span>
-            </p>
-          }
-          <ul class="todos__container">
-            @for (todo of todoGroup.value; track $index) {
-              <app-todo
-                [todo]="todo"
-                (changeComplete)="changeComplete($event)"
-              ></app-todo>
-            }
-          </ul>
+          <app-todos-list-section
+            [todosGroupLength]="todoGroup.value.length"
+            [todosGroupSectionName]="todoGroup.key"
+            [todosGroupTime]="todoGroup.time"
+            [todosGroup]="todoGroup.value"
+          >
+          </app-todos-list-section>
         }
         @case ("No priority") {
-          @if (todoGroup.value.length > 0) {
-            <p class="uncomplete__sum-values">
-              <span>{{ todoGroup.key }}</span> <span class="middle-dot"></span>
-              <span>{{ todoGroup.time }}</span>
-            </p>
-          }
-          <ul class="todos__container">
-            @for (todo of todoGroup.value; track $index) {
-              <app-todo
-                [todo]="todo"
-                (changeComplete)="changeComplete($event)"
-              ></app-todo>
-            }
-          </ul>
+          <app-todos-list-section
+            [todosGroupLength]="todoGroup.value.length"
+            [todosGroupSectionName]="todoGroup.key"
+            [todosGroupTime]="todoGroup.time"
+            [todosGroup]="todoGroup.value"
+          >
+          </app-todos-list-section>
         }
       }
     }
   } @else {
-    @if (todosAndEstimatedTime$ | async; as totalTime) {
-      <p class="uncomplete__sum-values">
-        <span>Tasks</span> <span class="middle-dot"></span>
-        <span>{{ totalTime }}</span>
-      </p>
-    }
-
-    <ul class="todos__container">
-      @for (todo of todosUncomplete$ | async; track $index) {
-        <app-todo
-          [todo]="todo"
-          (changeComplete)="changeComplete($event)"
-        ></app-todo>
+    @if (todosUncomplete$ | async; as todosUncomplete) {
+      @if (todosUncomplete.length) {
+        <p class="uncomplete__sum-values">
+          <span>Tasks</span> <span class="middle-dot"></span>
+          <span>{{ todosAndEstimatedTime$ | async }}</span>
+        </p>
       }
-    </ul>
+      <ul class="todos__container">
+        @for (todo of todosUncomplete; track $index) {
+          <app-todo [todo]="todo"></app-todo>
+        }
+      </ul>
+    }
   }
 </div>
 
@@ -108,10 +78,7 @@
 @if (showTodosComplete) {
   <ul class="todos__container">
     @for (todo of todosComplete$ | async; track $index) {
-      <app-todo
-        [todo]="todo"
-        (changeComplete)="changeComplete($event)"
-      ></app-todo>
+      <app-todo [todo]="todo"></app-todo>
     }
   </ul>
 }

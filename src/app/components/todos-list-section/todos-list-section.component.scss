@@ -1,0 +1,24 @@
+.todos__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.middle-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  content: "";
+  border: none;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.uncomplete__sum-values {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}

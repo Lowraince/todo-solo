@@ -13,6 +13,7 @@ import { ModalSortComponent } from '../../../components/modals/modal-sort/modal-
 import { SettingsService } from '../../../services/settings.service';
 import { MainContentQuantityComponent } from './main-content-quantity/main-content-quantity.component';
 import { MainContentTimeComponent } from './main-content-time/main-content-time.component';
+import { sumMinutes } from '../../../utils/sum-mins';
 
 @Component({
   selector: 'app-main-content',
@@ -62,19 +63,11 @@ export class MainContentComponent {
     this.todos$,
     this.timerDuration$,
   ]).pipe(
-    filter(
-      ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
-    ),
+    filter(([, timeDuration]) => timeDuration !== null),
     map(([todos, timeDuration]) => {
       const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
 
-      const minsSum = uncompleteTodos.reduce(
-        (accumulator, current) =>
-          accumulator + current.value * Number(timeDuration),
-        0,
-      );
-
-      return minsSum;
+      return sumMinutes(uncompleteTodos, timeDuration);
     }),
   );
 
@@ -86,11 +79,7 @@ export class MainContentComponent {
       ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
     ),
     map(([todos, timeDuration]) => {
-      return todos.reduce(
-        (accumulator, current) =>
-          accumulator + current.timeSpent * Number(timeDuration),
-        0,
-      );
+      return sumMinutes(todos, timeDuration, true);
     }),
   );
 

@@ -17,7 +17,6 @@ export class MainContentTimeComponent {
       this.hours = 0;
       this.minutes = 0;
     }
-    console.log(value);
   }
 
   public hours = 0;

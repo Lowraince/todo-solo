@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ITodo, TodosService } from '../../../../services/todos.service';
-import { combineLatest, filter, map } from 'rxjs';
+import { TodosService } from '../../../../services/todos.service';
+import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TodoComponent } from '../../../../components/todo/todo.component';
 import { SettingsService } from '../../../../services/settings.service';
+import { TodosListSectionComponent } from '../../../../components/todos-list-section/todos-list-section.component';
+import { calculateTime } from '../../../../utils/calculate-time';
 
 @Component({
   selector: 'app-main-content-todos',
-  imports: [AsyncPipe, TodoComponent, NgClass],
+  imports: [AsyncPipe, TodoComponent, NgClass, TodosListSectionComponent],
   templateUrl: './main-content-todos.component.html',
   styleUrl: './main-content-todos.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,9 +44,6 @@ export class MainContentTodosComponent {
     this.todos$,
     this.timerDurationSetting$,
   ]).pipe(
-    filter(
-      ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
-    ),
     map(([todos, timeDuration]) => {
       const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
 
@@ -60,38 +59,27 @@ export class MainContentTodosComponent {
       const highPrio = uncompleteTodos.filter(
         (todo) => todo.priority === 'High priority',
       );
-      const calculateTime = (todoList: ITodo[]): string => {
-        const minsSum = todoList.reduce(
-          (accumulator, current) =>
-            accumulator + current.value * Number(timeDuration),
-          0,
-        );
-        const hours = Math.floor(minsSum / 60);
-        const minutes = minsSum % 60;
-
-        return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-      };
 
       return [
         {
           key: 'High priority',
           value: highPrio,
-          time: calculateTime(highPrio),
+          time: calculateTime(highPrio, timeDuration),
         },
         {
           key: 'Medium priority',
           value: mediumPrio,
-          time: calculateTime(mediumPrio),
+          time: calculateTime(mediumPrio, timeDuration),
         },
         {
           key: 'Low priority',
           value: lowPrio,
-          time: calculateTime(lowPrio),
+          time: calculateTime(lowPrio, timeDuration),
         },
         {
           key: 'No priority',
           value: noPrio,
-          time: calculateTime(noPrio),
+          time: calculateTime(noPrio, timeDuration),
         },
       ];
     }),
@@ -101,22 +89,10 @@ export class MainContentTodosComponent {
     this.todos$,
     this.timerDurationSetting$,
   ]).pipe(
-    filter(
-      ([todos, timeDuration]) => todos.length > 0 && timeDuration !== null,
-    ),
     map(([todos, timeDuration]) => {
       const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
 
-      const minsSum = uncompleteTodos.reduce(
-        (accumulator, current) =>
-          accumulator + current.value * Number(timeDuration),
-        0,
-      );
-
-      const hours = Math.floor(minsSum / 60);
-      const minutes = minsSum % 60;
-
-      return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+      return calculateTime(uncompleteTodos, timeDuration);
     }),
   );
 
@@ -135,15 +111,5 @@ export class MainContentTodosComponent {
     return this.showTodosComplete
       ? 'Hide completed tasks'
       : 'Show completed tasks';
-  }
-
-  public changeComplete({
-    id,
-    complete,
-  }: {
-    id: string;
-    complete: boolean;
-  }): void {
-    this.todosState.changeCompleteTodo(id, complete).subscribe();
   }
 }

@@ -1,11 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   inject,
   Input,
   OnInit,
-  Output,
 } from '@angular/core';
 import { ITodo, TodosService } from '../../services/todos.service';
 import { CompleteIconComponent } from '../../icons/complete-icon/complete-icon.component';
@@ -50,15 +48,10 @@ import { PriorityType } from '../../interfaces/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent implements OnInit {
-  private todoState = inject(TodosService);
+  private todosState = inject(TodosService);
 
   @Input({ required: true }) public todo!: ITodo;
   @Input() public dateView: boolean = true;
-
-  @Output() public changeComplete = new EventEmitter<{
-    id: string;
-    complete: boolean;
-  }>();
 
   public valueControl = new FormControl(0, { nonNullable: true });
 
@@ -81,7 +74,7 @@ export class TodoComponent implements OnInit {
         switchMap((value) => {
           const idTodo = this.todo.idTodo;
 
-          return this.todoState.changeValueTodo(idTodo, value);
+          return this.todosState.changeValueTodo(idTodo, value);
         }),
       )
       .subscribe();
@@ -91,7 +84,7 @@ export class TodoComponent implements OnInit {
     this.changePrio$
       .pipe(
         switchMap((newPrio) =>
-          this.todoState.changePriorityTodo(newPrio).pipe(
+          this.todosState.changePriorityTodo(newPrio).pipe(
             tap(() => this.isOpen$.next(false)),
             catchError((error) => {
               console.error(error, 'error change priority');
@@ -117,7 +110,7 @@ export class TodoComponent implements OnInit {
     const todoId = this.todo.idTodo;
     const todoComplete = !this.todo.isComplete;
 
-    this.changeComplete.emit({ id: todoId, complete: todoComplete });
+    this.todosState.changeCompleteTodo(todoId, todoComplete).subscribe();
   }
 
   public changePriority(priority: PriorityType): void {
