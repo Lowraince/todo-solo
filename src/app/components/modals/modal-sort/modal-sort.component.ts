@@ -80,7 +80,7 @@ export class ModalSortComponent implements OnInit {
   }
 
   public changeSort(sort: SortItemsType): void {
-    console.log(sort, 'click');
+    this.closeModal.emit(false);
     this.todosState.changeSortTodos(sort);
   }
 }

@@ -2,7 +2,7 @@
   <header class="main-content__header">
     <h2>{{ todoActiveLink$ | async | capitalize }}</h2>
     <div class="header__sort-wrapper">
-      <div class="main-content__svg-wrapper" (click)="toggleOpenModal()">
+      <div class="main-content__svg-wrapper" (mousedown)="toggleOpenModal()">
         <svg app-sort-icon></svg>
       </div>
       @if (isOpenSort$ | async) {
