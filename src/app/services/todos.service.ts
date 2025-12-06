@@ -1,12 +1,26 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError, timer } from 'rxjs';
-import { PriorityType, SidebarItemsType, SortTodos } from '../interfaces/types';
-import { PriorityTodos, SidebarItems } from '../interfaces/enums';
+import {
+  PriorityType,
+  SidebarItemsType,
+  SortItemsType,
+} from '../interfaces/types';
+import {
+  PriorityTodos,
+  SidebarItems,
+  SortItems,
+  SortTitles,
+} from '../interfaces/enums';
 import { ApiService } from './api.service';
 
 export interface SidebarItemsState {
   title: SidebarItemsType;
   isActive: boolean;
+}
+
+export interface SortItemsState {
+  title: SortTitles;
+  sorting: SortItems;
 }
 
 export interface ITodo {
@@ -25,9 +39,10 @@ export type ITodoAdd = Omit<ITodo, 'idTodo' | 'isComplete'>;
 
 interface TodosState {
   sidebarItems: SidebarItemsState[];
+  sortingItems: SortItemsState[];
   todos: ITodo[];
   activeSidebarItem: SidebarItemsType | null;
-  sort: SortTodos;
+  activeSort: SortItemsType;
   errorMessages: string[];
 }
 
@@ -43,10 +58,21 @@ export class TodosService {
       { title: SidebarItems.TOMORROW, isActive: true },
       { title: SidebarItems.MISSED, isActive: true },
       { title: SidebarItems.FOR_WEEK, isActive: true },
+      { title: SidebarItems.ALL, isActive: true },
+    ],
+    sortingItems: [
+      {
+        title: SortTitles.BY_TASKS,
+        sorting: SortItems.PROJECT_SORT,
+      },
+
+      { title: SortTitles.BY_PRIORITY, sorting: SortItems.PRIORITY_SORT },
+
+      { title: SortTitles.BY_DATE, sorting: SortItems.DATE_SORT },
     ],
     activeSidebarItem: null,
     todos: [],
-    sort: 'project_order',
+    activeSort: SortItems.PROJECT_SORT,
     errorMessages: [],
   });
 
@@ -68,7 +94,7 @@ export class TodosService {
     } else if (activeSidebar === 'for this week') {
       presentTime = this.endOfWeek(presentTime);
     }
-
+    console.log(presentTime.toISOString());
     const newTodo: ITodoAdd = {
       value,
       valueComplete: 0,
@@ -220,12 +246,12 @@ export class TodosService {
     );
   }
 
-  public changeSortTodos(sort: SortTodos): void {
+  public changeSortTodos(activeSort: SortItemsType): void {
     const currentState = this.todoState.value;
 
     this.todoState.next({
       ...currentState,
-      sort,
+      activeSort,
     });
   }
 

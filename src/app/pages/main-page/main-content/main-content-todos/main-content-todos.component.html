@@ -1,55 +1,62 @@
 <div class="todos__uncomplete-wrapper">
-  @if (isTodosSortPrio | async) {
-    @for (todoGroup of todosUncompletePrioWithTime$ | async; track $index) {
-      @switch (todoGroup.key) {
-        @case ("High priority") {
-          <app-todos-list-section
-            [todosGroupLength]="todoGroup.value.length"
-            [todosGroupSectionName]="todoGroup.key"
-            [todosGroupTime]="todoGroup.time"
-            [todosGroup]="todoGroup.value"
-          >
-          </app-todos-list-section>
-        }
-        @case ("Medium priority") {
-          <app-todos-list-section
-            [todosGroupLength]="todoGroup.value.length"
-            [todosGroupSectionName]="todoGroup.key"
-            [todosGroupTime]="todoGroup.time"
-            [todosGroup]="todoGroup.value"
-          >
-          </app-todos-list-section>
-        }
-        @case ("Low priority") {
-          <app-todos-list-section
-            [todosGroupLength]="todoGroup.value.length"
-            [todosGroupSectionName]="todoGroup.key"
-            [todosGroupTime]="todoGroup.time"
-            [todosGroup]="todoGroup.value"
-          >
-          </app-todos-list-section>
-        }
-        @case ("No priority") {
-          <app-todos-list-section
-            [todosGroupLength]="todoGroup.value.length"
-            [todosGroupSectionName]="todoGroup.key"
-            [todosGroupTime]="todoGroup.time"
-            [todosGroup]="todoGroup.value"
-          >
-          </app-todos-list-section>
+  @switch (activeSorting$ | async) {
+    @case ("priority_order") {
+      @for (todoGroup of todosUncompletePrioWithTime$ | async; track $index) {
+        @switch (todoGroup.key) {
+          @case ("High priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("Medium priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("Low priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("No priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
         }
       }
     }
-  } @else {
-    @if (todosUncomplete$ | async; as todosUncomplete) {
-      @if (todosUncomplete.length) {
+
+    @case ("date_order") {
+      <h1>Date</h1>
+    }
+
+    @default {
+      @if (isEmptyUncompleteAndAllSidebar$ | async) {
         <p class="uncomplete__sum-values">
           <span>Tasks</span> <span class="middle-dot"></span>
           <span>{{ todosAndEstimatedTime$ | async }}</span>
         </p>
       }
+
       <ul class="todos__container">
-        @for (todo of todosUncomplete; track $index) {
+        @for (todo of todosUncomplete$ | async; track $index) {
           <app-todo [todo]="todo"></app-todo>
         }
       </ul>
@@ -57,7 +64,7 @@
   }
 </div>
 
-@if (isEmptyOrUncomplete | async) {
+@if (isEmptyOrUncomplete$ | async) {
   <div class="todos__empty-wrapper">
     <span class="circle"></span>
     <p>No tasks</p>

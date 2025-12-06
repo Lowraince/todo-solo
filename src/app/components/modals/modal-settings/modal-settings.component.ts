@@ -23,7 +23,11 @@ import { CheckboxComponent } from '../../checkbox/checkbox.component';
 import { ModalsOpenService } from '../../../services/modals-open.service';
 import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { Router } from '@angular/router';
-import { RootPages, SidebarItems } from '../../../interfaces/enums';
+import {
+  RootPages,
+  SettingsItems,
+  SidebarItems,
+} from '../../../interfaces/enums';
 
 @Component({
   selector: 'app-modal-settings',
@@ -53,8 +57,8 @@ export class ModalSettingsComponent implements OnInit {
     }
   }
 
-  public settingsSections = ['General', 'Timer'];
-  public activeSection = 'General';
+  public settingsSections = [SettingsItems.GENERAL, SettingsItems.TIMER];
+  public activeSection = SettingsItems.GENERAL;
 
   public themeControl = new FormControl<string | null>(null);
 
@@ -110,11 +114,8 @@ export class ModalSettingsComponent implements OnInit {
     this.modalOpenService.closeModal('settingsAppModal');
   }
 
-  public changeNavSettings(item: string): void {
-    const findSection = this.settingsSections.includes(item);
-    if (findSection) {
-      this.activeSection = item;
-    }
+  public changeNavSettings(item: SettingsItems): void {
+    this.activeSection = item;
   }
 
   private initTheme(): void {
@@ -179,12 +180,6 @@ export class ModalSettingsComponent implements OnInit {
     if (this.isThemeApp(value)) {
       this.settingsState.changeTheme(value);
     }
-  }
-
-  private isSidebarItemsApp(value: string): value is SidebarItemsType {
-    return (
-      value === 'Tomorrow' || value === 'Missed' || value === 'For this week'
-    );
   }
 
   private isThemeApp(value: string): value is ThemeApp {

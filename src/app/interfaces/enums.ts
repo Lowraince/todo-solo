@@ -17,4 +17,22 @@ export enum SidebarItems {
   TOMORROW = 'tomorrow',
   MISSED = 'missed',
   FOR_WEEK = 'for this week',
+  ALL = 'all tasks',
+}
+
+export enum SortTitles {
+  BY_TASKS = 'By tasks',
+  BY_PRIORITY = 'By priority',
+  BY_DATE = 'By date',
+}
+
+export enum SortItems {
+  PROJECT_SORT = 'project_order',
+  PRIORITY_SORT = 'priority_order',
+  DATE_SORT = 'date_order',
+}
+
+export enum SettingsItems {
+  GENERAL = 'General',
+  TIMER = 'Timer',
 }

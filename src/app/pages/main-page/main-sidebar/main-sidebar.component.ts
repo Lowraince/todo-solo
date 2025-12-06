@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SidebarItemsType } from '../../../interfaces/types';
 import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { RootPages } from '../../../interfaces/enums';
+import { AllIconComponent } from '../../../icons/all-icon/all-icon.component';
 
 @Component({
   selector: 'app-main-sidebar',
@@ -21,6 +22,7 @@ import { RootPages } from '../../../interfaces/enums';
     CalendarIconComponent,
     NgClass,
     CapitalizePipe,
+    AllIconComponent,
   ],
   templateUrl: './main-sidebar.component.html',
   styleUrl: './main-sidebar.component.scss',

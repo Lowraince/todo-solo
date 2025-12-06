@@ -1,8 +1,16 @@
 <div class="modal-sort">
-  <button class="button button__sort" (click)="changeSort('project_order')">
-    By tasks
-  </button>
-  <button class="button button__sort" (click)="changeSort('priority_order')">
-    By priority
-  </button>
+  @for (sortOption of filteredSortItems$ | async; track $index) {
+    <label
+      class="sort__label"
+      [ngClass]="{ active: sortOption.sorting === (todosActiveSort$ | async) }"
+    >
+      <input
+        type="radio"
+        [value]="sortOption.sorting"
+        class="sort__radio"
+        (click)="changeSort(sortOption.sorting)"
+      />
+      {{ sortOption.title }}
+    </label>
+  }
 </div>

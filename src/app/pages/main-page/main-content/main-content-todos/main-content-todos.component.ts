@@ -20,10 +20,6 @@ export class MainContentTodosComponent {
 
   public showTodosComplete: boolean = true;
 
-  public isTodosSortPrio = this.todosState.todoState$.pipe(
-    map((state) => state.sort === 'priority_order'),
-  );
-
   private timerDurationSetting$ = this.settingsState.settingsState$.pipe(
     map((state) => state.timer.timeDuration),
   );
@@ -38,6 +34,24 @@ export class MainContentTodosComponent {
 
   public todosUncomplete$ = this.todos$.pipe(
     map((todos) => todos.filter((todo) => !todo.isComplete)),
+  );
+
+  public activeSidebar$ = this.todosState.todoState$.pipe(
+    map((state) => state.activeSidebarItem),
+  );
+
+  public activeSorting$ = this.todosState.todoState$.pipe(
+    map((state) => state.activeSort),
+  );
+
+  public isEmptyUncompleteAndAllSidebar$ = combineLatest([
+    this.todosUncomplete$,
+    this.activeSidebar$,
+  ]).pipe(
+    map(
+      ([todosUncomplete, activeSidebar]) =>
+        todosUncomplete.length > 0 && activeSidebar !== 'all tasks',
+    ),
   );
 
   public todosUncompletePrioWithTime$ = combineLatest([
@@ -96,7 +110,7 @@ export class MainContentTodosComponent {
     }),
   );
 
-  public isEmptyOrUncomplete = combineLatest([
+  public isEmptyOrUncomplete$ = combineLatest([
     this.todos$,
     this.todosUncomplete$,
   ]).pipe(

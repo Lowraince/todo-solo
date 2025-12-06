@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { PriorityTodos, SidebarItems } from './enums';
+import { PriorityTodos, SettingsItems, SidebarItems, SortItems } from './enums';
 
 export type GetToken = {
   token: string;
@@ -14,8 +14,10 @@ export type EmitterSelect = {
   value: string | ThemeApp;
 };
 
-export type SortTodos = 'project_order' | 'priority_order';
+export type SortItemsType = `${SortItems}`;
 
 export type SidebarItemsType = `${SidebarItems}`;
 
 export type PriorityType = `${PriorityTodos}`;
+
+export type SettingsItemsType = `${SettingsItems}`;

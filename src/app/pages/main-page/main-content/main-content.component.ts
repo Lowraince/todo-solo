@@ -108,4 +108,8 @@ export class MainContentComponent {
   public toggleOpenModal(): void {
     this.isOpenSort.next(!this.isOpenSort.value);
   }
+
+  public closeModal(): void {
+    this.isOpenSort.next(false);
+  }
 }
