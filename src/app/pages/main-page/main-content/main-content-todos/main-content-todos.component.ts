@@ -6,6 +6,7 @@ import { TodoComponent } from '../../../../components/todo/todo.component';
 import { SettingsService } from '../../../../services/settings.service';
 import { TodosListSectionComponent } from '../../../../components/todos-list-section/todos-list-section.component';
 import { calculateTime } from '../../../../utils/calculate-time';
+import { DateGroupMapSort, DateGroupSort } from '../../../../interfaces/types';
 
 @Component({
   selector: 'app-main-content-todos',
@@ -98,6 +99,70 @@ export class MainContentTodosComponent {
       ];
     }),
   );
+
+  public todosForDataSort$ = combineLatest([
+    this.todos$,
+    this.timerDurationSetting$,
+  ]).pipe(
+    map(([todos, timeDuration]) => {
+      const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
+
+      const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+
+      const todosMap = new Map<string, DateGroupMapSort>();
+
+      for (const todo of uncompleteTodos) {
+        const timeSlice = new Date(todo.timeToCreate);
+        const dataString = `${dayOfWeek[timeSlice.getDay()]}, ${timeSlice.getDate()} ${months[timeSlice.getMonth()].slice(0, 3)}`;
+        if (!todosMap.has(dataString)) {
+          todosMap.set(dataString, {
+            date: dataString,
+            todos: [],
+          });
+        }
+
+        const dateGroup = todosMap.get(dataString)!;
+        dateGroup.todos.push(todo);
+      }
+
+      const dateGroupWithTime = this.transformToDateGroupsWithTime(
+        todosMap,
+        timeDuration,
+      );
+
+      return dateGroupWithTime;
+    }),
+  );
+
+  private transformToDateGroupsWithTime(
+    todosMap: Map<string, DateGroupMapSort>,
+    timeDuration: string,
+  ): DateGroupSort[] {
+    return [...todosMap.values()].map((dateGroup) => {
+      const timeTest = calculateTime(dateGroup.todos, timeDuration);
+
+      return {
+        date: dateGroup.date,
+        todos: [...dateGroup.todos],
+        time: timeTest,
+      };
+    });
+  }
 
   public todosAndEstimatedTime$ = combineLatest([
     this.todos$,

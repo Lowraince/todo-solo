@@ -44,7 +44,15 @@
     }
 
     @case ("date_order") {
-      <h1>Date</h1>
+      @for (todoGroup of todosForDataSort$ | async; track $index) {
+        <app-todos-list-section
+          [todosGroupLength]="todoGroup.todos.length"
+          [todosGroupSectionName]="todoGroup.date"
+          [todosGroupTime]="todoGroup.time"
+          [todosGroup]="todoGroup.todos"
+        >
+        </app-todos-list-section>
+      }
     }
 
     @default {

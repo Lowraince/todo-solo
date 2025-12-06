@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { PriorityTodos, SettingsItems, SidebarItems, SortItems } from './enums';
+import { ITodo } from '../services/todos.service';
 
 export type GetToken = {
   token: string;
@@ -12,6 +13,17 @@ export type ThemeApp = 'light' | 'dark';
 export type EmitterSelect = {
   control: FormControl;
   value: string | ThemeApp;
+};
+
+export type DateGroupMapSort = {
+  date: string;
+  todos: ITodo[];
+};
+
+export type DateGroupSort = {
+  date: string;
+  todos: ITodo[];
+  time: string;
 };
 
 export type SortItemsType = `${SortItems}`;

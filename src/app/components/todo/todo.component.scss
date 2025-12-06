@@ -83,6 +83,10 @@
 .todo__description {
   word-break: break-all;
   overflow-wrap: break-word;
+
+  &.complete {
+    text-decoration: line-through;
+  }
 }
 
 .todo__values {

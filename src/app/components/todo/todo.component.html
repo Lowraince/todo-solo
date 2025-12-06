@@ -17,7 +17,7 @@
       <svg app-video-icon></svg>
     </div>
     <div class="todo__text-wrapper">
-      <p class="todo__description">
+      <p class="todo__description" [ngClass]="{ complete: todo.isComplete }">
         {{ todo.description }}
       </p>
       <div class="todo__values">
