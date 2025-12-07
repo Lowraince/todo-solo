@@ -94,7 +94,7 @@ export class TodosService {
     } else if (activeSidebar === 'for this week') {
       presentTime = this.endOfWeek(presentTime);
     }
-    console.log(presentTime.toISOString());
+
     const newTodo: ITodoAdd = {
       value,
       valueComplete: 0,
@@ -116,14 +116,22 @@ export class TodosService {
     );
   }
 
-  public getTodos(active: SidebarItemsType): Observable<ITodo[]> {
+  public loadTodos(active: SidebarItemsType): Observable<ITodo[]> {
     return this.apiService.getDataTodo(active).pipe(
       tap((todos: ITodo[]) => {
         const currentState = this.todoState.value;
+
+        const activeSort =
+          active === 'today' ||
+          (active === 'tomorrow' && currentState.activeSort === 'date_order')
+            ? 'project_order'
+            : currentState.activeSort;
+
         this.todoState.next({
           ...currentState,
           activeSidebarItem: active,
           todos: todos,
+          activeSort,
         });
       }),
     );

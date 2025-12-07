@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TodosService } from '../../../../services/todos.service';
+import { ITodo, TodosService } from '../../../../services/todos.service';
 import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TodoComponent } from '../../../../components/todo/todo.component';
@@ -7,6 +7,7 @@ import { SettingsService } from '../../../../services/settings.service';
 import { TodosListSectionComponent } from '../../../../components/todos-list-section/todos-list-section.component';
 import { calculateTime } from '../../../../utils/calculate-time';
 import { DateGroupMapSort, DateGroupSort } from '../../../../interfaces/types';
+import { formatedDateISO } from '../../../../utils/formated-date-iso';
 
 @Component({
   selector: 'app-main-content-todos',
@@ -107,47 +108,63 @@ export class MainContentTodosComponent {
     map(([todos, timeDuration]) => {
       const uncompleteTodos = todos.filter((todo) => !todo.isComplete);
 
-      const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-      const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ];
-
-      const todosMap = new Map<string, DateGroupMapSort>();
-
-      for (const todo of uncompleteTodos) {
-        const timeSlice = new Date(todo.timeToCreate);
-        const dataString = `${dayOfWeek[timeSlice.getDay()]}, ${timeSlice.getDate()} ${months[timeSlice.getMonth()].slice(0, 3)}`;
-        if (!todosMap.has(dataString)) {
-          todosMap.set(dataString, {
-            date: dataString,
-            todos: [],
-          });
-        }
-
-        const dateGroup = todosMap.get(dataString)!;
-        dateGroup.todos.push(todo);
-      }
+      const uncompleteSortDate = uncompleteTodos.toSorted(
+        (a, b) =>
+          new Date(a.timeToCreate).getTime() -
+          new Date(b.timeToCreate).getTime(),
+      );
 
       const dateGroupWithTime = this.transformToDateGroupsWithTime(
-        todosMap,
+        this.todosIntoDateMap(uncompleteSortDate),
         timeDuration,
       );
 
       return dateGroupWithTime;
     }),
   );
+
+  private todosIntoDateMap(
+    uncompleteSortDate: ITodo[],
+  ): Map<string, DateGroupMapSort> {
+    const todosMap = new Map<string, DateGroupMapSort>();
+
+    const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    for (const todo of uncompleteSortDate) {
+      const todoCreateISO = todo.timeToCreate.slice(0, 10);
+      const timeSlice = new Date(todo.timeToCreate);
+      let dataString = `${dayOfWeek[timeSlice.getDay()]}, ${timeSlice.getDate()} ${months[timeSlice.getMonth()].slice(0, 3)}`;
+      if (!todosMap.has(dataString)) {
+        if (todoCreateISO === formatedDateISO('today')) {
+          dataString = 'today';
+        } else if (todoCreateISO === formatedDateISO('tomorrow')) {
+          dataString = 'tomorrow';
+        }
+        todosMap.set(dataString, {
+          date: dataString,
+          todos: [],
+        });
+      }
+      const dateGroup = todosMap.get(dataString)!;
+      dateGroup.todos.push(todo);
+    }
+
+    return todosMap;
+  }
 
   private transformToDateGroupsWithTime(
     todosMap: Map<string, DateGroupMapSort>,

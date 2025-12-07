@@ -29,6 +29,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { getClassPriority } from '../../utils/class-priority';
 import { PriorityType } from '../../interfaces/types';
+import { formatedDateISO } from '../../utils/formated-date-iso';
 
 @Component({
   selector: 'app-todo',
@@ -120,11 +121,11 @@ export class TodoComponent implements OnInit {
   public getFormattedDate(timeCreate: string): string {
     const todoCreateISO = timeCreate.slice(0, 10);
 
-    if (this.formatedDateISO('today') === todoCreateISO) {
+    if (formatedDateISO('today') === todoCreateISO) {
       return 'Today';
     }
 
-    if (this.formatedDateISO('tomorrow') === todoCreateISO) {
+    if (formatedDateISO('tomorrow') === todoCreateISO) {
       return 'Tomorrow';
     }
 
@@ -151,7 +152,7 @@ export class TodoComponent implements OnInit {
   public changeColorPastDate(timeCreate: string): boolean {
     const todoCreateISO = timeCreate.slice(0, 10);
 
-    return todoCreateISO < this.formatedDateISO('today');
+    return todoCreateISO < formatedDateISO('today');
   }
 
   public getClassPriority(priority: PriorityType): string {
@@ -183,20 +184,5 @@ export class TodoComponent implements OnInit {
 
   private changeValue(value: number): void {
     this.valueControl.setValue(value);
-  }
-
-  private formatedDateISO(day: 'today' | 'tomorrow'): string {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-
-    switch (day) {
-      case 'today': {
-        return today.toISOString().slice(0, 10);
-      }
-      case 'tomorrow': {
-        return tomorrow.toISOString().slice(0, 10);
-      }
-    }
   }
 }

@@ -100,7 +100,7 @@ export class MainContentComponent {
       .pipe(
         map((parameterMap) => parameterMap.get('todosDay')),
         filter((day): day is SidebarItemsType => day !== null),
-        switchMap((day) => this.todoState.getTodos(day)),
+        switchMap((day) => this.todoState.loadTodos(day)),
       )
       .subscribe();
   }
