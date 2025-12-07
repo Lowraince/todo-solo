@@ -1,5 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap, throwError, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  switchMap,
+  tap,
+  throwError,
+  timer,
+} from 'rxjs';
 import {
   PriorityType,
   SidebarItemsType,
@@ -144,10 +151,10 @@ export class TodosService {
     idTodo: string;
     priority: PriorityType;
   }): Observable<ITodo> {
-    const currentState = this.todoState.value;
-
     return Math.random() > 0.5
       ? throwError(() => {
+          const currentState = this.todoState.value;
+
           this.todoState.next({
             ...currentState,
             errorMessages: [
@@ -158,8 +165,8 @@ export class TodosService {
 
           timer(2000).subscribe(() => {
             this.todoState.next({
-              ...currentState,
-              errorMessages: currentState.errorMessages.filter(
+              ...this.todoState.value,
+              errorMessages: this.todoState.value.errorMessages.filter(
                 (errorMessage) =>
                   errorMessage !== 'Failed to update task priority',
               ),
@@ -171,8 +178,8 @@ export class TodosService {
       : this.apiService.patchDataTodo(idTodo, { priority }).pipe(
           tap((newTodo) => {
             this.todoState.next({
-              ...currentState,
-              todos: currentState.todos.map((todo) => {
+              ...this.todoState.value,
+              todos: this.todoState.value.todos.map((todo) => {
                 if (todo.idTodo === idTodo) {
                   return newTodo;
                 }
@@ -252,6 +259,27 @@ export class TodosService {
         });
       }),
     );
+  }
+
+  public changeDateTodo(
+    idTodo: string,
+    newDate: 'today' | 'tomorrow',
+  ): Observable<ITodo[]> {
+    let presentTime = new Date();
+
+    if (newDate === 'tomorrow') {
+      presentTime = this.nextDay(presentTime);
+    }
+
+    return this.apiService
+      .patchDataTodo(idTodo, { timeToCreate: presentTime.toISOString() })
+      .pipe(
+        switchMap(() => {
+          const currentState = this.todoState.value;
+
+          return this.loadTodos(currentState.activeSidebarItem!);
+        }),
+      );
   }
 
   public changeSortTodos(activeSort: SortItemsType): void {

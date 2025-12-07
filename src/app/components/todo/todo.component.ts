@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   Input,
   OnInit,
@@ -30,6 +31,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { getClassPriority } from '../../utils/class-priority';
 import { PriorityType } from '../../interfaces/types';
 import { formatedDateISO } from '../../utils/formated-date-iso';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-todo',
@@ -50,6 +52,7 @@ import { formatedDateISO } from '../../utils/formated-date-iso';
 })
 export class TodoComponent implements OnInit {
   private todosState = inject(TodosService);
+  private destroyRef = inject(DestroyRef);
 
   @Input({ required: true }) public todo!: ITodo;
   @Input() public dateView: boolean = true;
@@ -84,6 +87,7 @@ export class TodoComponent implements OnInit {
   public initChangePrio(): void {
     this.changePrio$
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         switchMap((newPrio) =>
           this.todosState.changePriorityTodo(newPrio).pipe(
             tap(() => this.isOpen$.next(false)),

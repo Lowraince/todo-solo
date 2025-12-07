@@ -36,3 +36,9 @@ export enum SettingsItems {
   GENERAL = 'General',
   TIMER = 'Timer',
 }
+
+export enum ButtonsTodoSettings {
+  TODAY = 'today',
+  TOMORROW = 'tomorrow',
+  SHEDULE = 'schedule date',
+}

@@ -1,34 +1,47 @@
-<div class="todo-settings__wrapper">
-  <p class="todo-settings__description">Expected quantity</p>
-  <div class="todo-settings__value">
-    <ng-content></ng-content>
+@if (todo.isComplete) {
+  <div class="todo-settings__wrapper_buttons">
+    <button class="button button__todo-settings" (click)="deleteClickHandler()">
+      Delete task
+    </button>
   </div>
-</div>
+} @else {
+  <div class="todo-settings__wrapper">
+    <p class="todo-settings__description">Expected quantity</p>
+    <div class="todo-settings__value">
+      <ng-content></ng-content>
+    </div>
+  </div>
 
-<div class="todo-settings__wrapper todo-settings__wrapper_buttons">
-  <button class="button button__todo-settings">Today</button>
-  <button class="button button__todo-settings">Tomorrow</button>
-  <button class="button button__todo-settings">For this week</button>
-  <button class="button button__todo-settings">Schedule date</button>
-</div>
-
-<div class="todo-settings__wrapper">
-  <p class="todo-settings__description">Priority</p>
-  <div class="todo-settings__flags-wrapper">
-    @for (item of priorityArray; track $index) {
-      <div
-        class="flag-wrapper"
-        [ngClass]="{ flag_active: item === todo.priority }"
-        (click)="changePriority(item)"
+  <div class="todo-settings__wrapper todo-settings__wrapper_buttons">
+    @for (button of buttonsTodoSettings; track $index) {
+      <button
+        class="button button__todo-settings"
+        [ngClass]="{ active: isButtonActive(button) }"
+        (click)="changeTodoDate(button)"
       >
-        <svg [class]="getClassPriority(item)" app-flag-icon></svg>
-      </div>
+        {{ button | capitalize }}
+      </button>
     }
   </div>
-</div>
 
-<div class="todo-settings__wrapper_buttons">
-  <button class="button button__todo-settings" (click)="deleteClickHandler()">
-    Delete task
-  </button>
-</div>
+  <div class="todo-settings__wrapper">
+    <p class="todo-settings__description">Priority</p>
+    <div class="todo-settings__flags-wrapper">
+      @for (priority of priorityArray; track $index) {
+        <div
+          class="flag-wrapper"
+          [ngClass]="{ flag_active: priority === todo.priority }"
+          (click)="changePriority(priority)"
+        >
+          <svg [class]="getClassPriority(priority)" app-flag-icon></svg>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="todo-settings__wrapper_buttons">
+    <button class="button button__todo-settings" (click)="deleteClickHandler()">
+      Delete task
+    </button>
+  </div>
+}

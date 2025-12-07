@@ -1,5 +1,11 @@
 import { FormControl } from '@angular/forms';
-import { PriorityTodos, SettingsItems, SidebarItems, SortItems } from './enums';
+import {
+  ButtonsTodoSettings,
+  PriorityTodos,
+  SettingsItems,
+  SidebarItems,
+  SortItems,
+} from './enums';
 import { ITodo } from '../services/todos.service';
 
 export type GetToken = {
@@ -33,3 +39,5 @@ export type SidebarItemsType = `${SidebarItems}`;
 export type PriorityType = `${PriorityTodos}`;
 
 export type SettingsItemsType = `${SettingsItems}`;
+
+export type ButtonsTodoSettingsType = `${ButtonsTodoSettings}`;
