@@ -14,13 +14,32 @@
 
   <div class="todo-settings__wrapper todo-settings__wrapper_buttons">
     @for (button of buttonsTodoSettings; track $index) {
-      <button
-        class="button button__todo-settings"
-        [ngClass]="{ active: isButtonActive(button) }"
-        (click)="changeTodoDate(button)"
-      >
-        {{ button | capitalize }}
-      </button>
+      @if (button === "schedule date") {
+        <div
+          class="todo-settings__shedule-wrapper"
+          (mouseenter)="openCalendar()"
+          (mouseleave)="closeCalendar()"
+        >
+          <button
+            class="button button__todo-settings button__todo-settings_shedule"
+          >
+            {{ button | capitalize }}
+          </button>
+          @if (isOpenCalendar$ | async) {
+            <app-calendar [todo]="todo"></app-calendar>
+          }
+        </div>
+      } @else {
+        <button
+          class="button button__todo-settings"
+          [ngClass]="{
+            active: isButtonActive(button),
+          }"
+          (click)="changeTodoDate(button)"
+        >
+          {{ button | capitalize }}
+        </button>
+      }
     }
   </div>
 

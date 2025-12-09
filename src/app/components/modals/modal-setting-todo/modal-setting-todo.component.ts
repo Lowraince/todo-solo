@@ -13,9 +13,9 @@ import {
 import { getPriority } from '../../../utils/get-priority';
 import { FlagIconComponent } from '../../../icons/flag-icon/flag-icon.component';
 import { ButtonsTodoSettings, PriorityTodos } from '../../../interfaces/enums';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ModalsOpenService } from '../../../services/modals-open.service';
-import { filter, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, switchMap, tap, timer } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ITodo, TodosService } from '../../../services/todos.service';
 import { getClassPriority } from '../../../utils/class-priority';
@@ -25,10 +25,17 @@ import {
 } from '../../../interfaces/types';
 import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { formatedDateISO } from '../../../utils/formated-date-iso';
+import { CalendarComponent } from '../../calendar/calendar.component';
 
 @Component({
   selector: 'app-modal-setting-todo',
-  imports: [FlagIconComponent, NgClass, CapitalizePipe],
+  imports: [
+    FlagIconComponent,
+    NgClass,
+    CapitalizePipe,
+    AsyncPipe,
+    CalendarComponent,
+  ],
   templateUrl: './modal-setting-todo.component.html',
   styleUrl: './modal-setting-todo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,6 +62,10 @@ export class ModalSettingTodoComponent implements OnInit {
     map((state) => state.confirmModal),
   );
 
+  private isOpenCalendar = new BehaviorSubject<boolean>(false);
+
+  public isOpenCalendar$ = this.isOpenCalendar.asObservable();
+
   private modalConfirmIsOpen: boolean = false;
 
   public priorityArray = getPriority();
@@ -73,6 +84,16 @@ export class ModalSettingTodoComponent implements OnInit {
     ) {
       this.changeModalOpen.emit(false);
     }
+  }
+
+  public openCalendar(): void {
+    this.isOpenCalendar.next(true);
+  }
+
+  public closeCalendar(): void {
+    timer(500).subscribe(() => {
+      this.isOpenCalendar.next(false);
+    });
   }
 
   public changePriority(priority: PriorityType): void {
@@ -113,16 +134,32 @@ export class ModalSettingTodoComponent implements OnInit {
 
   public changeTodoDate(buttonName: ButtonsTodoSettingsType): void {
     const idTodo = this.todo.idTodo;
-    if (
-      buttonName === ButtonsTodoSettings.TODAY ||
-      buttonName === ButtonsTodoSettings.TOMORROW
-    ) {
-      this.todosState
-        .changeDateTodo(idTodo, buttonName)
-        .pipe(tap(() => this.changeModalOpen.emit(false)))
-        .subscribe();
-    } else if (buttonName === ButtonsTodoSettings.SHEDULE) {
-      console.log('shedule');
+
+    const date = new Date();
+
+    switch (buttonName) {
+      case ButtonsTodoSettings.TODAY: {
+        this.todosState
+          .changeDateTodo(idTodo, date)
+          .pipe(tap(() => this.changeModalOpen.emit(false)))
+          .subscribe();
+
+        break;
+      }
+      case ButtonsTodoSettings.TOMORROW: {
+        date.setDate(date.getDate() + 1);
+        this.todosState
+          .changeDateTodo(idTodo, date)
+          .pipe(tap(() => this.changeModalOpen.emit(false)))
+          .subscribe();
+
+        break;
+      }
+      case ButtonsTodoSettings.SHEDULE: {
+        console.log('shedule');
+
+        break;
+      }
     }
   }
 }

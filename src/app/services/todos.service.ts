@@ -261,18 +261,9 @@ export class TodosService {
     );
   }
 
-  public changeDateTodo(
-    idTodo: string,
-    newDate: 'today' | 'tomorrow',
-  ): Observable<ITodo[]> {
-    let presentTime = new Date();
-
-    if (newDate === 'tomorrow') {
-      presentTime = this.nextDay(presentTime);
-    }
-
+  public changeDateTodo(idTodo: string, newDate: Date): Observable<ITodo[]> {
     return this.apiService
-      .patchDataTodo(idTodo, { timeToCreate: presentTime.toISOString() })
+      .patchDataTodo(idTodo, { timeToCreate: newDate.toISOString() })
       .pipe(
         switchMap(() => {
           const currentState = this.todoState.value;

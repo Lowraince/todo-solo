@@ -1,0 +1,79 @@
+.calendar {
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: var(--color-bg-modal);
+  padding: 0.3rem;
+  top: 0;
+  right: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+}
+
+.calendar__month {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem;
+}
+
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 30px);
+  font-size: 0.8rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  background-color: #fff;
+
+  span {
+    color: rgb(161, 159, 159);
+  }
+}
+
+.day__span_prev,
+.day__span_next {
+  color: rgb(161, 159, 159);
+}
+
+.calendar__daysCalendar {
+  display: grid;
+  grid-template-columns: repeat(7, 30px);
+  grid-template-rows: repeat(6, 30px);
+  font-size: 0.8rem;
+  text-align: center;
+  background-color: #fff;
+
+  .current-month {
+    font-weight: bold;
+    color: #000;
+  }
+}
+
+.arrow {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text-button-hover);
+  }
+}
+
+.day__span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  margin: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text-button-hover);
+  }
+}
+
+.day__span_active {
+  background-color: rgb(247, 77, 77);
+  color: white;
+  cursor: auto;
+  pointer-events: none;
+}
