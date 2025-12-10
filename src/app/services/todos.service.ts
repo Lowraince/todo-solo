@@ -262,15 +262,22 @@ export class TodosService {
   }
 
   public changeDateTodo(idTodo: string, newDate: Date): Observable<ITodo[]> {
-    return this.apiService
-      .patchDataTodo(idTodo, { timeToCreate: newDate.toISOString() })
-      .pipe(
-        switchMap(() => {
-          const currentState = this.todoState.value;
+    console.log('changeDate', newDate.toISOString());
+    const test = new Date(
+      newDate.getUTCFullYear(),
+      newDate.getUTCMonth(),
+      newDate.getUTCDate(),
+      12,
+      0,
+      0,
+    ).toISOString();
+    return this.apiService.patchDataTodo(idTodo, { timeToCreate: test }).pipe(
+      switchMap(() => {
+        const currentState = this.todoState.value;
 
-          return this.loadTodos(currentState.activeSidebarItem!);
-        }),
-      );
+        return this.loadTodos(currentState.activeSidebarItem!);
+      }),
+    );
   }
 
   public changeSortTodos(activeSort: SortItemsType): void {

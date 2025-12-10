@@ -87,7 +87,7 @@ export class CalendarService {
       array.push({
         day: index,
         type: type,
-        fullDate: new Date(year, month, index),
+        fullDate: new Date(Date.UTC(year, month, index)),
       });
     }
 

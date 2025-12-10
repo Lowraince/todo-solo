@@ -1,17 +1,20 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
-import { ITodo, TodosService } from '../../services/todos.service';
+import { ITodo } from '../../services/todos.service';
 import {
   CalendarDayTypes,
   CalendarService,
 } from '../../services/calendar.service';
 import { map, take, tap } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
+import { ButtonsTodoSettingsType } from '../../interfaces/types';
 
 @Component({
   selector: 'app-calendar',
@@ -23,7 +26,12 @@ import { AsyncPipe, NgClass } from '@angular/common';
 export class CalendarComponent implements OnInit {
   @Input({ required: true }) public todo!: ITodo;
 
-  private todosState = inject(TodosService);
+  @Output() public todoDataChange = new EventEmitter<{
+    idTodo: string;
+    data: Date;
+    buttonName: ButtonsTodoSettingsType;
+  }>();
+
   private calendarState = inject(CalendarService);
 
   public selectedDate$ = this.calendarState.calendarState$.pipe(
@@ -44,7 +52,7 @@ export class CalendarComponent implements OnInit {
   );
 
   public ngOnInit(): void {
-    this.calendarState.createCalendar(new Date('2025-12-15T15:24:17.609Z'));
+    this.calendarState.createCalendar(new Date(this.todo.timeToCreate));
   }
 
   public activeDay(date: Date): boolean {
@@ -79,7 +87,7 @@ export class CalendarComponent implements OnInit {
       .subscribe();
   }
 
-  // public changeTodoData(idTodo: string, data: Date): void {
-
-  // }
+  public changeTodoData(idTodo: string, data: Date): void {
+    this.todoDataChange.emit({ idTodo, data, buttonName: 'schedule date' });
+  }
 }

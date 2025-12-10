@@ -62,9 +62,19 @@ export class ModalSettingTodoComponent implements OnInit {
     map((state) => state.confirmModal),
   );
 
-  private isOpenCalendar = new BehaviorSubject<boolean>(false);
+  private isOpenCalendar = new BehaviorSubject<{
+    isHover: boolean;
+    isTarget: boolean;
+  }>({
+    isHover: false,
+    isTarget: false,
+  });
 
-  public isOpenCalendar$ = this.isOpenCalendar.asObservable();
+  private isOpenCalendar$ = this.isOpenCalendar.asObservable();
+
+  public isTargetCalendar$ = this.isOpenCalendar$.pipe(
+    map((state) => state.isTarget),
+  );
 
   private modalConfirmIsOpen: boolean = false;
 
@@ -87,13 +97,43 @@ export class ModalSettingTodoComponent implements OnInit {
   }
 
   public openCalendar(): void {
-    this.isOpenCalendar.next(true);
+    this.isOpenCalendar.next({
+      isTarget: true,
+      isHover: true,
+    });
   }
 
   public closeCalendar(): void {
-    timer(500).subscribe(() => {
-      this.isOpenCalendar.next(false);
+    this.isOpenCalendar.next({
+      ...this.isOpenCalendar.value,
+      isHover: false,
     });
+
+    timer(500).subscribe(() => {
+      const calendarHover = this.isOpenCalendar.value.isHover;
+
+      if (!calendarHover) {
+        this.isOpenCalendar.next({
+          isTarget: false,
+          isHover: false,
+        });
+      }
+    });
+  }
+
+  public toggleCalendar(): void {
+    const current = this.isOpenCalendar.value;
+
+    this.isOpenCalendar.next({
+      isTarget: !current.isTarget,
+      isHover: !current.isHover,
+    });
+  }
+
+  public handlePointerDown(event: PointerEvent): void {
+    if (event.pointerType === 'touch' || event.pointerType === 'pen') {
+      this.toggleCalendar();
+    }
   }
 
   public changePriority(priority: PriorityType): void {
@@ -132,9 +172,12 @@ export class ModalSettingTodoComponent implements OnInit {
     return false;
   }
 
-  public changeTodoDate(buttonName: ButtonsTodoSettingsType): void {
-    const idTodo = this.todo.idTodo;
-
+  public changeTodoDate(event: {
+    idTodo: string;
+    buttonName: ButtonsTodoSettingsType;
+    data?: Date;
+  }): void {
+    const { idTodo, buttonName, data } = event;
     const date = new Date();
 
     switch (buttonName) {
@@ -143,7 +186,6 @@ export class ModalSettingTodoComponent implements OnInit {
           .changeDateTodo(idTodo, date)
           .pipe(tap(() => this.changeModalOpen.emit(false)))
           .subscribe();
-
         break;
       }
       case ButtonsTodoSettings.TOMORROW: {
@@ -152,12 +194,17 @@ export class ModalSettingTodoComponent implements OnInit {
           .changeDateTodo(idTodo, date)
           .pipe(tap(() => this.changeModalOpen.emit(false)))
           .subscribe();
-
         break;
       }
       case ButtonsTodoSettings.SHEDULE: {
-        console.log('shedule');
+        if (!data) return;
 
+        console.log(data, 'dataShedule');
+
+        this.todosState
+          .changeDateTodo(idTodo, data)
+          .pipe(tap(() => this.changeModalOpen.emit(false)))
+          .subscribe();
         break;
       }
     }
