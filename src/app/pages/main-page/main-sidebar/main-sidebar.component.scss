@@ -5,6 +5,7 @@
   border-radius: 10px;
   min-height: 170px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-width: 170px;
 }
 
 .sidebar__icon {
@@ -15,6 +16,7 @@
 .sidebar__link {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--color-bg-sidebar);
   margin-bottom: 0.5rem;
   padding: 0.4rem;
@@ -33,6 +35,11 @@
   }
 }
 
+.sidebar__text-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .sidebar__link_active {
   background-color: var(--color-bg-sidebar-active);
   cursor: auto;
@@ -42,4 +49,10 @@
 
 .sidebar__text {
   font-size: 1em;
+  white-space: nowrap;
+}
+
+.sidebar__stats {
+  font-size: 0.9rem;
+  color: var(--color-text-second);
 }

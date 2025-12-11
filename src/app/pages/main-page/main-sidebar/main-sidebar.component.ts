@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { SunIconComponent } from '../../../icons/sun-icon/sun-icon.component';
 import { SunsetIconComponent } from '../../../icons/sunset-icon/sunset-icon.component';
@@ -36,8 +36,26 @@ export class MainSidebarComponent {
     map((state) => state.sidebarItems),
   );
 
+  public sidebarStats$ = this.todoState.todoState$.pipe(
+    map((state) => state.stats),
+  );
+
   public activeSidebar$ = this.todoState.todoState$.pipe(
     map((state) => state.activeSidebarItem),
+  );
+
+  public sidebarWithStats$ = combineLatest([
+    this.sidebarItems$,
+    this.sidebarStats$,
+  ]).pipe(
+    map(([sidebars, stats]) => {
+      return sidebars.map((sidebar) => {
+        return {
+          ...sidebar,
+          sidebarStats: stats ? stats[sidebar.title] : 0,
+        };
+      });
+    }),
   );
 
   public changeActiveLink(sidebar: SidebarItemsType): void {

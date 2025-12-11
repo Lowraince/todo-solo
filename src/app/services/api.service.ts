@@ -67,4 +67,8 @@ export class ApiService {
   public deleteDataTodo(idTodo: string): Observable<{ success: true }> {
     return this.http.delete<{ success: true }>(`api/todos/${idTodo}`);
   }
+
+  public getStats(): Observable<Record<string, number>> {
+    return this.http.get<Record<string, number>>(`api/todos/stats`);
+  }
 }

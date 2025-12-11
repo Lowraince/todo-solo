@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import {
   BehaviorSubject,
+  catchError,
   Observable,
+  of,
   switchMap,
   tap,
   throwError,
@@ -51,6 +53,7 @@ interface TodosState {
   activeSidebarItem: SidebarItemsType | null;
   activeSort: SortItemsType;
   errorMessages: string[];
+  stats: Record<SidebarItemsType, number> | null;
 }
 
 @Injectable({
@@ -81,6 +84,7 @@ export class TodosService {
     todos: [],
     activeSort: SortItems.PROJECT_SORT,
     errorMessages: [],
+    stats: null,
   });
 
   public todoState$ = this.todoState.asObservable();
@@ -93,7 +97,7 @@ export class TodosService {
     description: string;
     value: number;
     activeSidebar: SidebarItemsType;
-  }): Observable<ITodo> {
+  }): Observable<Record<string, number>> {
     let presentTime = new Date();
 
     if (activeSidebar === 'tomorrow') {
@@ -120,10 +124,13 @@ export class TodosService {
           todos: [...currentState.todos, todo],
         });
       }),
+      switchMap(() => this.loadStats()),
     );
   }
 
-  public loadTodos(active: SidebarItemsType): Observable<ITodo[]> {
+  public loadTodos(
+    active: SidebarItemsType,
+  ): Observable<Record<string, number>> {
     return this.apiService.getDataTodo(active).pipe(
       tap((todos: ITodo[]) => {
         const currentState = this.todoState.value;
@@ -141,6 +148,7 @@ export class TodosService {
           activeSort,
         });
       }),
+      switchMap(() => this.loadStats()),
     );
   }
 
@@ -150,7 +158,7 @@ export class TodosService {
   }: {
     idTodo: string;
     priority: PriorityType;
-  }): Observable<ITodo> {
+  }): Observable<Record<string, number>> {
     return Math.random() > 0.5
       ? throwError(() => {
           const currentState = this.todoState.value;
@@ -188,10 +196,11 @@ export class TodosService {
               }),
             });
           }),
+          switchMap(() => this.loadStats()),
         );
   }
 
-  public deleteTodo(idTodo: string): Observable<{ success: true }> {
+  public deleteTodo(idTodo: string): Observable<Record<string, number>> {
     return this.apiService.deleteDataTodo(idTodo).pipe(
       tap(() => {
         const currentState = this.todoState.value;
@@ -201,10 +210,14 @@ export class TodosService {
           todos: currentState.todos.filter((todo) => todo.idTodo !== idTodo),
         });
       }),
+      switchMap(() => this.loadStats()),
     );
   }
 
-  public changeValueTodo(idTodo: string, value: number): Observable<ITodo> {
+  public changeValueTodo(
+    idTodo: string,
+    value: number,
+  ): Observable<Record<string, number>> {
     return this.apiService.patchDataTodo(idTodo, { value }).pipe(
       tap((newTodo) => {
         const currentState = this.todoState.value;
@@ -220,6 +233,7 @@ export class TodosService {
           }),
         });
       }),
+      switchMap(() => this.loadStats()),
     );
   }
 
@@ -242,7 +256,7 @@ export class TodosService {
   public changeCompleteTodo(
     idTodo: string,
     complete: boolean,
-  ): Observable<ITodo> {
+  ): Observable<Record<string, number>> {
     return this.apiService.patchDataTodo(idTodo, { isComplete: complete }).pipe(
       tap((newTodo) => {
         const currentState = this.todoState.value;
@@ -258,11 +272,14 @@ export class TodosService {
           }),
         });
       }),
+      switchMap(() => this.loadStats()),
     );
   }
 
-  public changeDateTodo(idTodo: string, newDate: Date): Observable<ITodo[]> {
-    console.log('changeDate', newDate.toISOString());
+  public changeDateTodo(
+    idTodo: string,
+    newDate: Date,
+  ): Observable<Record<string, number>> {
     const test = new Date(
       newDate.getUTCFullYear(),
       newDate.getUTCMonth(),
@@ -287,6 +304,18 @@ export class TodosService {
       ...currentState,
       activeSort,
     });
+  }
+
+  public loadStats(): Observable<Record<string, number>> {
+    return this.apiService.getStats().pipe(
+      tap((stats) => {
+        this.todoState.next({
+          ...this.todoState.value,
+          stats,
+        });
+      }),
+      catchError(() => of({})),
+    );
   }
 
   private nextDay(date: Date): Date {

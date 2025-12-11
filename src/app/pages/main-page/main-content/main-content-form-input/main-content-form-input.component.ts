@@ -11,7 +11,15 @@ import { ArrowIconComponent } from '../../../../icons/arrow-icon/arrow-icon.comp
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ModalIncreaseComponent } from '../../../../components/modals/modal-increase/modal-increase.component';
 import { ModalsOpenService } from '../../../../services/modals-open.service';
-import { BehaviorSubject, exhaustMap, finalize, map, Subject, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  exhaustMap,
+  finalize,
+  map,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   FormControl,
   FormGroup,
@@ -91,6 +99,7 @@ export class MainContentFormInputComponent implements OnInit {
               this.addTodoForm.reset();
               this.resetActiveIconsState();
             }),
+            switchMap(() => this.todosState.loadStats()),
             finalize(() => this.isLoading$.next(false)),
           ),
         ),
