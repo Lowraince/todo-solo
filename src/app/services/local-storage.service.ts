@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppThemesType } from '../interfaces/types';
 
 @Injectable({
   providedIn: 'root',
@@ -14,5 +15,13 @@ export class LocalStorageService {
 
   public removeTokenLocalStorage(): void {
     localStorage.removeItem('token-todo');
+  }
+
+  public setAppThemeLocalStorage(theme: AppThemesType): void {
+    localStorage.setItem('app-theme', theme);
+  }
+
+  public getAppThemeLocalStorage(): string | null {
+    return localStorage.getItem('app-theme') || null;
   }
 }

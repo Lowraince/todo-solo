@@ -42,3 +42,9 @@ export enum ButtonsTodoSettings {
   TOMORROW = 'tomorrow',
   SHEDULE = 'schedule date',
 }
+
+export enum AppThemes {
+  LIGHT = 'light',
+  DARK = 'dark',
+  AUTO = 'auto',
+}

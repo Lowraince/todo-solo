@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ThemeApp } from '../interfaces/types';
+import { AppThemesType } from '../interfaces/types';
+import { AppThemes } from '../interfaces/enums';
 
 interface SettingsState {
   appThemes: {
-    themes: string[];
-    activeTheme: ThemeApp;
+    themes: AppThemesType[];
+    activeTheme: AppThemesType;
   };
   timer: {
     timeDuration: string;
@@ -19,8 +20,8 @@ interface SettingsState {
 export class SettingsService {
   private settingsState = new BehaviorSubject<SettingsState>({
     appThemes: {
-      themes: ['light', 'dark', 'auto'],
-      activeTheme: 'light',
+      themes: [AppThemes.LIGHT, AppThemes.DARK, AppThemes.AUTO],
+      activeTheme: AppThemes.LIGHT,
     },
     timer: {
       timeDuration: '2',
@@ -52,8 +53,16 @@ export class SettingsService {
     });
   }
 
-  public changeTheme(activeTheme: ThemeApp): void {
+  public changeTheme(activeTheme: AppThemesType): void {
     const currentState = this.settingsState.value;
+    const root = document.documentElement;
+
+    if (activeTheme === 'light') {
+      delete root.dataset['theme'];
+    } else {
+      root.dataset['theme'] = 'dark';
+    }
+
     this.settingsState.next({
       ...currentState,
       appThemes: {

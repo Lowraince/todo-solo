@@ -25,8 +25,8 @@
             <p>Theme application</p>
             <app-select
               [controlSelect]="themeControl"
-              [valueOption]="appThemes | async"
-              (changeValue)="onSelectChange2($event.value)"
+              [valueOption]="appThemes$ | async"
+              (changeValue)="changeTheme($event.value)"
             >
             </app-select>
           </div>

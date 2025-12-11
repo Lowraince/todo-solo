@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
+  --color-bg-body-0: rgb(243 243 243);
+  --color-bg-body-100: rgb(129 129 129);
+
   --color-text-white: #fff;
   --color-text-black: #000;
   --color-text-second: gray;
@@ -62,6 +65,11 @@
   --color-date-text-past: red;
 }
 
+:root[data-theme="dark"] {
+  --color-bg-body-0: rgb(52 56 83);
+  --color-bg-body-100: rgb(99 79 80);
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -70,8 +78,8 @@ body {
   align-items: center;
   background: linear-gradient(
     155deg,
-    rgb(243 243 243) 0%,
-    rgb(129 129 129) 100%
+    var(--color-bg-body-0) 0%,
+    var(--color-bg-body-100) 100%
   );
 }
 

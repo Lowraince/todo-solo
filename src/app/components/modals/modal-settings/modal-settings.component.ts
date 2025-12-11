@@ -7,16 +7,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { TodosService } from '../../../services/todos.service';
-import { map, take, tap } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SettingsService } from '../../../services/settings.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SelectComponent } from '../../select/select.component';
 import {
+  AppThemesType,
   EmitterSelect,
   SidebarItemsType,
-  ThemeApp,
 } from '../../../interfaces/types';
 import { TabNavComponent } from '../../tab-nav/tab-nav.component';
 import { CheckboxComponent } from '../../checkbox/checkbox.component';
@@ -28,6 +28,7 @@ import {
   SettingsItems,
   SidebarItems,
 } from '../../../interfaces/enums';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'app-modal-settings',
@@ -49,6 +50,7 @@ export class ModalSettingsComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private modalOpenService = inject(ModalsOpenService);
   private router = inject(Router);
+  private localStorage = inject(LocalStorageService);
 
   @HostListener('document:keydown', ['$event'])
   public handleKeydown(event: KeyboardEvent): void {
@@ -60,7 +62,7 @@ export class ModalSettingsComponent implements OnInit {
   public settingsSections = [SettingsItems.GENERAL, SettingsItems.TIMER];
   public activeSection = SettingsItems.GENERAL;
 
-  public themeControl = new FormControl<string | null>(null);
+  public themeControl = new FormControl<AppThemesType | null>(null);
 
   private timerForm = new FormGroup({
     timeDuration: new FormControl<string | null>(null),
@@ -89,24 +91,24 @@ export class ModalSettingsComponent implements OnInit {
     return array;
   }
 
-  public activeTheme = this.settingsState.settingsState$.pipe(
+  public activeTheme$ = this.settingsState.settingsState$.pipe(
     map((state) => state.appThemes.activeTheme),
   );
 
-  public appThemes = this.settingsState.settingsState$.pipe(
-    map((state) => state.appThemes.themes ?? []),
+  public appThemes$ = this.settingsState.settingsState$.pipe(
+    map((state) => state.appThemes.themes),
   );
 
-  public timer = this.settingsState.settingsState$.pipe(
+  public timer$ = this.settingsState.settingsState$.pipe(
     map((state) => state.timer),
   );
 
-  public activeSidebar = this.todosState.todoState$.pipe(
+  public activeSidebar$ = this.todosState.todoState$.pipe(
     map((state) => state.activeSidebarItem),
   );
 
   public ngOnInit(): void {
-    this.initTheme();
+    this.initTheme().subscribe();
     this.initTimer();
   }
 
@@ -118,14 +120,23 @@ export class ModalSettingsComponent implements OnInit {
     this.activeSection = item;
   }
 
-  private initTheme(): void {
-    this.activeTheme
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((theme) => this.themeControl.setValue(theme));
+  private initTheme(): Observable<AppThemesType> {
+    return this.activeTheme$.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((theme) => {
+        const themeLocal = this.localStorage.getAppThemeLocalStorage();
+
+        if (this.isAppThemeType(themeLocal)) {
+          this.themeControl.setValue(themeLocal);
+        } else {
+          this.themeControl.setValue(theme);
+        }
+      }),
+    );
   }
 
   private initTimer(): void {
-    this.timer.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((time) => {
+    this.timer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((time) => {
       if (time) {
         this.timerForm.setValue({
           timeDuration: time.timeDuration,
@@ -146,7 +157,7 @@ export class ModalSettingsComponent implements OnInit {
     title: SidebarItemsType;
     isActive: boolean;
   }): void {
-    this.activeSidebar
+    this.activeSidebar$
       .pipe(
         take(1),
         tap((activeSidebar) => {
@@ -160,8 +171,10 @@ export class ModalSettingsComponent implements OnInit {
     this.todosState.changeVisibleSidebar({ title, isActive });
   }
 
-  public changeTheme(item: string): void {
-    console.log(item);
+  public changeTheme(theme: AppThemesType): void {
+    this.localStorage.setAppThemeLocalStorage(theme);
+    this.themeControl.setValue(theme);
+    this.settingsState.changeTheme(theme);
   }
 
   public onSelectChange({ control, value }: EmitterSelect): void {
@@ -176,13 +189,7 @@ export class ModalSettingsComponent implements OnInit {
     }
   }
 
-  public onSelectChange2(value: string): void {
-    if (this.isThemeApp(value)) {
-      this.settingsState.changeTheme(value);
-    }
-  }
-
-  private isThemeApp(value: string): value is ThemeApp {
-    return value === 'light' || value === 'dark';
+  private isAppThemeType(value: string | null): value is AppThemesType {
+    return value === 'light' || value === 'dark' || value === 'auto';
   }
 }

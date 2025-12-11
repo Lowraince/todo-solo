@@ -1,5 +1,6 @@
 import { FormControl } from '@angular/forms';
 import {
+  AppThemes,
   ButtonsTodoSettings,
   PriorityTodos,
   SettingsItems,
@@ -14,11 +15,9 @@ export type GetToken = {
 
 export type PasswordFieldType = 'password' | 'text';
 
-export type ThemeApp = 'light' | 'dark';
-
 export type EmitterSelect = {
   control: FormControl;
-  value: string | ThemeApp;
+  value: string | AppThemesType;
 };
 
 export type DateGroupMapSort = {
@@ -41,3 +40,5 @@ export type PriorityType = `${PriorityTodos}`;
 export type SettingsItemsType = `${SettingsItems}`;
 
 export type ButtonsTodoSettingsType = `${ButtonsTodoSettings}`;
+
+export type AppThemesType = `${AppThemes}`;

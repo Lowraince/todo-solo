@@ -1,10 +1,13 @@
 <div (click)="toggleSelect()" class="custom-select">
   <div class="custom-select__header">
     <p>{{ controlSelect.value }} {{ optionalValue }}</p>
-    <span class="arrow" [ngClass]="{ arrow_active: isOpen }"></span>
+    <span
+      class="arrow"
+      [ngClass]="{ arrow_active: isOpenSelect$ | async }"
+    ></span>
   </div>
 
-  @if (isOpen) {
+  @if (isOpenSelect$ | async) {
     <ul class="custom-select__options">
       @for (item of valueOption; track $index) {
         <li

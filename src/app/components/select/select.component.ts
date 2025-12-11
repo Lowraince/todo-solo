@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,33 +7,38 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { EmitterSelect } from '../../interfaces/types';
+import { BehaviorSubject } from 'rxjs';
+
+export type EmitterSelect<T extends string> = {
+  control: FormControl<T | null>;
+  value: T;
+};
 
 @Component({
   selector: 'app-select',
-  imports: [NgClass, ReactiveFormsModule],
+  imports: [NgClass, ReactiveFormsModule, AsyncPipe],
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent {
-  @Input({ required: true }) public controlSelect!: FormControl<string | null>;
-  @Input({ required: true }) public valueOption!: string[] | null;
+export class SelectComponent<T extends string> {
+  @Input({ required: true }) public controlSelect!: FormControl<T | null>;
+  @Input({ required: true }) public valueOption!: T[] | null;
   @Input() public optionalValue!: string;
 
-  @Output() public changeValue = new EventEmitter<EmitterSelect>();
+  @Output() public changeValue = new EventEmitter<EmitterSelect<T>>();
 
-  public isOpen: boolean = false;
+  public isOpenSelect$ = new BehaviorSubject<boolean>(false);
 
   public getDisplayValue(item: string): string {
     return this.optionalValue ? `${item} ${this.optionalValue}` : item;
   }
 
   public toggleSelect(): void {
-    this.isOpen = !this.isOpen;
+    this.isOpenSelect$.next(!this.isOpenSelect$.value);
   }
 
-  public changeValueOption(item: string): void {
+  public changeValueOption(item: T): void {
     this.changeValue.emit({ control: this.controlSelect, value: item });
   }
 }

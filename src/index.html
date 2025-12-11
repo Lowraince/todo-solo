@@ -12,6 +12,27 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function () {
+        let theme = window.localStorage.getItem("app-theme");
+
+        if (theme === "auto") {
+          const hour = new Date().getHours();
+
+          const isNight = hour >= 20 || hour < 6;
+
+          theme = isNight ? "dark" : "light";
+        }
+
+        const root = document.documentElement;
+
+        if (theme === "dark") {
+          root.dataset["theme"] = "dark";
+        } else {
+          delete root.dataset["theme"];
+        }
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>
