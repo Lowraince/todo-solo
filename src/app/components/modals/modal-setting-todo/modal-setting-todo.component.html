@@ -73,3 +73,9 @@
     </button>
   </div>
 }
+
+@if (modalConfirm$ | async) {
+  <app-modal-confirm
+    (closeSettings)="confirmCloseSettings()"
+  ></app-modal-confirm>
+}

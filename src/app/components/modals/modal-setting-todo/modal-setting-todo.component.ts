@@ -26,6 +26,7 @@ import {
 import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { formatedDateISO } from '../../../utils/formated-date-iso';
 import { CalendarComponent } from '../../calendar/calendar.component';
+import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 
 @Component({
   selector: 'app-modal-setting-todo',
@@ -35,6 +36,7 @@ import { CalendarComponent } from '../../calendar/calendar.component';
     CapitalizePipe,
     AsyncPipe,
     CalendarComponent,
+    ModalConfirmComponent,
   ],
   templateUrl: './modal-setting-todo.component.html',
   styleUrl: './modal-setting-todo.component.scss',
@@ -58,7 +60,7 @@ export class ModalSettingTodoComponent implements OnInit {
     ButtonsTodoSettings.SHEDULE,
   ];
 
-  private modalConfirm$ = this.openModalService.modalsState$.pipe(
+  public modalConfirm$ = this.openModalService.modalsState$.pipe(
     map((state) => state.confirmModal),
   );
 
@@ -94,6 +96,10 @@ export class ModalSettingTodoComponent implements OnInit {
     ) {
       this.changeModalOpen.emit(false);
     }
+  }
+
+  public confirmCloseSettings(): void {
+    this.changeModalOpen.emit(false);
   }
 
   public openCalendar(): void {

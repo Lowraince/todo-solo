@@ -59,7 +59,7 @@ export class TodoComponent implements OnInit {
 
   public valueControl = new FormControl(0, { nonNullable: true });
 
-  public isOpen$ = new BehaviorSubject<boolean>(false);
+  public isOpenSettings$ = new BehaviorSubject<boolean>(false);
   public changePrio$ = new Subject<{
     idTodo: string;
     priority: PriorityType;
@@ -90,7 +90,7 @@ export class TodoComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
         switchMap((newPrio) =>
           this.todosState.changePriorityTodo(newPrio).pipe(
-            tap(() => this.isOpen$.next(false)),
+            tap(() => this.isOpenSettings$.next(false)),
             catchError((error) => {
               console.error(error, 'error change priority');
 
@@ -104,11 +104,11 @@ export class TodoComponent implements OnInit {
 
   public toggleModalTodo(): void {
     this.valueControl.setValue(this.todo.value, { emitEvent: false });
-    this.isOpen$.next(!this.isOpen$.value);
+    this.isOpenSettings$.next(!this.isOpenSettings$.value);
   }
 
   public closeModal(event: boolean): void {
-    this.isOpen$.next(event);
+    this.isOpenSettings$.next(event);
   }
 
   public changeCompleteHandler(): void {

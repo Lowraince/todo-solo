@@ -3,7 +3,6 @@ import { ModalSettingsComponent } from '../../components/modals/modal-settings/m
 import { AsyncPipe } from '@angular/common';
 import { ModalsOpenService } from '../../services/modals-open.service';
 import { map } from 'rxjs';
-import { ModalConfirmComponent } from '../../components/modals/modal-confirm/modal-confirm.component';
 import { RouterOutlet } from '@angular/router';
 import { MainSidebarComponent } from './main-sidebar/main-sidebar.component';
 import { HeaderMainComponent } from './main-header/header-main.component';
@@ -13,7 +12,6 @@ import { HeaderMainComponent } from './main-header/header-main.component';
   imports: [
     ModalSettingsComponent,
     AsyncPipe,
-    ModalConfirmComponent,
     RouterOutlet,
     MainSidebarComponent,
     HeaderMainComponent,
@@ -27,9 +25,5 @@ export class MainPageComponent {
 
   public modalAppSettings$ = this.modalOpenService.modalsState$.pipe(
     map((state) => state.settingsAppModal),
-  );
-
-  public modalConfirm$ = this.modalOpenService.modalsState$.pipe(
-    map((state) => state.confirmModal),
   );
 }

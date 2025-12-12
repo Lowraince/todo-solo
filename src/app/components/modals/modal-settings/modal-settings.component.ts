@@ -109,7 +109,7 @@ export class ModalSettingsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initTheme().subscribe();
-    this.initTimer();
+    this.initTimer().subscribe();
   }
 
   public closeModal(): void {
@@ -135,15 +135,19 @@ export class ModalSettingsComponent implements OnInit {
     );
   }
 
-  private initTimer(): void {
-    this.timer$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((time) => {
-      if (time) {
+  private initTimer(): Observable<{
+    timeDuration: string;
+    timeRest: string;
+  }> {
+    return this.timer$.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((time) => {
         this.timerForm.setValue({
           timeDuration: time.timeDuration,
           timeRest: time.timeRest,
         });
-      }
-    });
+      }),
+    );
   }
 
   public sidebarItems = this.todosState.todoState$.pipe(

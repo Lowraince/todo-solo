@@ -59,6 +59,12 @@ export class SettingsService {
 
     if (activeTheme === 'light') {
       delete root.dataset['theme'];
+    } else if (activeTheme === 'auto') {
+      const hour = new Date().getHours();
+
+      const isNight = hour >= 20 || hour < 6;
+
+      root.dataset['theme'] = isNight ? 'dark' : 'light';
     } else {
       root.dataset['theme'] = 'dark';
     }

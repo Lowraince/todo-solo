@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+} from '@angular/core';
 import { ModalsOpenService } from '../../../services/modals-open.service';
 import { AsyncPipe } from '@angular/common';
 import { SliceModalDescriptionPipe } from '../../../pipes/slice-modal-description.pipe';
@@ -14,10 +20,13 @@ import { ConfirmIconComponent } from '../../../icons/confirm-icon/confirm-icon.c
 export class ModalConfirmComponent {
   private openModalService = inject(ModalsOpenService);
 
+  @Output() public closeSettings = new EventEmitter();
+
   public modalCurrentDescription$ = this.openModalService.confirmText$;
 
   public yesHandler(): void {
     this.openModalService.confirmTrue();
+    this.closeSettings.emit();
   }
 
   public noHandler(): void {

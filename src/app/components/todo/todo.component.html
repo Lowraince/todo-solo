@@ -35,10 +35,10 @@
         }
       </div>
     </div>
-    @if (isOpen$ | async) {
+    @if (isOpenSettings$ | async) {
       <app-modal-setting-todo
         [todo]="todo"
-        [modalActive]="(isOpen$ | async)!"
+        [modalActive]="(isOpenSettings$ | async)!"
         (changeModalOpen)="closeModal($event)"
         (priorityChanged)="changePriority($event)"
       >
@@ -55,7 +55,7 @@
       <div class="todo__setting-icon-wrapper" (mousedown)="toggleModalTodo()">
         <svg
           app-settings-icon
-          [ngClass]="{ icon_active: isOpen$ | async }"
+          [ngClass]="{ icon_active: isOpenSettings$ | async }"
         ></svg>
       </div>
       <p
