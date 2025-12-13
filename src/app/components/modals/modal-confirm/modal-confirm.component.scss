@@ -1,0 +1,59 @@
+.modal__confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--color-bg-modal);
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.confirm__header {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.confirm__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirm__question {
+  font-weight: 700;
+}
+
+.confirm__description {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.confirm__buttons-wrapper {
+  display: flex;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.button__confirm {
+  min-width: 80px;
+  padding: 0.3rem 0.5rem;
+  border: none;
+  border-radius: 8px;
+
+  &_cancel {
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--color-bg-sidebar-active);
+      }
+    }
+  }
+}
+
+.button__confirm_ok {
+  background-color: var(--color-bg-sidebar-active);
+
+  @media (any-hover: hover) {
+    &:hover {
+      background-color: var(--color-icon-hover);
+    }
+  }
+}

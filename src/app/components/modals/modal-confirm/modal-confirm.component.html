@@ -1,0 +1,32 @@
+<div class="modal-overlay" (click)="noHandler()">
+  <div class="modal__confirm" (click)="$event.stopPropagation()">
+    <div class="confirm__header">
+      <svg app-confirm-icon></svg>
+      <div class="confirm__text-wrapper">
+        <p class="confirm__question">
+          Do you really want to delete "{{
+            modalCurrentDescription$ | async | sliceModalDescription
+          }}" ?
+        </p>
+        <p class="confirm__description">
+          This task will be deleted and will not be restored.
+        </p>
+      </div>
+    </div>
+
+    <div class="confirm__buttons-wrapper">
+      <button
+        class="button button__confirm button__confirm_ok"
+        (click)="yesHandler()"
+      >
+        Ok
+      </button>
+      <button
+        class="button button__confirm button__confirm_cancel"
+        (click)="noHandler()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

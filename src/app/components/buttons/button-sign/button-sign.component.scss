@@ -1,6 +1,5 @@
 .button__sign {
   padding: 0.5rem 2rem;
-  border: none;
   border-radius: 5px;
   color: var(--color-text-button-primary);
   background-color: var(--color-bg-button-register);
@@ -12,6 +11,7 @@
 }
 
 .button_disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }

@@ -1,0 +1,99 @@
+<div class="todos__uncomplete-wrapper">
+  @switch (activeSorting$ | async) {
+    @case ("priority_order") {
+      @for (todoGroup of todosUncompletePrioWithTime$ | async; track $index) {
+        @switch (todoGroup.key) {
+          @case ("High priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("Medium priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("Low priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+          @case ("No priority") {
+            <app-todos-list-section
+              [todosGroupLength]="todoGroup.value.length"
+              [todosGroupSectionName]="todoGroup.key"
+              [todosGroupTime]="todoGroup.time"
+              [todosGroup]="todoGroup.value"
+            >
+            </app-todos-list-section>
+          }
+        }
+      }
+    }
+
+    @case ("date_order") {
+      @for (todoGroup of todosForDataSort$ | async; track $index) {
+        <app-todos-list-section
+          [todosGroupLength]="todoGroup.todos.length"
+          [todosGroupSectionName]="todoGroup.date"
+          [todosGroupTime]="todoGroup.time"
+          [todosGroup]="todoGroup.todos"
+        >
+        </app-todos-list-section>
+      }
+    }
+
+    @default {
+      @if (isEmptyUncompleteAndAllSidebar$ | async) {
+        <p class="uncomplete__sum-values">
+          <span>Tasks</span> <span class="middle-dot"></span>
+          <span>{{ todosAndEstimatedTime$ | async }}</span>
+        </p>
+      }
+
+      <ul class="todos__container">
+        @for (todo of todosUncomplete$ | async; track $index) {
+          <app-todo [todo]="todo"></app-todo>
+        }
+      </ul>
+    }
+  }
+</div>
+
+@if (isEmptyOrUncomplete$ | async) {
+  <div class="todos__empty-wrapper">
+    <span class="circle"></span>
+    <p>No tasks</p>
+    <p>Click in the input field above to add the task.</p>
+  </div>
+}
+
+<div class="todos__button-wrapper">
+  <button
+    class="button button__todos"
+    (click)="showTodosCompleteHanlder()"
+    [ngClass]="{ button__todos_active: showTodosComplete }"
+  >
+    {{ isShowTodosComplete() }}
+  </button>
+</div>
+
+@if (showTodosComplete) {
+  <ul class="todos__container">
+    @for (todo of todosComplete$ | async; track $index) {
+      <app-todo [todo]="todo"></app-todo>
+    }
+  </ul>
+}

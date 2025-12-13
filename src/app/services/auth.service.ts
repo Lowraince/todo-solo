@@ -3,25 +3,28 @@ import {
   BehaviorSubject,
   catchError,
   EMPTY,
-  finalize,
+  exhaustMap,
+  map,
   Observable,
-  of,
-  switchMap,
   take,
   tap,
   timer,
 } from 'rxjs';
-import { UserLogin, UserProfile } from '../interfaces/interface-api';
+import {
+  GetUserProfile,
+  PostCreateUser,
+  postLoginUser,
+  UserProfileState,
+} from '../interfaces/interface-api';
 import { ApiService } from './api.service';
-import { GetToken } from '../interfaces/types';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
-import { RootPages } from '../interfaces/enums';
 import { LoadingService } from './loading.service';
+import { GetToken } from '../interfaces/types';
+import { RootPages } from '../interfaces/enums';
 
 interface AuthState {
-  userProfile: UserProfile | null;
-  error: string | null;
+  userProfile: UserProfileState | null;
 }
 
 @Injectable({
@@ -35,102 +38,108 @@ export class AuthService {
 
   private authState = new BehaviorSubject<AuthState>({
     userProfile: null,
-    error: null,
   });
 
   public authState$ = this.authState.asObservable();
 
-  public registrationUser(newUser: UserProfile): Observable<GetToken> {
+  public registrationUser(newUser: PostCreateUser): Observable<GetUserProfile> {
     this.modalLoaderService.openModal('Account creation is in progress...');
 
     return this.apiService.postCreateUser(newUser).pipe(
-      tap((value: GetToken) => {
-        this.localStorage.setTokenLocalStorage(value.token);
+      map((userToken: GetToken) => userToken.token),
+      exhaustMap((token: string) =>
+        this.afterSuccessfullAuth(token).pipe(
+          tap(() =>
+            this.modalLoaderService.updateTextModalSuccess(
+              'Account created successfully.',
+            ),
+          ),
+          catchError((error) => {
+            console.error(`Error user create: ${error.message}`);
 
-        this.modalLoaderService.updateTextModalSuccess(
-          'Account created successfully.',
-        );
+            this.modalLoaderService.updateTextModalError(
+              'Something went wrong',
+            );
 
-        timer(1000)
-          .pipe(take(1))
-          .subscribe(() => {
-            this.fetchUserProfile(value.token, false);
-          });
-      }),
-      catchError((error) => {
-        console.error(`Error user create: ${error.message}`);
-        this.authState.next({
-          ...this.authState.value,
-          error: `Error user create: ${error.message}`,
-        });
-        return EMPTY;
-      }),
+            timer(800)
+              .pipe(take(1))
+              .subscribe(() => {
+                this.modalLoaderService.hideModal();
+              });
+            return EMPTY;
+          }),
+        ),
+      ),
     );
   }
 
-  private fetchUserProfile(token: string, redirectOnError = true): void {
-    this.apiService
-      .getUserProfile(token)
-      .pipe(
-        tap((profile: UserProfile) => {
-          this.authState.next({
-            userProfile: profile,
-            error: null,
-          });
+  public fetchUserProfile(
+    transfer: boolean = true,
+  ): Observable<GetUserProfile> {
+    return this.apiService.getUserProfile().pipe(
+      tap((userProfile: GetUserProfile) => {
+        const currentState = this.authState.value;
+        this.authState.next({
+          ...currentState,
+          userProfile: userProfile.data,
+        });
 
-          this.modalLoaderService.hideModal();
-
-          this.router.navigate([`/${RootPages.MAIN}`], { replaceUrl: true });
-        }),
-        catchError((error) => {
-          console.error(`Error user profile: ${error.message}`);
-          this.authState.next({
-            ...this.authState.value,
-            error: `Error user profile: ${error.message}`,
-          });
-
-          if (redirectOnError) {
-            this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
-          }
-
-          return EMPTY;
-        }),
-        take(1),
-        finalize(() => this.modalLoaderService.hideModal()),
-      )
-      .subscribe();
-  }
-
-  public initProfile(): void {
-    const token = this.localStorage.getTokenLocalStorage();
-    if (token) {
-      this.fetchUserProfile(token);
-    } else {
-      this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
-    }
+        if (transfer) {
+          timer(800)
+            .pipe(take(1))
+            .subscribe(() => {
+              this.modalLoaderService.hideModal();
+              this.router.navigate([RootPages.MAIN]);
+            });
+        }
+      }),
+    );
   }
 
   public loginUserAuth({
     userName,
     password,
-  }: UserLogin): Observable<GetToken> {
+  }: postLoginUser): Observable<GetUserProfile> {
     this.modalLoaderService.openModal('Signing in...');
 
     return this.apiService.postLoginUser({ userName, password }).pipe(
-      switchMap((value: GetToken) => {
-        this.localStorage.setTokenLocalStorage(value.token);
-        this.fetchUserProfile(value.token, false);
-
-        return of(value);
-      }),
+      map((userToken: GetToken) => userToken.token),
+      exhaustMap((token: string) =>
+        this.afterSuccessfullAuth(token).pipe(
+          tap(() =>
+            this.modalLoaderService.updateTextModalSuccess('Welcome back!'),
+          ),
+        ),
+      ),
       catchError((error: Error) => {
         console.error(`Login error: ${error.message}`);
-        this.authState.next({
-          ...this.authState.value,
-          error: `Login error: ${error.message}`,
-        });
+        this.modalLoaderService.updateTextModalError(
+          'Incorrect nickname or password!',
+        );
+        timer(1000)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.modalLoaderService.hideModal();
+          });
+
         return EMPTY;
       }),
     );
+  }
+
+  private afterSuccessfullAuth(token: string): Observable<GetUserProfile> {
+    this.localStorage.setTokenLocalStorage(token);
+
+    return this.fetchUserProfile();
+  }
+
+  public logoutUser(): void {
+    this.localStorage.removeTokenLocalStorage();
+
+    this.authState.next({
+      userProfile: null,
+    });
+
+    this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
   }
 }

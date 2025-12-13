@@ -1,0 +1,17 @@
+:host {
+  &.no_prio {
+    fill: var(--flag-no-prio);
+  }
+
+  &.low_prio {
+    fill: var(--flag-low-prio);
+  }
+
+  &.medium_prio {
+    fill: var(--flag-medium-prio);
+  }
+
+  &.high_prio {
+    fill: var(--flag-high-prio);
+  }
+}

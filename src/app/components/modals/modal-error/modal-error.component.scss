@@ -1,0 +1,18 @@
+:host {
+  padding: 0.5rem;
+  border-radius: 5px;
+  transform: translateY(100%);
+  background: var(--color-bg-error);
+  transition: transform 0.35s ease;
+  animation: slide-up 0.35s ease forwards;
+  position: absolute;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

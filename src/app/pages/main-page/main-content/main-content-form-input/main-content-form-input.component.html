@@ -1,0 +1,47 @@
+<form class="add-todo__form" [formGroup]="addTodoForm">
+  <div class="add-todo__action-wrapper">
+    @if (isLoading$ | async) {
+      <span class="loader loader__add-todo"></span>
+    } @else {
+      <svg app-plus-icon class="add-todo__icon-add" (click)="addTodo()"></svg>
+    }
+  </div>
+
+  <input
+    class="add-todo__input"
+    placeholder="To add a task to 'Tasks', press [Enter] to save"
+    formControlName="text"
+    (keydown.enter)="addTodo()"
+  />
+
+  <div class="add-todo__icons">
+    <div class="icons__values" (mouseleave)="onMouseLeave()">
+      @for (icon of activeIconsState.icons; track $index) {
+        <svg
+          app-peach-icon
+          [ngClass]="{
+            icon_active: icon.isHovered || icon.isTarget,
+            icon_target: icon.isHovered && icon.isTarget,
+          }"
+          (mouseenter)="onHoverValues($index)"
+          (mousedown)="onClickIconValue($event, $index)"
+        ></svg>
+      }
+    </div>
+    <svg
+      (click)="openIncreaseModal()"
+      app-arrow-icon
+      class="add-todo__icon-more-values"
+    ></svg>
+    @if (modalIncrease | async) {
+      <app-modal-increase>
+        <app-input-increase
+          [control]="addTodoForm.controls.values"
+          (valueChange)="onValueChangeDirection($event)"
+          (activeValueCountChange)="onInputValueChange($event)"
+        >
+        </app-input-increase>
+      </app-modal-increase>
+    }
+  </div>
+</form>

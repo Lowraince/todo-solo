@@ -1,0 +1,16 @@
+<div class="modal-sort">
+  @for (sortOption of filteredSortItems$ | async; track $index) {
+    <label
+      class="sort__label"
+      [ngClass]="{ active: sortOption.sorting === (todosActiveSort$ | async) }"
+    >
+      <input
+        type="radio"
+        [value]="sortOption.sorting"
+        class="sort__radio"
+        (click)="changeSort(sortOption.sorting)"
+      />
+      {{ sortOption.title }}
+    </label>
+  }
+</div>

@@ -15,7 +15,6 @@ export class LoginGuardService implements CanActivate {
       this.router.navigate([`/${RootPages.MAIN}`]);
       return false;
     }
-
     return true;
   }
 }

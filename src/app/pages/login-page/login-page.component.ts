@@ -5,9 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserLogin } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { BehaviorSubject, exhaustMap, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PasswordFieldType } from '../../interfaces/types';
@@ -15,6 +14,7 @@ import { InputFieldComponent } from '../../components/input-field/input-field.co
 import { markAllFieldsAsDirty } from '../../utils/mark-all-field-dirty';
 
 import { ButtonSignComponent } from '../../components/buttons/button-sign/button-sign.component';
+import { postLoginUser } from '../../interfaces/interface-api';
 
 @Component({
   selector: 'app-login-page',
@@ -54,18 +54,12 @@ export class LoginPageComponent {
 
     if (!formValue.userName || !formValue.password) return;
 
-    const currentUser: UserLogin = {
+    const currentUser: postLoginUser = {
       userName: formValue.userName,
       password: formValue.password,
     };
 
-    of(currentUser)
-      .pipe(
-        exhaustMap((currentUser) =>
-          this.authService.loginUserAuth(currentUser),
-        ),
-      )
-      .subscribe();
+    this.authService.loginUserAuth(currentUser).subscribe();
   }
 
   public changePasswordView(viewPassword: PasswordFieldType): void {

@@ -1,0 +1,29 @@
+<div class="calendar">
+  <div class="calendar__month">
+    <span class="arrow" (click)="monthHandler('prev')"> L </span>
+    <p>{{ selectedDate$ | async }}</p>
+    <span class="arrow" (click)="monthHandler('next')"> R </span>
+  </div>
+  <div class="calendar__days">
+    @for (day of daysOfWeek$ | async; track $index) {
+      <span>
+        {{ day }}
+      </span>
+    }
+  </div>
+  <div class="calendar__daysCalendar">
+    @for (day of calendarDays$ | async; track $index) {
+      <span
+        class="day__span"
+        (click)="changeTodoData(todo.idTodo, day.fullDate)"
+        [ngClass]="{
+          day__span_prev: isPrevOrNext(day.type),
+          day__span_next: isPrevOrNext(day.type),
+          day__span_active: activeDay(day.fullDate),
+        }"
+      >
+        {{ day.day }}
+      </span>
+    }
+  </div>
+</div>

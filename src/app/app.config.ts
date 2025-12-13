@@ -12,7 +12,6 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
-import { LoaderInterceptorService } from './interceptors/loader-interceptor.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,11 +23,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderInterceptorService,
       multi: true,
     },
   ],

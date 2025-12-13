@@ -1,0 +1,44 @@
+<div class="main-content__wrapper">
+  <header class="main-content__header">
+    <h2>{{ todoActiveLink$ | async | capitalize }}</h2>
+    <div class="header__sort-wrapper">
+      <div class="main-content__svg-wrapper" (mousedown)="toggleOpenModal()">
+        <svg app-sort-icon></svg>
+      </div>
+      @if (isOpenSort$ | async) {
+        <app-modal-sort (closeModal)="closeModal()"></app-modal-sort>
+      }
+    </div>
+  </header>
+  <section class="main-content__statistics">
+    <app-main-content-time
+      [time]="todosAndEstimatedTime$ | async"
+      description="Estimated time"
+    >
+    </app-main-content-time>
+    <app-main-content-quantity
+      [quantity]="todoUncompleteLength$ | async"
+      description="Todos awaiting completion"
+    >
+    </app-main-content-quantity>
+    <app-main-content-time
+      [time]="todosAndSpentTime$ | async"
+      description="Time spent"
+    ></app-main-content-time>
+
+    <app-main-content-quantity
+      [quantity]="todoComplete$ | async"
+      description="Completed todos"
+    >
+    </app-main-content-quantity>
+  </section>
+  <section>
+    <app-main-content-form-input></app-main-content-form-input>
+  </section>
+  <section class="main-content__todos">
+    <app-main-content-todos></app-main-content-todos>
+    @for (errorText of todoErrors$ | async; track $index) {
+      <app-modal-error [text]="errorText"></app-modal-error>
+    }
+  </section>
+</div>

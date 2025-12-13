@@ -1,0 +1,68 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-settings" (click)="$event.stopPropagation()">
+    <header class="modal-settings__header">
+      <div class="modal-settings__header-wrapper">
+        <h2>Settings</h2>
+        <span class="cross" (click)="closeModal()"></span>
+      </div>
+
+      <span class="custom-underline"></span>
+    </header>
+
+    <div class="modal-settings__content">
+      <ul class="modal-settings__nav-items">
+        @for (section of settingsSections; track $index) {
+          <app-tab-nav
+            [text]="section"
+            [activeNav]="activeSection"
+            (changeNav)="changeNavSettings(section)"
+          ></app-tab-nav>
+        }
+      </ul>
+      <div class="projects">
+        @if (activeSection === "General") {
+          <div class="theme__wrapper">
+            <p>Theme application</p>
+            <app-select
+              [controlSelect]="themeControl"
+              [valueOption]="appThemes$ | async"
+              (changeValue)="changeTheme($event.value)"
+            >
+            </app-select>
+          </div>
+          <h4 class="projects__title">Projects</h4>
+          <ul>
+            @for (item of sidebarItems | async; track $index) {
+              <li class="projects__link">
+                <p>
+                  {{ item.title | capitalize }}
+                </p>
+                <app-checkbox
+                  [title]="item.title"
+                  [isActive]="item.isActive"
+                  (toggleItem)="toggleActiveSidebar($event)"
+                ></app-checkbox>
+              </li>
+            }
+          </ul>
+        } @else if (activeSection === "Timer") {
+          <h4 class="projects__title">Timer</h4>
+          <ul>
+            @for (item of optionValueTimer; track $index) {
+              <li class="projects__link projects__link_timer">
+                <p>{{ item.label }}</p>
+                <app-select
+                  [controlSelect]="item.control"
+                  [valueOption]="item.values"
+                  optionalValue="Minutes"
+                  (changeValue)="onSelectChange($event)"
+                >
+                </app-select>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+</div>

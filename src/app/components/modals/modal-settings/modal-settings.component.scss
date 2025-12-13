@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+.modal-settings {
+  background-color: var(--color-bg-modal);
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.custom-underline {
+  display: block;
+  content: "";
+  height: 2px;
+  background-color: var(--color-underline);
+}
+
+.modal-settings__header {
+  margin-bottom: 0.5rem;
+}
+
+.modal-settings__nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-settings__header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cross {
+  display: block;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  color: var(--color-bg-cross-modal-close);
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--color-bg-cross-modal-close-hover);
+  }
+}
+
+.cross::before,
+.cross::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.cross::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.cross::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.modal-settings__content {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  padding: 1rem 0.5rem;
+  gap: 0.5rem;
+}
+
+.projects {
+  border: 1px solid #c1c1c1;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.projects__link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 0.3rem;
+  border-radius: 5px;
+  gap: 1rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &:nth-child(even) {
+    background-color: rgb(180, 179, 179);
+    color: white;
+  }
+}
+
+.projects__link_timer {
+  &:nth-child(even) {
+    background-color: transparent;
+    color: inherit;
+  }
+}
+
+.theme__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}

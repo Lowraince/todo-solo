@@ -1,0 +1,136 @@
+.todo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-height: 50px;
+}
+
+.todo__change-wrapper {
+  display: flex;
+  cursor: pointer;
+}
+
+.todo__cycle {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  border: 2px solid gray;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+
+  &.no_prio {
+    border-color: var(--flag-no-prio);
+  }
+  &.low_prio {
+    border-color: var(--flag-low-prio);
+  }
+  &.medium_prio {
+    border-color: var(--flag-medium-prio);
+  }
+  &.high_prio {
+    border-color: var(--flag-high-prio);
+  }
+
+  .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  &.no_prio .inner {
+    background-color: var(--flag-no-prio);
+  }
+  &.low_prio .inner {
+    background-color: var(--flag-low-prio);
+  }
+  &.medium_prio .inner {
+    background-color: var(--flag-medium-prio);
+  }
+  &.high_prio .inner {
+    background-color: var(--flag-high-prio);
+  }
+}
+
+.todo__content {
+  display: grid;
+  position: relative;
+  align-items: center;
+  grid-template-columns: 50px 1fr;
+  width: 100%;
+}
+
+.todo__icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.todo__text-wrapper {
+  padding: 0 0.5rem;
+}
+
+.todo__description {
+  word-break: break-all;
+  overflow-wrap: break-word;
+
+  &.complete {
+    text-decoration: line-through;
+  }
+}
+
+.todo__values {
+  display: flex;
+  align-items: center;
+}
+
+.todo__complete-value,
+.todo__uncomplete-value {
+  font-size: 0.9rem;
+}
+
+.icon__todo {
+  width: 13px;
+  height: 13px;
+}
+
+.todo__icons-value {
+  display: flex;
+  gap: 0.1rem;
+}
+
+.todo__uncomplete-value {
+  opacity: 0.7;
+}
+
+.todo__date-wrapper {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 70px;
+}
+
+.todo__setting-icon-wrapper {
+  display: flex;
+}
+
+.todo__date {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+
+  &_past {
+    color: var(--color-date-text-past);
+  }
+}

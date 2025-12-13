@@ -1,0 +1,81 @@
+@if (todo.isComplete) {
+  <div class="todo-settings__wrapper_buttons">
+    <button class="button button__todo-settings" (click)="deleteClickHandler()">
+      Delete task
+    </button>
+  </div>
+} @else {
+  <div class="todo-settings__wrapper">
+    <p class="todo-settings__description">Expected quantity</p>
+    <div class="todo-settings__value">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+  <div class="todo-settings__wrapper todo-settings__wrapper_buttons">
+    @for (button of buttonsTodoSettings; track $index) {
+      @if (button === "schedule date") {
+        <div
+          class="todo-settings__shedule-wrapper"
+          (mouseenter)="openCalendar()"
+          (mouseleave)="closeCalendar()"
+          (pointerdown)="handlePointerDown($event)"
+        >
+          <button
+            class="button button__todo-settings button__todo-settings_shedule"
+          >
+            {{ button | capitalize }}
+          </button>
+          @if (isTargetCalendar$ | async) {
+            <app-calendar
+              [todo]="todo"
+              (todoDataChange)="changeTodoDate($event)"
+            ></app-calendar>
+          }
+        </div>
+      } @else {
+        <button
+          class="button button__todo-settings"
+          [ngClass]="{
+            active: isButtonActive(button),
+          }"
+          (click)="
+            changeTodoDate({
+              idTodo: todo.idTodo,
+              buttonName: button,
+            })
+          "
+        >
+          {{ button | capitalize }}
+        </button>
+      }
+    }
+  </div>
+
+  <div class="todo-settings__wrapper">
+    <p class="todo-settings__description">Priority</p>
+    <div class="todo-settings__flags-wrapper">
+      @for (priority of priorityArray; track $index) {
+        <div
+          class="flag-wrapper"
+          [ngClass]="{ flag_active: priority === todo.priority }"
+          (click)="changePriority(priority)"
+        >
+          <svg [class]="getClassPriority(priority)" app-flag-icon></svg>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="todo-settings__wrapper_buttons">
+    <button class="button button__todo-settings" (click)="deleteClickHandler()">
+      Delete task
+    </button>
+  </div>
+}
+
+@if (modalConfirm$ | async) {
+  <app-modal-confirm
+    (closeSettings)="confirmCloseSettings()"
+  ></app-modal-confirm>
+}

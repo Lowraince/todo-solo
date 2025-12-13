@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginGuardService } from './guards/login-guard.service';
 import { AuthGuardService } from './guards/auth-guard.service';
-import { RootPages } from './interfaces/enums';
+import { RootPages, SidebarItems } from './interfaces/enums';
 
 export const routes: Routes = [
   { path: '', redirectTo: RootPages.MAIN, pathMatch: 'full' },
@@ -28,5 +28,19 @@ export const routes: Routes = [
         (m) => m.MainPageComponent,
       ),
     canActivate: [AuthGuardService],
+    children: [
+      {
+        path: '',
+        redirectTo: SidebarItems.TODAY,
+        pathMatch: 'full',
+      },
+      {
+        path: ':todosDay',
+        loadComponent: () =>
+          import('./pages/main-page/main-content/main-content.component').then(
+            (m) => m.MainContentComponent,
+          ),
+      },
+    ],
   },
 ];

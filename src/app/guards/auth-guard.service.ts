@@ -14,7 +14,7 @@ export class AuthGuardService implements CanActivate {
     if (this.localStorage.getTokenLocalStorage()) {
       return true;
     }
-    this.router.navigate([`/${RootPages.LOGIN}`]);
+    this.router.navigate([`/${RootPages.LOGIN}`], { replaceUrl: true });
     return false;
   }
 }

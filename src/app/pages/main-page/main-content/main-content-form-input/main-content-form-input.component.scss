@@ -1,0 +1,69 @@
+.add-todo__form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0.5rem;
+  background-color: white;
+  border: 1.5px solid var(--color-form-border);
+}
+
+.add-todo__input {
+  width: 90%;
+  padding: 0.2rem;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid transparent;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.add-todo__form:focus-within {
+  border-color: var(--color-form-border-active);
+  box-shadow: 0 0 2px 1px var(--color-form-border-active);
+}
+
+.add-todo__icons {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.icons__values {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-todo__icon-add {
+  width: 25px;
+  height: 25px;
+}
+
+.add-todo__icon-more-values {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    fill: red;
+  }
+}
+
+.add-todo__action-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+}
+
+.loader__add-todo {
+  width: 18px;
+  height: 18px;
+}

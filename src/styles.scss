@@ -1,13 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --color-bg-primary: #ffcba4;
-  --color-bg-secondary: #fff5ee;
+  --color-bg-body-0: rgb(243 243 243);
+  --color-bg-body-100: rgb(129 129 129);
+
+  --color-text-primary: #000;
+  --color-text-secondary: gray;
+  --color-text-third: #f86d02;
+
+  --color-bg-primary: #fff;
+  --color-bg-secondary: #f9f7f7;
   --color-bg-tertiary: #f8ad7e;
   --color-border: #f0c6a8;
   --color-bg-modal: #fff;
+  --color-bg-modal-secondary: rgb(255 194 176);
+
+  --color-form-border: #dddddd;
+  --color-form-border-active: #f0c6a8;
+
+  --color-bg-header-linear: #ff9c7d;
+  --color-bg-header-linear-2: #ffc9b8;
 
   --color-text-button-primary: white;
-  --color-text-button-hover: white;
+  --color-text-button-hover: #f86d02;
+
+  --color-bg-button-hover: rgb(255 194 176);
   --color-bg-button-register: green;
   --color-bg-button-register-hover: rgb(2, 151, 2);
 
@@ -16,14 +32,71 @@
   --color-input-focus: white;
   --color-input-error-border: red;
 
+  --color-bg-error: #ff4d4d;
+
   --color-loader-border: lightblue;
   --color-loader-border-right: orange;
+
+  --color-icon: #f86d02;
+  --color-icon-hover: #f86d02;
+  --color-icon-input: black;
+
+  --color-bg-sidebar: #fff;
+  --color-bg-sidebar-active: rgb(255 194 176);
+
+  --color-bg-cross-modal-close: black;
+  --color-bg-cross-modal-close-hover: orange;
+
+  --color-underline: #d9d1d1;
+
+  --arrow-select-border: #000;
+  --custom-select-bg: #fff;
+  --custom-select-option-bg-active: rgb(230, 227, 227);
+  --custom-select-border: #ccc;
+
+  --box-shadow-color: rgb(167, 167, 167);
+
+  --flag-no-prio: gray;
+  --flag-low-prio: green;
+  --flag-medium-prio: #f86d02;
+  --flag-high-prio: red;
+
+  --color-date-text-past: red;
+}
+
+:root[data-theme="dark"] {
+  --color-bg-body-0: rgb(52 56 83);
+  --color-bg-body-100: rgb(99 79 80);
+
+  --color-bg-primary: #282b3f;
+  --color-bg-secondary: #353852;
+
+  --color-bg-header-linear: #282b3f;
+  --color-bg-header-linear-2: #353852;
+
+  --color-text-primary: rgb(255 222 187);
+  --color-text-third: rgb(255 222 187);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    155deg,
+    var(--color-bg-body-0) 0%,
+    var(--color-bg-body-100) 100%
+  );
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Roboto, Verdana, sans-serif;
 }
 
 ul {
@@ -38,6 +111,7 @@ button {
 a {
   transition: all 0.3s ease-in;
   cursor: pointer;
+  font-family: Roboto, Verdana, sans-serif;
 }
 
 .loader {
@@ -52,4 +126,23 @@ a {
   to {
     transform: rotate(1turn);
   }
+}
+
+.wrapper {
+  margin: auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }

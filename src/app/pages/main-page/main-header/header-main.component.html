@@ -1,0 +1,27 @@
+<header>
+  <div class="wrapper wrapper__header">
+    <div class="header__logo">
+      <img
+        class="header__img"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTabhtqG_EwOEJ3V9gmVmOe3bpTt4ck_wWGEg&s"
+        alt="peach"
+      />
+    </div>
+    <h1 class="header__title">Focus To-Do</h1>
+    <div class="header__profile">
+      @if (profile$ | async; as userProfile) {
+        <p class="profile__name">{{ userProfile.userName }}</p>
+      } @else {
+        <div class="skeleton-loader">
+          <div class="skeleton-line"></div>
+        </div>
+      }
+      <div class="header__settings" (click)="openSettingsModal()">
+        <svg app-settings-icon></svg>
+      </div>
+      <div class="header__logout" (click)="logoutHandler()">
+        <svg app-logout-icon></svg>
+      </div>
+    </div>
+  </div>
+</header>

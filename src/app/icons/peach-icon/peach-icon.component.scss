@@ -1,0 +1,29 @@
+:host {
+  fill: var(--color-icon);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &.icon_active {
+    opacity: 0.6;
+  }
+
+  &.icon_modal {
+    opacity: 1;
+    cursor: auto;
+    width: 12px;
+    height: 12px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.icon_todo {
+    cursor: auto;
+  }
+
+  &.icon_target {
+    opacity: 1;
+  }
+}

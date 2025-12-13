@@ -1,0 +1,42 @@
+<ul class="sidebar__items">
+  @if (activeSidebar$ | async; as activeItem) {
+    @for (item of sidebarWithStats$ | async; track $index) {
+      @if (item.isActive) {
+        <li
+          class="sidebar__link"
+          [ngClass]="{
+            sidebar__link_active: item.title === activeItem,
+          }"
+          (click)="changeActiveLink(item.title)"
+        >
+          <div class="sidebar__text-wrapper">
+            <div class="sidebar__icon">
+              @switch (item.title) {
+                @case ("today") {
+                  <svg app-sun-icon></svg>
+                }
+                @case ("tomorrow") {
+                  <svg app-sunset-icon></svg>
+                }
+                @case ("missed") {
+                  <svg app-calendar-miss-icon></svg>
+                }
+                @case ("for this week") {
+                  <svg app-calendar-icon></svg>
+                }
+                @case ("all tasks") {
+                  <svg app-all-icon></svg>
+                }
+              }
+            </div>
+
+            <p class="sidebar__text">
+              {{ item.title | capitalize }}
+            </p>
+          </div>
+          <p class="sidebar__stats">{{ item.sidebarStats }}</p>
+        </li>
+      }
+    }
+  }
+</ul>

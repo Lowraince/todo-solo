@@ -1,0 +1,25 @@
+<div (click)="toggleSelect()" class="custom-select">
+  <div class="custom-select__header">
+    <p>{{ controlSelect.value }} {{ optionalValue }}</p>
+    <span
+      class="arrow"
+      [ngClass]="{ arrow_active: isOpenSelect$ | async }"
+    ></span>
+  </div>
+
+  @if (isOpenSelect$ | async) {
+    <ul class="custom-select__options">
+      @for (item of valueOption; track $index) {
+        <li
+          class="custom-select__option"
+          [ngClass]="{
+            'custom-select__option_active': controlSelect.value === item,
+          }"
+          (click)="changeValueOption(item)"
+        >
+          {{ getDisplayValue(item) }}
+        </li>
+      }
+    </ul>
+  }
+</div>

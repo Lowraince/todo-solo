@@ -1,1 +1,13 @@
-<p>main-page works!</p>
+<div class="page-container">
+  <app-header-main></app-header-main>
+  <div class="wrapper wrapper__main-layout">
+    <app-main-sidebar></app-main-sidebar>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  @if (modalAppSettings$ | async) {
+    <app-modal-settings></app-modal-settings>
+  }
+</div>

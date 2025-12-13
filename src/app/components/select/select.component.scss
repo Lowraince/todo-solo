@@ -1,0 +1,69 @@
+.custom-select {
+  position: relative;
+  padding: 0.2rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--custom-select-border);
+  font-size: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+
+.custom-select__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-select__options {
+  position: absolute;
+  background-color: var(--custom-select-bg);
+  z-index: 999;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  border-radius: 8px;
+  border: 1px solid var(--custom-select-border);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.custom-select__option {
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+}
+
+.custom-select__option_active {
+  background-color: var(--custom-select-option-bg-active);
+  cursor: auto;
+  pointer-events: none;
+}
+
+.arrow {
+  display: inline-block;
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+
+.arrow::before {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-left: 2px solid var(--arrow-select-border);
+  border-bottom: 2px solid var(--arrow-select-border);
+  transform: rotate(225deg);
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+}
+
+.arrow_active::before {
+  transform: rotate(315deg);
+}

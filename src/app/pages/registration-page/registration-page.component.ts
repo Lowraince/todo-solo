@@ -9,9 +9,7 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { UserProfile } from '../../interfaces/interface-api';
 import { AuthService } from '../../services/auth.service';
-import { exhaustMap, of } from 'rxjs';
 import { markAllFieldsAsDirty } from '../../utils/mark-all-field-dirty';
 import { multipleWordsValidator } from '../../utils/validators/validator-multiple-words';
 import { usernameAsyncValidator } from '../../utils/validators/async-validators/async-validator-username';
@@ -20,6 +18,7 @@ import { noSpacesValidator } from '../../utils/validators/validator-no-spaces';
 import { hasDigitValidator } from '../../utils/validators/validator-has-digit';
 import { ButtonSignComponent } from '../../components/buttons/button-sign/button-sign.component';
 import { InputFieldComponent } from '../../components/input-field/input-field.component';
+import { PostCreateUser } from '../../interfaces/interface-api';
 
 @Component({
   selector: 'app-registration-page',
@@ -82,15 +81,13 @@ export class RegistrationPageComponent {
       return;
     }
 
-    const newUser: UserProfile = {
+    const newUser: PostCreateUser = {
       userName: value.userName.trim(),
       password: value.password.trim(),
       name: value.realName.trim(),
     };
 
-    of(newUser)
-      .pipe(exhaustMap((newUser) => this.authService.registrationUser(newUser)))
-      .subscribe();
+    this.authService.registrationUser(newUser).subscribe();
   }
 
   private passwordMatchValidator(

@@ -1,0 +1,11 @@
+@if (todosGroupLength) {
+  <p class="uncomplete__sum-values">
+    <span>{{ todosGroupSectionName }}</span> <span class="middle-dot"></span>
+    <span>{{ todosGroupTime }}</span>
+  </p>
+}
+<ul class="todos__container">
+  @for (todo of todosGroup; track $index) {
+    <app-todo [todo]="todo"></app-todo>
+  }
+</ul>
