@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -42,17 +43,19 @@ import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component'
   styleUrl: './modal-setting-todo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModalSettingTodoComponent implements OnInit {
+export class ModalSettingTodoComponent implements OnInit, AfterViewInit {
   @Input({ required: true }) public todo!: ITodo;
   @Input({ required: true }) public modalActive!: boolean;
 
   @Output() public changeModalOpen = new EventEmitter<boolean>();
   @Output() public priorityChanged = new EventEmitter<PriorityType>();
 
-  private element = inject(ElementRef);
+  private element = inject(ElementRef<HTMLElement>);
   private openModalService = inject(ModalsOpenService);
   private todosState = inject(TodosService);
   private destroyRef = inject(DestroyRef);
+
+  private initialDocumentHeight = 0;
 
   public buttonsTodoSettings = [
     ButtonsTodoSettings.TODAY,
@@ -86,6 +89,20 @@ export class ModalSettingTodoComponent implements OnInit {
     this.modalConfirm$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => (this.modalConfirmIsOpen = value));
+
+    this.initialDocumentHeight = document.documentElement.scrollHeight;
+  }
+
+  public ngAfterViewInit(): void {
+    const element = this.element.nativeElement;
+    const rect = element.getBoundingClientRect();
+
+    const elementBottom = rect.bottom + window.scrollY;
+    const overflow = elementBottom - this.initialDocumentHeight;
+
+    if (overflow > 0) {
+      element.style.transform = `translateY(-${overflow}px)`;
+    }
   }
 
   @HostListener('document:mousedown', ['$event'])
