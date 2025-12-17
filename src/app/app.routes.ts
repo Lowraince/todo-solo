@@ -43,4 +43,12 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: RootPages.TIMER,
+    loadComponent: () =>
+      import('./pages/timer-page/timer-page.component').then(
+        (m) => m.TimerPageComponent,
+      ),
+    canActivate: [AuthGuardService],
+  },
 ];

@@ -36,6 +36,11 @@
   padding: 0.5rem;
   border-radius: 5px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+  min-width: 768px;
+
+  &_two-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .main-content__todos {

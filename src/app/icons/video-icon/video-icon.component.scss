@@ -1,0 +1,8 @@
+:host {
+  fill: var(--color-icon);
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    fill: var(--color-icon-hover);
+  }
+}

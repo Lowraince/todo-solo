@@ -42,6 +42,10 @@ export class MainContentTodosComponent {
     map((state) => state.activeSidebarItem),
   );
 
+  public activeSidebarIsNoMissed$ = this.activeSidebar$.pipe(
+    map((state) => state !== 'missed'),
+  );
+
   public activeSorting$ = this.todosState.todoState$.pipe(
     map((state) => state.activeSort),
   );
@@ -54,6 +58,13 @@ export class MainContentTodosComponent {
       ([todosUncomplete, activeSidebar]) =>
         todosUncomplete.length > 0 && activeSidebar !== 'all tasks',
     ),
+  );
+
+  public isEmptyOrUncomplete$ = combineLatest([
+    this.todos$,
+    this.todosUncomplete$,
+  ]).pipe(
+    map(([todos, uncomplete]) => todos.length === 0 || uncomplete.length === 0),
   );
 
   public todosUncompletePrioWithTime$ = combineLatest([
@@ -190,13 +201,6 @@ export class MainContentTodosComponent {
 
       return calculateTime(uncompleteTodos, timeDuration);
     }),
-  );
-
-  public isEmptyOrUncomplete$ = combineLatest([
-    this.todos$,
-    this.todosUncomplete$,
-  ]).pipe(
-    map(([todos, uncomplete]) => todos.length === 0 || uncomplete.length === 0),
   );
 
   public showTodosCompleteHanlder(): void {

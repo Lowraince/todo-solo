@@ -80,15 +80,17 @@
   </div>
 }
 
-<div class="todos__button-wrapper">
-  <button
-    class="button button__todos"
-    (click)="showTodosCompleteHanlder()"
-    [ngClass]="{ button__todos_active: showTodosComplete }"
-  >
-    {{ isShowTodosComplete() }}
-  </button>
-</div>
+@if (activeSidebarIsNoMissed$ | async) {
+  <div class="todos__button-wrapper">
+    <button
+      class="button button__todos"
+      (click)="showTodosCompleteHanlder()"
+      [ngClass]="{ button__todos_active: showTodosComplete }"
+    >
+      {{ isShowTodosComplete() }}
+    </button>
+  </div>
+}
 
 @if (showTodosComplete) {
   <ul class="todos__container">

@@ -1,0 +1,35 @@
+.timer__wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todos__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 300px;
+}
+
+.timer__day-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.brick {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 10px;
+  background-color: var(--color-bg-tertiary);
+  border-radius: 5px;
+}
+
+.aside__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  background-color: var(--color-bg-secondary);
+}

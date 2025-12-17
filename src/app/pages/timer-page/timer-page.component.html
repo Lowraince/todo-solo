@@ -1,0 +1,38 @@
+<div class="wrapper timer__wrapper">
+  <section>
+    <header>
+      @if (isActiveTask$ | async; as ActiveTask) {
+        <ul>
+          <app-todo
+            [todo]="ActiveTask"
+            [generalView]="false"
+            [dateView]="false"
+          ></app-todo>
+        </ul>
+      } @else {
+        <p>Please select a task...</p>
+      }
+    </header>
+    <main>
+      <app-timer></app-timer>
+    </main>
+  </section>
+
+  <aside class="timer__aside">
+    <header>
+      <p>Estimated time</p>
+    </header>
+    <main class="aside__main">
+      <div class="timer__day-wrapper">
+        <span class="brick"></span>
+        <h4>Today</h4>
+      </div>
+
+      <ul class="todos__container">
+        @for (todo of todosTimer$ | async; track $index) {
+          <app-todo [todo]="todo" [dateView]="false"></app-todo>
+        }
+      </ul>
+    </main>
+  </aside>
+</div>

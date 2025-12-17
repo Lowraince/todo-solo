@@ -18,8 +18,10 @@ import {
   debounceTime,
   distinctUntilChanged,
   EMPTY,
+  map,
   Subject,
   switchMap,
+  take,
   tap,
 } from 'rxjs';
 import { ModalSettingTodoComponent } from '../modals/modal-setting-todo/modal-setting-todo.component';
@@ -32,6 +34,9 @@ import { getClassPriority } from '../../utils/class-priority';
 import { PriorityType } from '../../interfaces/types';
 import { formatedDateISO } from '../../utils/formated-date-iso';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { TimerService } from '../../services/timer.service';
+import { RootPages } from '../../interfaces/enums';
 
 @Component({
   selector: 'app-todo',
@@ -52,18 +57,26 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class TodoComponent implements OnInit {
   private todosState = inject(TodosService);
+  private timerState = inject(TimerService);
+  private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
   @Input({ required: true }) public todo!: ITodo;
   @Input() public dateView: boolean = true;
+  @Input() public generalView: boolean = true;
 
   public valueControl = new FormControl(0, { nonNullable: true });
 
   public isOpenSettings$ = new BehaviorSubject<boolean>(false);
+
   public changePrio$ = new Subject<{
     idTodo: string;
     priority: PriorityType;
   }>();
+
+  public todosActiveSidebar = this.todosState.todoState$.pipe(
+    map((state) => state.activeSidebarItem),
+  );
 
   public ngOnInit(): void {
     this.initChangePrio();
@@ -115,7 +128,18 @@ export class TodoComponent implements OnInit {
     const todoId = this.todo.idTodo;
     const todoComplete = !this.todo.isComplete;
 
-    this.todosState.changeCompleteTodo(todoId, todoComplete).subscribe();
+    this.todosActiveSidebar
+      .pipe(
+        take(1),
+        switchMap((sidebar) => {
+          if (sidebar === 'missed') {
+            return this.todosState.deleteTodo(todoId);
+          }
+
+          return this.todosState.changeCompleteTodo(todoId, todoComplete);
+        }),
+      )
+      .subscribe();
   }
 
   public changePriority(priority: PriorityType): void {
@@ -184,6 +208,16 @@ export class TodoComponent implements OnInit {
 
   public onInputValueChange(input: number): void {
     this.valueControl.setValue(input);
+  }
+
+  public navigateToTimer(todo: ITodo): void {
+    this.timerState.addActiveTodo(todo);
+
+    this.router.navigate([RootPages.TIMER]);
+  }
+
+  public clearActiveTodo(): void {
+    this.timerState.clearActiveTodo();
   }
 
   private changeValue(value: number): void {

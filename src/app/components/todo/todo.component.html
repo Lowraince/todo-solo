@@ -14,7 +14,14 @@
         }
       </div>
 
-      <svg app-video-icon></svg>
+      @if (generalView) {
+        <svg
+          app-video-icon
+          class="todo__nav-timer"
+          (click)="navigateToTimer(todo)"
+          [ngClass]="{ 'todo__nav-timer_inactive': todo.isComplete }"
+        ></svg>
+      }
     </div>
     <div class="todo__text-wrapper">
       <p class="todo__description" [ngClass]="{ complete: todo.isComplete }">
@@ -23,13 +30,13 @@
       <div class="todo__values">
         @if (todo.value <= 5) {
           @for (item of [].constructor(todo.value); track $index) {
-            <svg app-peach-icon></svg>
+            <svg app-peach-icon class="icon_todo"></svg>
           }
         } @else {
           <div class="todo__icons-value">
-            <svg app-peach-icon class="icon__todo icon_target"></svg>
+            <svg app-peach-icon class="icon__todo icon_target icon_todo"></svg>
             <span class="todo__complete-value">{{ todo.valueComplete }}</span
-            >/<svg app-peach-icon class="icon__todo"></svg>
+            >/<svg app-peach-icon class="icon__todo icon_todo"></svg>
             <span class="todo__uncomplete-value">{{ todo.value }}</span>
           </div>
         }
@@ -67,5 +74,8 @@
         {{ getFormattedDate(todo.timeToCreate) }}
       </p>
     </div>
+  }
+  @if (!generalView) {
+    <span class="cross" (click)="clearActiveTodo()"></span>
   }
 </li>

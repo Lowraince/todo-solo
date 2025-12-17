@@ -36,7 +36,7 @@ export class CalendarService {
     const getDaysInMonth = this.daysInMonth(year, month);
 
     const firstDayofMonth = new Date(year, month, 1);
-    const firstDayofWeek = firstDayofMonth.getDay();
+    const firstDayofWeek = firstDayofMonth.getDay() - 1;
 
     const calendarDaysPrevious = this.getCalendarPrev(
       year,
