@@ -24,8 +24,8 @@ export class SettingsService {
       activeTheme: AppThemes.LIGHT,
     },
     timer: {
-      timeDuration: '2',
-      timeRest: '2',
+      timeDuration: '01:00',
+      timeRest: '01:00',
     },
   });
 
@@ -37,7 +37,7 @@ export class SettingsService {
       ...currentState,
       timer: {
         ...currentState.timer,
-        timeDuration,
+        timeDuration: `0${timeDuration}:00`,
       },
     });
   }
@@ -48,7 +48,7 @@ export class SettingsService {
       ...currentState,
       timer: {
         ...currentState.timer,
-        timeRest,
+        timeRest: `0${timeRest}:00`,
       },
     });
   }

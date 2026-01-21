@@ -1,16 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { ITodo } from './todos.service';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { SidebarItemsType } from '../interfaces/types';
 import { ApiService } from './api.service';
+import { ITodo } from '../interfaces/interface';
 
 interface TimerState {
   activeTodo: null | ITodo;
   todos: ITodo[] | [];
   timeDuration: string;
   timeRest: string;
-  canvasHeight: number;
-  canvasWidth: number;
+  focusTime: 'focus' | 'rest';
+  isStart: boolean;
 }
 
 @Injectable({
@@ -22,8 +22,8 @@ export class TimerService {
     todos: [],
     timeDuration: '',
     timeRest: '',
-    canvasHeight: 400,
-    canvasWidth: 400,
+    focusTime: 'focus',
+    isStart: false,
   });
 
   public timerState$ = this.timerState.asObservable();
@@ -34,6 +34,20 @@ export class TimerService {
     this.timerState.next({
       ...this.timerState.value,
       activeTodo: todo,
+    });
+  }
+
+  public startTimer(): void {
+    this.timerState.next({
+      ...this.timerState.value,
+      isStart: true,
+    });
+  }
+
+  public stopTimer(): void {
+    this.timerState.next({
+      ...this.timerState.value,
+      isStart: false,
     });
   }
 

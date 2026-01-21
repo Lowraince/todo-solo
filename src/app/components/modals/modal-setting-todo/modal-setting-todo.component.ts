@@ -18,7 +18,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { ModalsOpenService } from '../../../services/modals-open.service';
 import { BehaviorSubject, filter, map, switchMap, tap, timer } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ITodo, TodosService } from '../../../services/todos.service';
+import { TodosService } from '../../../services/todos.service';
 import { getClassPriority } from '../../../utils/class-priority';
 import {
   ButtonsTodoSettingsType,
@@ -28,6 +28,7 @@ import { CapitalizePipe } from '../../../pipes/capitalize.pipe';
 import { formatedDateISO } from '../../../utils/formated-date-iso';
 import { CalendarComponent } from '../../calendar/calendar.component';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
+import { ITodo } from '../../../interfaces/interface';
 
 @Component({
   selector: 'app-modal-setting-todo',
@@ -99,6 +100,8 @@ export class ModalSettingTodoComponent implements OnInit, AfterViewInit {
 
     const elementBottom = rect.bottom + window.scrollY;
     const overflow = elementBottom - this.initialDocumentHeight;
+
+    console.log(element, 'settings');
 
     if (overflow > 0) {
       element.style.transform = `translateY(-${overflow}px)`;

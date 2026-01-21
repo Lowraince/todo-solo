@@ -6,7 +6,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ITodo, TodosService } from '../../services/todos.service';
+import { TodosService } from '../../services/todos.service';
 import { CompleteIconComponent } from '../../icons/complete-icon/complete-icon.component';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { VideoIconComponent } from '../../icons/video-icon/video-icon.component';
@@ -37,6 +37,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TimerService } from '../../services/timer.service';
 import { RootPages } from '../../interfaces/enums';
+import { ITodo } from '../../interfaces/interface';
 
 @Component({
   selector: 'app-todo',

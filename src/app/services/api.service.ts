@@ -5,9 +5,9 @@ import {
   postLoginUser,
 } from '../interfaces/interface-api';
 import { Observable } from 'rxjs';
-import { GetToken } from '../interfaces/types';
+import { GetToken, ITodoAdd } from '../interfaces/types';
 import { HttpClient } from '@angular/common/http';
-import { ITodo, ITodoAdd } from './todos.service';
+import { ITodo } from '../interfaces/interface';
 
 @Injectable({
   providedIn: 'root',

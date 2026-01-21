@@ -7,7 +7,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ITodo } from '../../services/todos.service';
 import {
   CalendarDayTypes,
   CalendarService,
@@ -15,6 +14,7 @@ import {
 import { map, take, tap } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ButtonsTodoSettingsType } from '../../interfaces/types';
+import { ITodo } from '../../interfaces/interface';
 
 @Component({
   selector: 'app-calendar',
@@ -87,7 +87,9 @@ export class CalendarComponent implements OnInit {
       .subscribe();
   }
 
-  public changeTodoData(idTodo: string, data: Date): void {
+  public changeTodoData(data: Date): void {
+    const idTodo = this.todo.idTodo;
+
     this.todoDataChange.emit({ idTodo, data, buttonName: 'schedule date' });
   }
 }

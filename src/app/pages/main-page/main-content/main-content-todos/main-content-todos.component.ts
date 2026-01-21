@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ITodo, TodosService } from '../../../../services/todos.service';
+import { TodosService } from '../../../../services/todos.service';
 import { combineLatest, map } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { TodoComponent } from '../../../../components/todo/todo.component';
@@ -8,6 +8,7 @@ import { TodosListSectionComponent } from '../../../../components/todos-list-sec
 import { calculateTime } from '../../../../utils/calculate-time';
 import { DateGroupMapSort, DateGroupSort } from '../../../../interfaces/types';
 import { formatedDateISO } from '../../../../utils/formated-date-iso';
+import { ITodo } from '../../../../interfaces/interface';
 
 @Component({
   selector: 'app-main-content-todos',

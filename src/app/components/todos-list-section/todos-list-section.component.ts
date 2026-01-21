@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ITodo } from '../../services/todos.service';
 import { TodoComponent } from '../todo/todo.component';
+import { ITodo } from '../../interfaces/interface';
 
 @Component({
   selector: 'app-todos-list-section',

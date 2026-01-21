@@ -1,6 +1,7 @@
 :host {
   fill: var(--color-icon);
   cursor: pointer;
+  transition: all 0.3s ease-in;
 
   &:hover {
     fill: var(--color-icon-hover);

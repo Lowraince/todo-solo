@@ -7,7 +7,10 @@ import {
   SidebarItems,
   SortItems,
 } from './enums';
-import { ITodo } from '../services/todos.service';
+import { ITodo } from './interface';
+
+export type ITodoCome = Pick<ITodo, 'description' | 'value'>;
+export type ITodoAdd = Omit<ITodo, 'idTodo' | 'isComplete'>;
 
 export type GetToken = {
   token: string;

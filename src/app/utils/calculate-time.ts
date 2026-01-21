@@ -1,4 +1,4 @@
-import { ITodo } from '../services/todos.service';
+import { ITodo } from '../interfaces/interface';
 import { sumMinutes } from './sum-mins';
 
 export function calculateTime(todoList: ITodo[], timeDuration: string): string {

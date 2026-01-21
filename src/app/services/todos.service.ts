@@ -10,6 +10,7 @@ import {
   timer,
 } from 'rxjs';
 import {
+  ITodoAdd,
   PriorityType,
   SidebarItemsType,
   SortItemsType,
@@ -21,40 +22,7 @@ import {
   SortTitles,
 } from '../interfaces/enums';
 import { ApiService } from './api.service';
-
-export interface SidebarItemsState {
-  title: SidebarItemsType;
-  isActive: boolean;
-}
-
-export interface SortItemsState {
-  title: SortTitles;
-  sorting: SortItems;
-}
-
-export interface ITodo {
-  idTodo: string;
-  value: number;
-  valueComplete: number;
-  description: string;
-  timeToCreate: string;
-  isComplete: boolean;
-  priority: PriorityType;
-  timeSpent: number;
-}
-
-export type ITodoCome = Pick<ITodo, 'description' | 'value'>;
-export type ITodoAdd = Omit<ITodo, 'idTodo' | 'isComplete'>;
-
-interface TodosState {
-  sidebarItems: SidebarItemsState[];
-  sortingItems: SortItemsState[];
-  todos: ITodo[];
-  activeSidebarItem: SidebarItemsType | null;
-  activeSort: SortItemsType;
-  errorMessages: string[];
-  stats: Record<SidebarItemsType, number> | null;
-}
+import { ITodo, SidebarItemsState, TodosState } from '../interfaces/interface';
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,6 @@
 <div class="timer__canvas">
-  <canvas
-    #timerCanvas
-    [width]="canvasHeight$ | async"
-    [height]="canvasWeigth$ | async"
-  ></canvas>
+  <canvas #timerCanvas [width]="canvasHeight" [height]="canvasWidth"></canvas>
+  <div>
+    <button (click)="startHandler()">Start</button>
+  </div>
 </div>
