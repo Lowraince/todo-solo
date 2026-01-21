@@ -1,6 +1,8 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -23,7 +25,7 @@ import { ITodo } from '../../interfaces/interface';
   styleUrl: './calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
   @Input({ required: true }) public todo!: ITodo;
 
   @Output() public todoDataChange = new EventEmitter<{
@@ -33,6 +35,8 @@ export class CalendarComponent implements OnInit {
   }>();
 
   private calendarState = inject(CalendarService);
+  private element = inject(ElementRef<HTMLElement>);
+  private initialDocumentHeight = 0;
 
   public selectedDate$ = this.calendarState.calendarState$.pipe(
     map((state) => {
@@ -53,6 +57,24 @@ export class CalendarComponent implements OnInit {
 
   public ngOnInit(): void {
     this.calendarState.createCalendar(new Date(this.todo.timeToCreate));
+
+    this.initialDocumentHeight = document.documentElement.scrollHeight;
+  }
+
+  public ngAfterViewInit(): void {
+    const element = this.element.nativeElement;
+    const rect = element.getBoundingClientRect();
+
+    const elementBottom = rect.bottom + window.scrollY;
+    const overflow = elementBottom - this.initialDocumentHeight;
+
+    console.log(overflow, 'cal');
+    console.log(`translateY(-${overflow}px)`, 'cal');
+
+    if (overflow >= -210) {
+      console.log('yes');
+      element.style.transform = `translateY(${overflow + 70}px)`;
+    }
   }
 
   public activeDay(date: Date): boolean {

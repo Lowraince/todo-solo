@@ -101,8 +101,6 @@ export class ModalSettingTodoComponent implements OnInit, AfterViewInit {
     const elementBottom = rect.bottom + window.scrollY;
     const overflow = elementBottom - this.initialDocumentHeight;
 
-    console.log(element, 'settings');
-
     if (overflow > 0) {
       element.style.transform = `translateY(-${overflow}px)`;
     }

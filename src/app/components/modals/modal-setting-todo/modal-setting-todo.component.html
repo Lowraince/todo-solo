@@ -26,11 +26,12 @@
           >
             {{ button | capitalize }}
           </button>
-
-          <app-calendar
-            [todo]="todo"
-            (todoDataChange)="changeTodoDate($event)"
-          ></app-calendar>
+          @if (isTargetCalendar$ | async) {
+            <app-calendar
+              [todo]="todo"
+              (todoDataChange)="changeTodoDate($event)"
+            ></app-calendar>
+          }
         </div>
       } @else {
         <button
